@@ -1,0 +1,5 @@
+# exclude data files
+datasampling/raw_data
+data/expert
+data/inexpert
+

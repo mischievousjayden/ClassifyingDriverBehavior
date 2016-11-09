@@ -15,8 +15,6 @@ def sampleData(period, inputfile, outputfile):
     Returns:
         void
     """
-    fread = open(inputfile, 'r')
-    fwrite = open(outputfile, 'w')
 
     with open(inputfile, 'r') as fread, open(outputfile, 'w') as fwrite:
         for i, line in enumerate(fread):
