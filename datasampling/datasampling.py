@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
 import sys
+from os import listdir
+from os.path import isfile, join
+
 
 def sampleData(period, inputfile, outputfile):
     """The function samples data. 
@@ -22,13 +25,21 @@ def sampleData(period, inputfile, outputfile):
                 fwrite.write(line)
 
 
+def sampleDataSet(period, inputpath, outputpath):
+    suffix = ".dat"
+    file_list = [f for f in listdir(inputpath) if isfile(join(inputpath, f)) and f.endswith(".dat")]
+    for f in file_list:
+        inputfile = join(inputpath, f)
+        outputfile = join(outputpath, "sample_" + f)
+        sampleData(period, inputfile, outputfile)
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        message = "Usag: datafilter.py <period> <input_file> <output_file>"
+        message = "Usag: datasampling.py <period> <input_path> <output_path>"
         sys.exit(message)
 
     period = int(sys.argv[1])
-    inputfile = sys.argv[2]
-    outputfile = sys.argv[3]
-    sampleData(period, inputfile, outputfile)
+    inputpath = sys.argv[2]
+    outputpath = sys.argv[3]
+    sampleDataSet(period, inputpath, outputpath)
 
