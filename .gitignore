@@ -2,4 +2,6 @@
 datasampling/raw_data
 data/expert
 data/inexpert
+src/__pycache__
+src/util/__pycache__
 
