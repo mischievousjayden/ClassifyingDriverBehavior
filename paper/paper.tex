@@ -12,6 +12,7 @@
 \usepackage{comment}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{color}
 
 
 \begin{document}
@@ -34,7 +35,16 @@ Introduction Section
 \section{Background}
 Background of Machine Learning and Deep Learning
 
-Here I am going to cite the Bengio paper \cite{bengio2009learning}
+{\color{blue} [Here summarize the Bengio paper \cite{bengio2009learning}]}
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/FSFNN.png}
+    \caption{blah blah blah.}
+    \label{fig:lstm}
+\end{figure}
+
+{\color{blue} [LSTM should be in Figure \ref{fig:lstm}]}
 
 \begin{enumerate}
 \item Deep Learning
@@ -43,7 +53,7 @@ Here I am going to cite the Bengio paper \cite{bengio2009learning}
 		\begin{enumerate}
 		\item Basic concept of recurrent neural network (RNN)\\
 			RNN is a neural network but RNN has two input: one is from data, another is from previous output. Usually RNN is used with serial data. For example, human language sentence has series of words and data has time domain like driving data and stock data.
-		\item Long Short Term Memory (LSTM) networks\\
+		\item Long Short Term Memory (LSTM) networks\\		
 			Basic RNN has problem of long term dependency \cite{UnderstandingLSTMNetworks}. It means that RNN is not able to memorize long term knowledge. To solve the problem, LSTM is introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM has cell state and the cell state can store long term memory. LSTM has four layer and three of them effect to cell state. Colah's blog \cite{UnderstandingLSTMNetworks} summarizes concept and purpose of each layers. The paper \cite{zaremba2014recurrent} describes LSTM in mathematical term. In this paper, I'm going to summarize the blog \cite{UnderstandingLSTMNetworks} and the paper \cite{zaremba2014recurrent}
 			\begin{enumerate}
 			\item Concept of each layers in LSTM\\
