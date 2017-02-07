@@ -3,6 +3,9 @@ from os.path import isfile, join
 import numpy as np
 
 import util.fileutil as fu
+import util.datautil as du
+
+import pdb
 
 class driverdata(object):
     """Driver data
@@ -13,22 +16,22 @@ class driverdata(object):
         """constructor
         create expert and inexpert data
         Args:
-            datapath: data path.
+            datapath (str): data path.
                 'expert' and 'inexpert' directories should be under the path.
                 'expert' directory contains expert's driving data,
                 'inexpert' directory contains inexpert driving data
-            suffix: data file extension. default is ".dat"
+            suffix (str): data file extension. default is ".dat"
         """
         self.input_data = {
-            "expert": self.createData(datapath + "/expert", suffix, 0),
-            "inexpert": self.createData(datapath + "/inexpert", suffix, 1)
+            "expert": self._create_data(datapath + "/expert", suffix, 0),
+            "inexpert": self._create_data(datapath + "/inexpert", suffix, 1)
         }
 
-    def getCrossValidationInput(self, num_groups, group):
-        """getCrossValidationInpu
+    def get_cross_validation_input(self, num_groups, group):
+        """get_cross_validation_input
         Args:
-            num_groups: seperate entire data to num_groups
-            group: group number. Start from 0 to num)groups-1
+            num_groups (int): seperate entire data to num_groups
+            group (int): group number. Start from 0 to num)groups-1
         Return:
             dictionary with train and test data
         """
@@ -42,10 +45,27 @@ class driverdata(object):
                     test_data = np.append(test_data, self.input_data[key][i::num_groups])
         train_data = np.array(np.random.permutation(train_data))
         test_data = np.array(np.random.permutation(test_data))
+        # return {"train":train_data, "test":test_data}
+        return self.standardize({"train":train_data, "test":test_data})
+
+    def standardize(self, data):
+        train_data = data["train"]
+        test_data = data["test"]
+
+        merged_table = list()
+        for d in train_data:
+            merged_table += d["features"].tolist()
+        mean, std = du.get_mean_std(np.array(merged_table))
+
+        for d in train_data:
+            d["features"] = du.standardize_data_by(d["features"], mean, std)
+        for d in test_data:
+            d["features"] = du.standardize_data_by(d["features"], mean, std)
+
         return {"train":train_data, "test":test_data}
 
-    def createData(self, path, suffix, label):
-        """createData
+    def _create_data(self, path, suffix, label):
+        """_create_data
         Args:
             path: directory path
             suffix: data file suffix
@@ -55,14 +75,14 @@ class driverdata(object):
             example_data_structure)
             [dictionary{features:data, label:label}, dictionary{features:data, label:label}, ...]
         """
-        data_set = self.readData(path, suffix)
-        data_set = self.parseData(data_set)
-        data_set = self.addLabel(data_set, label)
+        data_set = self._read_data(path, suffix)
+        data_set = self._parse_data(data_set)
+        data_set = self._add_label(data_set, label)
         data_set = np.random.permutation(data_set)
         return data_set
 
-    def readData(self, path, suffix):
-        """ readData
+    def _read_data(self, path, suffix):
+        """ _read_data
         Args:
             path: directory path
             suffix: data file suffix
@@ -72,8 +92,8 @@ class driverdata(object):
         files = fu.getAllFileNames(path, suffix)
         return np.array(fu.readDataFiles(files, " "))
 
-    def parseData(self, data_set):
-        """parseData
+    def _parse_data(self, data_set):
+        """_parse_data
         skip header and convert string value to float
         Args:
             data_set: three dimensional numpy array
@@ -92,8 +112,8 @@ class driverdata(object):
             result.append(data[1:,:].astype(np.float))
         return np.array(result)
 
-    def addLabel(self, data_set, label):
-        """ addLabel
+    def _add_label(self, data_set, label):
+        """ _add_label
         add label on data
         Args:
             data_set: three dimensional numpy array
@@ -110,3 +130,8 @@ class driverdata(object):
             result.append(data_dictionary)
         return np.array(result)
 
+if __name__ == "__main__":
+    data_path = "../data"
+    data = driverdata(data_path) # data.input_data, data.get_cross_validation_input(num_groups, group)
+    data = data.get_cross_validation_input(4, 1)
+    

@@ -10,7 +10,7 @@ import pdb
 # read data
 print("read data")
 data_path = "../data"
-data = dl.driverdata(data_path) # data.input_data, data.getCrossValidationInput(num_groups, group)
+data = dl.driverdata(data_path) # data.input_data, data.get_cross_validation_input(num_groups, group)
 
 # print("length " + str(len(data.input_data)))
 # print("length " + str(len(data.input_data["expert"])))
@@ -117,7 +117,7 @@ with tf.Session() as sess:
         summary_writer = tf.train.SummaryWriter(logfilename, sess.graph_def)
 
         print("build train and test data")
-        train_data, train_label, test_data, test_label = createTrainTestData(data.getCrossValidationInput(n_cross_validation, i))
+        train_data, train_label, test_data, test_label = createTrainTestData(data.get_cross_validation_input(n_cross_validation, i))
 
         print("start learning")
         sess.run(init)
