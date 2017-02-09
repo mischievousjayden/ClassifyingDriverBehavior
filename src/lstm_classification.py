@@ -5,17 +5,48 @@ import numpy as np
 
 import datalayer as dl
 
-import pdb
+
+class ClassificationLstm:
+    def __init__(self, n_features, n_hidden, n_classes, forget_bias=1.0):
+        """lstm neural network for classification
+        Args:
+            n_hidden (int): the number of neuron in lstm
+            n_classes (int): the number of classes
+            forget_bias (float): forget bias for lstm. default value is 1.0
+        """
+        self._n_features = n_features
+        self._n_hidden = n_hidden
+        self._n_classes = n_classes
+        self._forget_bias = forget_bias
+        self._weight = tf.Variable(tf.random_normal([n_hidden, n_classes]), name="classification_lstm_weight")
+        self._bias = tf.Variable(tf.random_normal([n_classes]), name="classification_lstm_bias")
+
+    def run_lstm(self, x, seq_len, max_seq_len):
+
+        x = tf.transpose(x, [1, 0, 2])
+        x = tf.reshape(x, [-1, self._n_features])
+        x = tf.split(0, max_seq_len, x)
+
+        # Define a lstm cell with tensorflow
+        lstm_cell = rnn_cell.BasicLSTMCell(self._n_hidden, forget_bias=self._forget_bias)
+
+        # Get lstm cell output
+        outputs, states = rnn.rnn(lstm_cell, x, dtype=tf.float32, sequence_length=seq_len)
+
+        outputs = tf.pack(outputs)
+        outputs = tf.transpose(outputs, [1, 0, 2])
+
+        batch_size = tf.shape(outputs)[0]
+        index = tf.range(0, batch_size) * max_seq_len + (seq_len - 1)
+        outputs = tf.gather(tf.reshape(outputs, [-1, self._n_hidden]), index)
+
+        return tf.matmul(outputs, self._weight) + self._bias
+
 
 # read data
 print("read data")
 data_path = "../data"
-data = dl.driverdata(data_path) # data.input_data, data.get_cross_validation_input(num_groups, group)
-
-# print("length " + str(len(data.input_data)))
-# print("length " + str(len(data.input_data["expert"])))
-# print("length " + str(len(data.input_data["inexpert"])))
-
+data = dl.driverdata(data_path)
 
 # Parameters
 n_cross_validation = 4
@@ -25,70 +56,20 @@ batch_size = 12
 display_step = 10
 
 # Network Parameters
-n_input = 23 # the number of filtered column # 101 # the number of column
-n_steps = 100 # 2629 # timesteps # 500 #
-n_hidden = 128 # 128 # hidden layer num of features
-n_classes = 2 # MNIST total classes (0-9 digits)
-
-
-def cutData(data, num_row):
-    features = []
-    label = []
-    for d in data:
-        # features.append(np.array(d["features"])[:n_steps,:])
-        features.append(d["features"][:n_steps,:])
-        label.append(d["label"])
-    return [np.array(features), np.array(label)]
-
-def createTrainTestData(cross_validation_data):
-    train_features, train_label = cutData(cross_validation_data["train"], n_steps)
-    test_features, test_label = cutData(cross_validation_data["test"], n_steps)
-    return [train_features, train_label, test_features, test_label]
-
-
+n_features = data.get_num_features()
+max_seq_len = data.get_max_seq_len()
+n_hidden = 128 # the number of hidden neurons in lstm
+n_classes = 2 # two classes: expert vs inexpert
+forget_bias = 1.0 # forget bias for lstm
 
 # tf Graph input
-x = tf.placeholder("float", [None, n_steps, n_input], name="x-input-data")
+x = tf.placeholder("float", [None, max_seq_len, n_features], name="x-input-data")
 y = tf.placeholder("float", [None, n_classes], name="y-output-label")
+seq_len = tf.placeholder(tf.int32, [None])
 
-# Define weights
-weights = {
-    'out': tf.Variable(tf.random_normal([n_hidden, n_classes]), name="output_weight")
-}
-
-biases = {
-    'out': tf.Variable(tf.random_normal([n_classes]), name="output_bias")
-}
-
-tf.histogram_summary("output_weight", weights["out"])
-tf.histogram_summary("output_bias", biases["out"])
-
-
-print("create lstm nn")
-def RNN(x, weights, biases):
-
-    # Prepare data shape to match `rnn` function requirements
-    # Current data input shape: (batch_size, n_steps, n_input)
-    # Required shape: 'n_steps' tensors list of shape (batch_size, n_input)
-
-    # Permuting batch_size and n_steps
-    x = tf.transpose(x, [1, 0, 2])
-    # Reshaping to (n_steps*batch_size, n_input)
-    x = tf.reshape(x, [-1, n_input])
-    # Split to get a list of 'n_steps' tensors of shape (batch_size, n_input)
-    x = tf.split(0, n_steps, x)
-
-    # Define a lstm cell with tensorflow
-    lstm_cell = rnn_cell.BasicLSTMCell(n_hidden, forget_bias=1.0)
-
-    # Get lstm cell output
-    outputs, states = rnn.rnn(lstm_cell, x, dtype=tf.float32)
-
-    # Linear activation, using rnn inner loop last output
-    return tf.matmul(outputs[-1], weights['out']) + biases['out']
-
-
-pred = RNN(x, weights, biases)
+print("create lstm nn: {} features, {} sequence length, {} hidden neurons, {} classes".format(n_features, max_seq_len, n_hidden, n_classes))
+cl = ClassificationLstm(n_features, n_hidden, n_classes)
+pred = cl.run_lstm(x, seq_len, max_seq_len)
 
 # Define loss
 with tf.name_scope("cost") as scope:
@@ -113,11 +94,19 @@ with tf.Session() as sess:
     merged = tf.merge_all_summaries()
 
     for i in range(n_cross_validation):
-        logfilename = "./logs/%d_rows/%d_hidden/group%d" % (n_steps, n_hidden, i)
+        logfilename = "./logs/%d_hidden/group%d" % (n_hidden, i)
         summary_writer = tf.train.SummaryWriter(logfilename, sess.graph_def)
 
         print("build train and test data")
-        train_data, train_label, test_data, test_label = createTrainTestData(data.get_cross_validation_input(n_cross_validation, i))
+        cross_validation_data = data.get_cross_validation_input(n_cross_validation, i)
+
+        train_data = cross_validation_data["train"]["data"]
+        train_label = cross_validation_data["train"]["label"]
+        train_seq_len = cross_validation_data["train"]["seq_len"]
+
+        test_data = cross_validation_data["test"]["data"]
+        test_label = cross_validation_data["test"]["label"]
+        test_seq_len = cross_validation_data["test"]["seq_len"]
 
         print("start learning")
         sess.run(init)
@@ -125,24 +114,23 @@ with tf.Session() as sess:
         # Keep training until reach max iterations
         step = 1
         while step * batch_size < training_iters:
-            # print("step " + str(step))
-            batch_x = train_data
-            batch_y = train_label
-
             # Run optimization op (backprop)
-            sess.run(optimizer, feed_dict={x: batch_x, y: batch_y})
+            sess.run(optimizer, \
+                    feed_dict={x: train_data, y: train_label, seq_len: train_seq_len})
             if step % display_step == 0:
                 # Calculate batch accuracy and loss
                 summary, loss, acc = \
-                        sess.run([merged, cost, accuracy], feed_dict={x: batch_x, y: batch_y})
+                        sess.run([merged, cost, accuracy], \
+                        feed_dict={x: train_data, y: train_label, seq_len: train_seq_len})
                 summary_writer.add_summary(summary, step*batch_size)
                 print("Iter " + str(step*batch_size) + \
                         ", Minibatch Loss= " + "{:.6f}".format(loss) + \
                         ", Training Accuracy= " + "{:.5f}".format(acc))
             step += 1
-        print("Optimization Finished!")
 
-        # Calculate accuracy for 128 mnist test images
+        print("Optimization Finished!")
+        # test network with test data
         print("Testing Accuracy:", \
-                sess.run(accuracy, feed_dict={x: test_data, y: test_label}))
+                sess.run(accuracy, \
+                feed_dict={x: test_data, y: test_label, seq_len: test_seq_len}))
 

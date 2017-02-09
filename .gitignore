@@ -5,4 +5,5 @@ data/inexpert
 src/__pycache__
 src/util/__pycache__
 src/logs
+src/reports
 
