@@ -1,9 +1,13 @@
 
+import argparse
+import datetime
+
 import tensorflow as tf
 from tensorflow.python.ops import rnn, rnn_cell
 import numpy as np
 
 import datalayer as dl
+import util.outpututil as ou
 
 
 class ClassificationLstm:
@@ -43,94 +47,127 @@ class ClassificationLstm:
         return tf.matmul(outputs, self._weight) + self._bias
 
 
-# read data
-print("read data")
-data_path = "../data"
-data = dl.driverdata(data_path)
+def classify_drivers(num_hidden, logdir):
+    # start time
+    start_time = datetime.datetime.now()
 
-# Parameters
-n_cross_validation = 4
-learning_rate = 0.001
-training_iters = 1000
-batch_size = 12
-display_step = 10
+    # log output
+    report = ou.ConsoleFileOutput(logdir + "/report.txt")
 
-# Network Parameters
-n_features = data.get_num_features()
-max_seq_len = data.get_max_seq_len()
-n_hidden = 128 # the number of hidden neurons in lstm
-n_classes = 2 # two classes: expert vs inexpert
-forget_bias = 1.0 # forget bias for lstm
+    # read data
+    report.output("read data")
+    data_path = "../data"
+    data = dl.driverdata(data_path)
 
-# tf Graph input
-x = tf.placeholder("float", [None, max_seq_len, n_features], name="x-input-data")
-y = tf.placeholder("float", [None, n_classes], name="y-output-label")
-seq_len = tf.placeholder(tf.int32, [None])
+    # Parameters
+    n_cross_validation = 4
+    learning_rate = 0.001
+    training_iters = 1000
+    batch_size = 12
+    display_step = 10
 
-print("create lstm nn: {} features, {} sequence length, {} hidden neurons, {} classes".format(n_features, max_seq_len, n_hidden, n_classes))
-cl = ClassificationLstm(n_features, n_hidden, n_classes)
-pred = cl.run_lstm(x, seq_len, max_seq_len)
+    # Network Parameters
+    n_features = data.get_num_features()
+    max_seq_len = data.get_max_seq_len()
+    n_hidden = num_hidden # the number of hidden neurons in lstm
+    n_classes = 2 # two classes: expert vs inexpert
+    forget_bias = 1.0 # forget bias for lstm
 
-# Define loss
-with tf.name_scope("cost") as scope:
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
-    tf.scalar_summary("cost", cost)
+    # tf Graph input
+    x = tf.placeholder("float", [None, max_seq_len, n_features], name="x-input-data")
+    y = tf.placeholder("float", [None, n_classes], name="y-output-label")
+    seq_len = tf.placeholder(tf.int32, [None])
 
-# Minimize
-with tf.name_scope("train") as scope:
-    optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
+    report.output("create lstm nn: {} features, {} sequence length, {} hidden neurons, {} classes".format(n_features, max_seq_len, n_hidden, n_classes))
+    cl = ClassificationLstm(n_features, n_hidden, n_classes)
+    pred = cl.run_lstm(x, seq_len, max_seq_len)
 
-# Evaluate model
-with tf.name_scope("evaluate") as scope:
-    correct_pred = tf.equal(tf.argmax(pred,1), tf.argmax(y,1))
-    accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
-    tf.scalar_summary("accuracy", accuracy)
+    # Define loss
+    with tf.name_scope("cost") as scope:
+        cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
+        tf.scalar_summary("cost", cost)
 
-# Initializing the variables
-init = tf.initialize_all_variables()
+    # Minimize
+    with tf.name_scope("train") as scope:
+        optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
-# Launch the graph
-with tf.Session() as sess:
-    merged = tf.merge_all_summaries()
+    # Evaluate model
+    with tf.name_scope("evaluate") as scope:
+        correct_pred = tf.equal(tf.argmax(pred,1), tf.argmax(y,1))
+        accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+        tf.scalar_summary("accuracy", accuracy)
 
-    for i in range(n_cross_validation):
-        logfilename = "./logs/%d_hidden/group%d" % (n_hidden, i)
-        summary_writer = tf.train.SummaryWriter(logfilename, sess.graph_def)
+    # Initializing the variables
+    init = tf.initialize_all_variables()
 
-        print("build train and test data")
-        cross_validation_data = data.get_cross_validation_input(n_cross_validation, i)
+    # Launch the graph
+    with tf.Session() as sess:
+        merged = tf.merge_all_summaries()
 
-        train_data = cross_validation_data["train"]["data"]
-        train_label = cross_validation_data["train"]["label"]
-        train_seq_len = cross_validation_data["train"]["seq_len"]
+        for i in range(n_cross_validation):
+            logtensorboard = "{}/groupid{}".format(logdir, i)
+            summary_writer = tf.train.SummaryWriter(logtensorboard, sess.graph_def)
 
-        test_data = cross_validation_data["test"]["data"]
-        test_label = cross_validation_data["test"]["label"]
-        test_seq_len = cross_validation_data["test"]["seq_len"]
+            report.output("build train and test data")
+            cross_validation_data = data.get_cross_validation_input(n_cross_validation, i)
 
-        print("start learning")
-        sess.run(init)
+            train_data = cross_validation_data["train"]["data"]
+            train_label = cross_validation_data["train"]["label"]
+            train_seq_len = cross_validation_data["train"]["seq_len"]
 
-        # Keep training until reach max iterations
-        step = 1
-        while step * batch_size < training_iters:
-            # Run optimization op (backprop)
-            sess.run(optimizer, \
-                    feed_dict={x: train_data, y: train_label, seq_len: train_seq_len})
-            if step % display_step == 0:
-                # Calculate batch accuracy and loss
-                summary, loss, acc = \
-                        sess.run([merged, cost, accuracy], \
+            test_data = cross_validation_data["test"]["data"]
+            test_label = cross_validation_data["test"]["label"]
+            test_seq_len = cross_validation_data["test"]["seq_len"]
+
+            report.output("start learning")
+            sess.run(init)
+
+            # Keep training until reach max iterations
+            step = 1
+            while step * batch_size < training_iters:
+                # Run optimization op (backprop)
+                sess.run(optimizer, \
                         feed_dict={x: train_data, y: train_label, seq_len: train_seq_len})
-                summary_writer.add_summary(summary, step*batch_size)
-                print("Iter " + str(step*batch_size) + \
-                        ", Minibatch Loss= " + "{:.6f}".format(loss) + \
-                        ", Training Accuracy= " + "{:.5f}".format(acc))
-            step += 1
+                if step % display_step == 0:
+                    # Calculate batch accuracy and loss
+                    summary, loss, acc = \
+                            sess.run([merged, cost, accuracy], \
+                            feed_dict={x: train_data, y: train_label, seq_len: train_seq_len})
+                    summary_writer.add_summary(summary, step*batch_size)
+                    logstr = "Iter {}".format(step*batch_size) + \
+                            ", Minibatch Loss= {:.6f}".format(loss) + \
+                            ", Training Accuracy= {:.5f}".format(acc)
+                    report.output(logstr)
+                step += 1
 
-        print("Optimization Finished!")
-        # test network with test data
-        print("Testing Accuracy:", \
-                sess.run(accuracy, \
-                feed_dict={x: test_data, y: test_label, seq_len: test_seq_len}))
+            report.output("Optimization Finished!")
+            # test network with test data
+            report.output("Testing Accuracy: {}".format( \
+                    sess.run(accuracy, \
+                    feed_dict={x: test_data, \
+                    y: test_label, seq_len: test_seq_len})))
+                    
+    report.output("Optimization Finished!")
+
+    # end time
+    end_time = datetime.datetime.now()
+    time_diff = end_time - start_time
+    hours, seconds = divmod(time_diff.seconds, 3600)
+    minutes, seconds = divmod(seconds, 60)
+    report.output("timestamp {}:{}:{}".format(hours, minutes, seconds))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("num_hidden", help="the number of hidden neurons in LSTM", type=int, default=64)
+    parser.add_argument("logdir", help="log directory", default="./logs/default")
+
+    args = parser.parse_args()
+    num_hidden = args.num_hidden
+    logdir = args.logdir
+
+    classify_drivers(num_hidden, logdir)
+
+if __name__ == "__main__":
+    main()
 
