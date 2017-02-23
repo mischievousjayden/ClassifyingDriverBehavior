@@ -1,56 +1,111 @@
-\title{This is title}
-\author{Jae Hoon Kim\\
-        Drexel University\\
-        Philadelphia, PA, USA\\
-        jk993@drexel.edu
-}
-\date{}
-\documentclass[12pt]{article}
-\usepackage[margin=0.7in]{geometry}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{comment}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{color}
-\usepackage{url}
+
+% \documentclass[blackref,approvalform,dvipsnames]{drexel-thesis}
+\documentclass[draft,dvipsnames]{drexel-thesis}
+
+
+\author{Jae Hoon Kim}
+\title{This is the Title}
+\DUTmonth{June}
+\DUTyear{2017}
+\degree{Master in Computer Science}
+\advisor{Santiago~Onta\~{n}\'{o}n, Ph.D.}
+\copyrighttext{\copyrighttextCCBYSA}
+
+\usepackage[numbers,sort&compress]{natbib} % fancy citation extensions
+\bibliographystyle{unsrtnat}
+
+
+% \usepackage{fancyvrb} % nicer verbatim handling
+% \DefineShortVerb{\|}  % \verb+TEXT+  ->  |TEXT|
+
+\usepackage{xcolor}
+\usepackage{colortbl,booktabs}
+\usepackage{xspace}
 \usepackage{multirow}
+\usepackage{wrapfig} % text around figures
+\usepackage{amssymb} % \mathbbstarcra
+\usepackage[final]{listings} % algorithms formated in code
+\usepackage{enumitem} % compact imte lists
+\usepackage{subcaption} % for subfigure (figures side-by-side)
+\usepackage{mathtools}
+\usepackage{soul}
+\usepackage[detect-all]{siunitx} % Aligning numbers by decimal points in table columns
+
+\usepackage{algorithm, soul}
+\usepackage[noend]{algpseudocode}
+\algnewcommand{\Break}{\textbf{break}}
+
+\newcommand{\todo}[1]{{\color{red}{\tt #1}}}
+% \newcommand{\toredo}[1]{{\leavevmode\color{Plum}#1}}
+\newcommand{\toredo}[1]{#1}
+\newcommand{\modified}[1]{{\leavevmode\color{blue}#1}}
+% \newcommand{\modified}[1]{#1}
+\newcommand{\highest}[1]{\textcolor{Maroon}{\textbf{#1}}}
+\newcommand{\StarCraft}{\mbox{\textsc{StarCraft}}\xspace}
+\newcommand{\BroodWar}{\textsc{StarCraft: Brood War}\xspace}
+\newcommand{\WarCraft}{\mbox{\textsc{WarCraft}}\xspace}
+\newcommand{\WarCraftII}{\mbox{\textsc{WarCraft II}}\xspace}
+\newcommand{\WarCraftIII}{\mbox{\textsc{WarCraft III}}\xspace}
+\newcommand{\Wargus}{\mbox{\textsc{Wargus}}\xspace}
+\newcommand{\Spring}{\mbox{\textsc{Spring}}\xspace}
+\newcommand{\BWTA}{\textsc{BWTA}\xspace}
+\newcommand{\BWTAb}{\textsc{BWTA2}\xspace}
+\newcommand{\BWAPI}{\textsc{BWAPI}\xspace}
+\newcommand{\SparCraft}{\textsc{SparCraft}\xspace}
+\newcommand{\Lanchester}{\mbox{\emph{TS-Lanchester}$^2$}\xspace}
+\newcommand{\cop}{\textsc{COP}\xspace}
+\newcommand{\Ghost}{\textsc{GHOST}\xspace}
+\newcommand{\Nova}{\textsc{Nova}\xspace}
+
+
 
 
 \begin{document}
-\maketitle
+\begin{preamble}
 
-\begin{center}
-\textbf{Abstract}
-\end{center}
-\noindent
-This is Abstract section
+% \begin{dedications}
+% We're in \iffinal{final}{draft} mode!
+% \end{dedications}
+
+% \begin{acknowledgments}
+% bla bla bla
+% \end{acknowledgments}
+
+\tableofcontents
+\listoftables
+\listoffigures
+
+% \iffinal{}{\newpage}
+
+\begin{abstract}
+{\color{blue}[To do: Write an abstract here]}
+\end{abstract}
+\end{preamble}
+
+\begin{thesis}
 
 
-\section{Introduction}
+
+% ####################################################################################################################################
+\chapter{Introduction}\label{chap:intro}
+% ####################################################################################################################################
+
 Introduction Section
 \begin{enumerate}
 \item Problem Statement
 \end{enumerate}
 
 
-\section{Background}
-%Background of Machine Learning and Deep Learning
 
-%{\color{blue} [Here summarize the Bengio paper \cite{bengio2009learning}]}
+% ====================================================================================================================================
+% ====================================================================================================================================
+\chapter{Background}\label{sec:bg}
+% ====================================================================================================================================
+% ====================================================================================================================================
 
-%\begin{figure}%[t!]
-%    \centering
-%    \includegraphics[width=0.5\textwidth]{pictures/FSFNN.png}
-%    \caption{blah blah blah.}
-%    \label{fig:lstm}
-%\end{figure}
+\section{Deep Learning}
 
-%{\color{blue} [LSTM should be in Figure \ref{fig:lstm}]}
-
-\subsection{Deep Learning}
-
-\subsubsection{Recurrent Neural Network}
+\subsection{Recurrent Neural Network}
 
 \begin{enumerate}
 \item Basic concept of recurrent neural network (RNN)\\
@@ -171,7 +226,7 @@ the current output $h_t = o \cdot tanh(c_t)$
 	\end{enumerate}
 \end{enumerate}
 
-\subsubsection{Auto-encoder}
+\subsection{Auto-encoder}
 In this section, I summarize 'Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces to the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA. \\
 \begin{enumerate}
 \item Intuition concepts of auto-encoder\\
@@ -181,8 +236,8 @@ When auto-encoder is traind, it has two layers: encode and decode. The encode la
 
 \end{enumerate}
 
-\subsection{Deep Learning Library}
-\subsubsection{DL4J}
+\section{Deep Learning Library}
+\subsection{DL4J}
 DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed deep-learning library for Java and Scala. It also integrates with Hadoop and Spark. 
 
 \subsubsection{Theano}
@@ -192,18 +247,23 @@ Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a Python lib
 Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operator as node. Another strong point is that Tesorflow allows developer to deploy computation to one or more CPUs or GPUs. 
 
 
-\subsection{Machine Learning in Driving Data}
+\section{Machine Learning in Driving Data}
+
+% ####################################################################################################################################
+\chapter{Data Set}
+% ####################################################################################################################################
 
 
-
-\section{Data Set}
 The drive simulation data is from \textit{Children's Hospital of Philadelphia} (CHOP). The simulator for the data can record 100 features with 60 samples per second from driver. The simulator has four different tracks. On the paper, the data has 16 set: 8 from expert and 8 from inexpert. Each expert and inexpert data set consist of two set of four different tracks.
 
-\section{Technical Approach}
-\subsection{Cross Validation}
+% ####################################################################################################################################
+\chapter{Technical Approach}
+% ####################################################################################################################################
+
+\section{Cross Validation}
 There are only 16 data set. It is not enough to train neural network for general case. Whether the neural network works well on the problem or not, I used cross validation. I split 16 data set to 4 groups. Each groups have 2 expert and 2 inexpert data. The neural network is trained four times with different train (3 groups) and test (1 group) set. 
 
-\subsection{LSTM}
+\section{LSTM}
 The LSTM neural network is used to classify data because the data has time domain and LSTM neural network can handle serial data. On the paper, LSTM neural network is built with 16, 32, 64, 128, and 256 hidden neurons. The output from LSTM is sent to output layer which has two neurons. By using softmax, output from two neurons is classified. If it has [0, 1], it is classified to expert. Otherwise, it is classified to inexpert.
 
 \begin{figure}[H]
@@ -213,7 +273,7 @@ The LSTM neural network is used to classify data because the data has time domai
     \label{fig:Applied LSTM}
 \end{figure}
 
-\subsection{Dimensionality Reduction}
+\section{Dimensionality Reduction}
 The data has 100 features so dimensionality reduction is necessary. First way is selecting meaningful features and 23 features are selected. Another way to reduce dimension is auto-encoder. Before giving data to LSTM neural network, data is sent to auto-encoder layer and less dimension data from auto-encoder is sent to LSTM. 
 
 \begin{figure}[H]
@@ -225,11 +285,14 @@ The data has 100 features so dimensionality reduction is necessary. First way is
 
 %\subsection{Raw vs. Filtered data}
 
-\subsection{Sampling}
+\section{Sampling}
 The simulator records 60 samples per second. It is too often recorded. I reduce data by two way. First way is sampling one per ten and sampling one per twenty. The sampled data might not represent ten or twenty data, so average data from every ten or twenty data is used. The second way can reduce noise because there is case in first way that sampled data has more noise than other data.
 
 
-\section{Experiment Result}
+% ####################################################################################################################################
+\chapter{Experiment Result}
+% ####################################################################################################################################
+
 
 \begin{figure}[H]
     \centering
@@ -268,13 +331,17 @@ Test                   & n    & 16    & 32    & 64      & 128      & 256   \\ \h
 \end{table}
 
 
-\section{Conclusion and Future work}
+% ####################################################################################################################################
+\chapter{Conclusion and Future work}
+% ####################################################################################################################################
 Conclusion and Future work\\
 
 
-\bibliographystyle{plain}
+
+\end{thesis}
+
 \bibliography{references.bib}
 
-
 \end{document}
+\endinput
 
