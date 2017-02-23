@@ -22,8 +22,12 @@ class ClassificationLstm:
         self._n_hidden = n_hidden
         self._n_classes = n_classes
         self._forget_bias = forget_bias
+
         self._weight = tf.Variable(tf.random_normal([n_hidden, n_classes]), name="classification_lstm_weight")
         self._bias = tf.Variable(tf.random_normal([n_classes]), name="classification_lstm_bias")
+
+        self._hist_weight = tf.summary.histogram("weight", self._weight)
+        self._hist_bias = tf.summary.histogram("bias", self._bias)
 
     def run_lstm(self, x, seq_len, max_seq_len):
 
@@ -85,7 +89,7 @@ def classify_drivers(num_hidden, logdir):
     # Define loss
     with tf.name_scope("cost") as scope:
         cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
-        tf.scalar_summary("cost", cost)
+        tf.summary.scalar("cost", cost)
 
     # Minimize
     with tf.name_scope("train") as scope:
@@ -95,18 +99,20 @@ def classify_drivers(num_hidden, logdir):
     with tf.name_scope("evaluate") as scope:
         correct_pred = tf.equal(tf.argmax(pred,1), tf.argmax(y,1))
         accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
-        tf.scalar_summary("accuracy", accuracy)
+        tf.summary.scalar("accuracy", accuracy)
 
     # Initializing the variables
-    init = tf.initialize_all_variables()
+    init = tf.global_variables_initializer()
 
     # Launch the graph
     with tf.Session() as sess:
-        merged = tf.merge_all_summaries()
+        report.output("Cross Validation Start")
+        merged = tf.summary.merge_all() # tf.merge_all_summaries()
 
         for i in range(n_cross_validation):
             logtensorboard = "{}/groupid{}".format(logdir, i)
-            summary_writer = tf.train.SummaryWriter(logtensorboard, sess.graph_def)
+            summary_writer = tf.summary.FileWriter(logtensorboard, sess.graph)
+            #tf.summary.FileWriter(logtensorboard, sess.graph_def) #tf.train.SummaryWriter
 
             report.output("build train and test data")
             cross_validation_data = data.get_cross_validation_input(n_cross_validation, i)
@@ -147,7 +153,7 @@ def classify_drivers(num_hidden, logdir):
                     feed_dict={x: test_data, \
                     y: test_label, seq_len: test_seq_len})))
                     
-    report.output("Optimization Finished!")
+    report.output("Cross Validation end")
 
     # end time
     end_time = datetime.datetime.now()
