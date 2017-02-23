@@ -1,10 +1,9 @@
 FILE=paper
 
 build:
-	latex ${FILE}
+	pdflatex ${FILE}
 	bibtex ${FILE}
-	latex ${FILE}
-	latex ${FILE}
+	pdflatex ${FILE}
 	pdflatex ${FILE}
 
 clean:

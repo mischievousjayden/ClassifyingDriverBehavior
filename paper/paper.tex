@@ -13,6 +13,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{color}
+\usepackage{url}
+\usepackage{multirow}
 
 
 \begin{document}
@@ -33,49 +35,63 @@ Introduction Section
 
 
 \section{Background}
-Background of Machine Learning and Deep Learning
+%Background of Machine Learning and Deep Learning
 
-{\color{blue} [Here summarize the Bengio paper \cite{bengio2009learning}]}
+%{\color{blue} [Here summarize the Bengio paper \cite{bengio2009learning}]}
 
-\begin{figure}[t!]
-    \centering
-    \includegraphics[width=0.5\textwidth]{pictures/FSFNN.png}
-    \caption{blah blah blah.}
-    \label{fig:lstm}
-\end{figure}
+%\begin{figure}%[t!]
+%    \centering
+%    \includegraphics[width=0.5\textwidth]{pictures/FSFNN.png}
+%    \caption{blah blah blah.}
+%    \label{fig:lstm}
+%\end{figure}
 
-{\color{blue} [LSTM should be in Figure \ref{fig:lstm}]}
+%{\color{blue} [LSTM should be in Figure \ref{fig:lstm}]}
+
+\subsection{Deep Learning}
+
+\subsubsection{Recurrent Neural Network}
 
 \begin{enumerate}
-\item Deep Learning
+\item Basic concept of recurrent neural network (RNN)\\
+	RNN is a neural network with two input: one is from data, another is from previous output. Usually RNN is used with serial data. For example, human language sentence has series of words and data has time domain like driving data and stock data.
+
+\begin{figure}[H]%[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/RNN.png}
+    \caption{RNN}
+    \label{fig:RNN}
+\end{figure}
+
+\item Long Short Term Memory (LSTM) networks\\
+	Basic RNN has problem of long term dependency. It means that RNN is not able to memorize long term knowledge. To solve the problem, LSTM is introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM has cell state and it solves long term memory problem in RNN because cell state can store long term memory.\\
+	Bengio mentioned on his paper \cite{bengio2009learning} that each layers in deep neural network should have purpose. LSTM can be divided to four layers: forget gate, input gate, input moduleation gate, and output gate. Each layers have different purpose.\\
+	 Colah's blog \footnote{\url{http://colah.github.io/posts/2015-08-Understanding-LSTMs}} develops an intuition for concept of LSTM and explains purpose of each layers. The paper \cite{zaremba2014recurrent} describes LSTM in mathematical term. In this paper, I'm going to summarize both the Colah's blog and the paper \cite{zaremba2014recurrent}
+	
 	\begin{enumerate}
-	\item Summary of Recurrent Neural Network
-		\begin{enumerate}
-		\item Basic concept of recurrent neural network (RNN)\\
-			RNN is a neural network but RNN has two input: one is from data, another is from previous output. Usually RNN is used with serial data. For example, human language sentence has series of words and data has time domain like driving data and stock data.
-		\item Long Short Term Memory (LSTM) networks\\		
-			Basic RNN has problem of long term dependency \cite{UnderstandingLSTMNetworks}. It means that RNN is not able to memorize long term knowledge. To solve the problem, LSTM is introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM has cell state and the cell state can store long term memory. LSTM has four layer and three of them effect to cell state. Colah's blog \cite{UnderstandingLSTMNetworks} summarizes concept and purpose of each layers. The paper \cite{zaremba2014recurrent} describes LSTM in mathematical term. In this paper, I'm going to summarize the blog \cite{UnderstandingLSTMNetworks} and the paper \cite{zaremba2014recurrent}
-			\begin{enumerate}
-			\item Concept of each layers in LSTM\\
-				Bengio mentioned on his paper \cite{bengio2009learning} that each layers in deep neural network have purpose. LSTM has four layers and four layers have different purpose. Colah's blog \cite{UnderstandingLSTMNetworks} summarizes it.\\
-				The first layer is forget gate and effects to cell state and filters what data to forget or throw away. This layer is sigmoid layer with previous output and input data. The second layer is input gate and also effects to cell state and it decides what data to remember. The second layer is also sigmoid. The third layer is input modulation gate and also effects to cell state and it is tanh. Out put from second and third layers are added to previous cell state and updated for next cell state. Fourth layer is the last layer output gate and output is decided from result of output gate and updated cell state.
-				
-			\item Modeling LSTM in mathematical term\\
-				LSTM is described in mathematical term in the paper \cite{zaremba2014recurrent}. I'm going to summarize it on this paper.\\
-				Let\\
-				$T_{n,m}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be an affine transform\\
-				$x_t$ be current input \\
-				$h_{t-1}$ be last output \\
-				$h_{t}$ be current output \\
-				$c_{t-1}$ be last cell state \\
-				$c_{t}$ be current cell state \\
+	\item An intuitive concept of LSTM\\
+		Colah's blog explains concept of LSTM and summarizes four layers in LSTM with each purpose.\\
+		The first layer is forget gate. The forget gate filters what data to forget or throw away. It consists of sigmod layer with previous output and current input data. The result of the forget gate is multiplied by previous cell state to build current cell state.\\
+		The second layer is input gate and also consists of sigmod layer with previous output and current input data. The result of the input gate is multiplied by the result of input modulation gate then it affects to cell state. The meaning of input gate is to decides what data to remember.\\
+		The third layer is input modulation gate. It consists of tanh with previous output and current input. It is multiplied by the result of second layer and affects to current cell state.\\
+		The last layer is output gate. The layer decides what data should be passed to current output from previous output and current input. the output gate also consists of sigmoid with two inputs: last output and current input. The result of the layer is multiplied by current cell state passed tanh.
+	
+	\item Modeling LSTM in mathematical term\\
+		LSTM is described in mathematical term in the paper \cite{zaremba2014recurrent}. I'm going to summarize it on this paper.\\
+	Let\\
+	$T_{n,m}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be an affine transform\\
+	$x_t$ be size $n$ vector for current input\\
+	$h_{t-1}$ be size $n$ vector for last output \\
+	$h_{t}$ be size $n$ vector for current output \\
+	$c_{t-1}$ be size $n$ vector for last cell state \\
+	$c_{t}$ be size $n$ vector for current cell state \\
 
 \[
 \begin{bmatrix}
-    input gate \\
-    forget gate \\
-    output gate \\
-    input modulation gate
+    input\_gate \\
+    forget\_gate \\
+    output\_gate \\
+    input\_modulation\_gate
 \end{bmatrix}
 =
 \begin{bmatrix}
@@ -86,24 +102,24 @@ Background of Machine Learning and Deep Learning
 \end{bmatrix}
 =
 \begin{bmatrix}
-    sigm \\
-    sigm \\
-    sigm \\
-    tanh
+    sigm & 0 & 0 & 0\\
+    0 & sigm & 0 & 0\\
+    0 & 0 & sigm & 0\\
+    0 & 0 & 0 & tanh
 \end{bmatrix}
 T_{2n,4n}
 \begin{bmatrix}
     h_{t-1} \\
-    x_{x}
+    x_{t}
 \end{bmatrix}
 \]
 \[
 =
 \begin{bmatrix}
-    sigm \\
-    sigm \\
-    sigm \\
-    tanh
+    sigm & 0 & 0 & 0\\
+    0 & sigm & 0 & 0\\
+    0 & 0 & sigm & 0\\
+    0 & 0 & 0 & tanh
 \end{bmatrix}
 \begin{bmatrix}
     {T^{hi}}_{n,n} & {T^{xi}}_{n,n} \\
@@ -115,12 +131,14 @@ T_{2n,4n}
     h_{t-1} \\
     x_{x}
 \end{bmatrix}
+\]
+\[
 =
 \begin{bmatrix}
-    sigm \\
-    sigm \\
-    sigm \\
-    tanh
+    sigm & 0 & 0 & 0\\
+    0 & sigm & 0 & 0\\
+    0 & 0 & sigm & 0\\
+    0 & 0 & 0 & tanh
 \end{bmatrix}
 \begin{bmatrix}
     {T^{hi}}_{n,n}h_{t-1} + {T^{xi}}_{n,n}x_{x} \\
@@ -129,7 +147,7 @@ T_{2n,4n}
     {T^{hg}}_{n,n}h_{t-1} + {T^{xg}}_{n,n}x_{x}
 \end{bmatrix}
 \]
-Multiply two vector not matrix multiplication. Therefore,\\
+Therefore,\\
 \[
 \begin{bmatrix}
     i \\
@@ -149,42 +167,109 @@ Multiply two vector not matrix multiplication. Therefore,\\
 $\{i, f, o, g\}$ is a set of output from each layers.
 The current cell state $c_t = f \cdot c_{t-1} + i \cdot g$
 the current output $h_t = o \cdot tanh(c_t)$
-			
-				
-			\end{enumerate}
-		\end{enumerate}
-	\end{enumerate}
 
-\item Deep Learning Library\\
-	\begin{enumerate}
-	\item DL4J\\
-	\item Theano\\
-	\item Tensorflow\\
 	\end{enumerate}
-
-\item Machine Learning in Driving Data\\
 \end{enumerate}
+
+\subsubsection{Auto-encoder}
+In this section, I summarize 'Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces to the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA. \\
+\begin{enumerate}
+\item Intuition concepts of auto-encoder\\
+When auto-encoder is traind, it has two layers: encode and decode. The encode layer receives input and passes output in lower dimension data to decode layer. The decode layer recovers dimension to input data dimention from output of encode layer. The error of auto-encoder is measured by difference between input data and output from decode layer. In other words, encoder layer compresses input data and decoder layer decompresses data from encoder layer that should be similar as original input data. That methods guarantees that the data from encoder layer keeps almost all properties of input data in lower dimension. That is the reason why output data from decode layer is similar as original input data. In math, relationship between encoder and decoder layer is similar as inverse matrix of each other.
+
+\item Multilayer Auto-encoder\\
+
+\end{enumerate}
+
+\subsection{Deep Learning Library}
+\subsubsection{DL4J}
+DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed deep-learning library for Java and Scala. It also integrates with Hadoop and Spark. 
+
+\subsubsection{Theano}
+Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a Python library for machine learning research. It integrates with Numpy and uses GPU power. The library is written in C code and optimizes user functions.
+
+\subsubsection{Tensorflow}
+Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operator as node. Another strong point is that Tesorflow allows developer to deploy computation to one or more CPUs or GPUs. 
+
+
+\subsection{Machine Learning in Driving Data}
+
 
 
 \section{Data Set}
-Explain data\\
-
+The drive simulation data is from \textit{Children's Hospital of Philadelphia} (CHOP). The simulator for the data can record 100 features with 60 samples per second from driver. The simulator has four different tracks. On the paper, the data has 16 set: 8 from expert and 8 from inexpert. Each expert and inexpert data set consist of two set of four different tracks.
 
 \section{Technical Approach}
-Theory and Method\\
-implementation with Tensorflow\\
+\subsection{Cross Validation}
+There are only 16 data set. It is not enough to train neural network for general case. Whether the neural network works well on the problem or not, I used cross validation. I split 16 data set to 4 groups. Each groups have 2 expert and 2 inexpert data. The neural network is trained four times with different train (3 groups) and test (1 group) set. 
+
+\subsection{LSTM}
+The LSTM neural network is used to classify data because the data has time domain and LSTM neural network can handle serial data. On the paper, LSTM neural network is built with 16, 32, 64, 128, and 256 hidden neurons. The output from LSTM is sent to output layer which has two neurons. By using softmax, output from two neurons is classified. If it has [0, 1], it is classified to expert. Otherwise, it is classified to inexpert.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/applied_lstm.png}
+    \caption{LSTM without Auto-Encoder}
+    \label{fig:Applied LSTM}
+\end{figure}
+
+\subsection{Dimensionality Reduction}
+The data has 100 features so dimensionality reduction is necessary. First way is selecting meaningful features and 23 features are selected. Another way to reduce dimension is auto-encoder. Before giving data to LSTM neural network, data is sent to auto-encoder layer and less dimension data from auto-encoder is sent to LSTM. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/applied_lstm_autoencoder.png}
+    \caption{LSTM with Auto-Encoder}
+    \label{fig:Applied LSTM With Auto-Encoder}
+\end{figure}
+
+%\subsection{Raw vs. Filtered data}
+
+\subsection{Sampling}
+The simulator records 60 samples per second. It is too often recorded. I reduce data by two way. First way is sampling one per ten and sampling one per twenty. The sampled data might not represent ten or twenty data, so average data from every ten or twenty data is used. The second way can reduce noise because there is case in first way that sampled data has more noise than other data.
 
 
 \section{Experiment Result}
-Result and Visualization\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{pictures/accuracy.png}
+    \caption{Accuracy}
+    \label{fig:Accuracy}
+\end{figure}
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+                       &      & \multicolumn{5}{l|}{The number of neurans} \\ \hline
+Test                   & n    & 16    & 32    & 64      & 128      & 256   \\ \hline
+\multirow{4}{*}{1}     & 1    & 0.5   & 0.25  & 1.0     & 0.5      & 0.5   \\ \cline{2-7} 
+                       & 2    & 0.75  & 0.75  & 0.5     & 0.5      & 0.5   \\ \cline{2-7} 
+                       & 3    & 1.0   & 0.5   & 0.5     & 0.75     & 0.5   \\ \cline{2-7} 
+                       & 4    & 0.5   & 0.5   & 0.75    & 0.5      & 0.5   \\ \hline
+\multirow{4}{*}{2}     & 1    & 0.5   & 0.75  & 0.75    & 0.75     & 0.75  \\ \cline{2-7} 
+                       & 2    & 0.25  & 0.25  & 0.75    & 0.5      & 0.25  \\ \cline{2-7} 
+                       & 3    & 0.5   & 0.5   & 0.25    & 0.75     & 0.25  \\ \cline{2-7} 
+                       & 4    & 0.25  & 0.25  & 0.5     & 0.25     & 0.75  \\ \hline
+\multirow{4}{*}{3}     & 1    & 0.75  & 0.25  & 1.0     & 0.75     & 0.25  \\ \cline{2-7} 
+                       & 2    & 0.25  & 0.5   & 0.75    & 0.5      & 1.0   \\ \cline{2-7} 
+                       & 3    & 0.5   & 0.75  & 0.75    & 0.5      & 0.5   \\ \cline{2-7} 
+                       & 4    & 0.5   & 0.25  & 0.75    & 0.75     & 0.5   \\ \hline
+\multirow{4}{*}{4}     & 1    & 0.75  & 0.5   & 0.5     & 0.5      & 0.5   \\ \cline{2-7} 
+                       & 2    & 0.25  & 0.5   & 0.5     & 1.0      & 0.25  \\ \cline{2-7} 
+                       & 3    & 0.0   & 0.75  & 1.0     & 0.75     & 0.25  \\ \cline{2-7} 
+                       & 4    & 0.75  & 0.75  & 0.75    & 0.25     & 0.75  \\ \hline
+\multicolumn{2}{|l|}{Average} & 0.5   & 0.5   & 0.6875  & 0.59375  & 0.5   \\ \hline
+\end{tabular}
+\caption{Raw 1/10 Result Summary}
+\label{Raw 1/10 Result Summary}
+\end{table}
 
 
 \section{Conclusion and Future work}
 Conclusion and Future work\\
-
-
-\section*{Reference}
-Reference Section\\
 
 
 \bibliographystyle{plain}
@@ -192,5 +277,4 @@ Reference Section\\
 
 
 \end{document}
-
 
