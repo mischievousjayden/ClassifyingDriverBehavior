@@ -3,7 +3,6 @@ import argparse
 import datetime
 
 import tensorflow as tf
-from tensorflow.python.ops import rnn, rnn_cell
 import numpy as np
 
 import datalayer as dl
@@ -36,10 +35,10 @@ class ClassificationLstm:
         x = tf.split(0, max_seq_len, x)
 
         # Define a lstm cell with tensorflow
-        lstm_cell = rnn_cell.BasicLSTMCell(self._n_hidden, forget_bias=self._forget_bias)
+        lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(self._n_hidden, forget_bias=self._forget_bias)
 
         # Get lstm cell output
-        outputs, states = rnn.rnn(lstm_cell, x, dtype=tf.float32, sequence_length=seq_len)
+        outputs, states = tf.nn.rnn(lstm_cell, x, dtype=tf.float32, sequence_length=seq_len)
 
         outputs = tf.pack(outputs)
         outputs = tf.transpose(outputs, [1, 0, 2])
