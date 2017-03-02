@@ -103,35 +103,50 @@ Introduction Section
 % ====================================================================================================================================
 % ====================================================================================================================================
 
+{\color{red} [santi: you need some text here that says something like ``This chapter presents the necessary background tu understand the experiments presented later in this Thesis. Specifically, the following sections present XXX, YYY and ZZZ]'' }
+
 \section{Deep Learning}
 
-\subsection{Recurrent Neural Network}
+{\color{red} [santi: again, you need some intro text here. First explain what is Deep Learning in general (give citations if necessary), and then say that the two types of networks that are important for your work are RNNs and BMs, which you will describe in the next two subsections (to refer to a subsection, in LaTeX, you just do this: Subsection \ref{subsec:RNN})]}
+
+\subsection{Recurrent Neural Network}\label{subsec:RNN}
 
 \begin{enumerate}
 \item Basic concept of recurrent neural network (RNN)\\
-	RNN is a neural network with two input: one is from data, another is from previous output. Usually RNN is used with serial data. For example, human language sentence has series of words and data has time domain like driving data and stock data.
+	RNN is a neural network with two input: one is from data, another is from previous output. Usually RNN is used with serial data. For example, human language sentence has series of words and data has time domain like driving data and stock data. {\color{red} [santi: provide a citation for RNNs the first time you mention the term, also, you always need to explain the figures. You cannot have a figure that is not explained in the text. So, after the explanation, add a few sentences explaining Figure \ref{fig:RNN}]}
 
-\begin{figure}[H]%[t!]
+\begin{figure}[t!]
     \centering
     \includegraphics[width=0.5\textwidth]{pictures/RNN.png}
-    \caption{RNN}
+    \caption{RNN {\color{red} [santi: Figures should never be placed within the text (that's a bad habit of using MicroSoft Word :)), they should be at the top or bottom of a page, so, I moved it]}}
     \label{fig:RNN}
 \end{figure}
 
-\item Long Short Term Memory (LSTM) networks\\
-	Basic RNN has problem of long term dependency. It means that RNN is not able to memorize long term knowledge. To solve the problem, LSTM is introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM has cell state and it solves long term memory problem in RNN because cell state can store long term memory.\\
-	Bengio mentioned on his paper \cite{bengio2009learning} that each layers in deep neural network should have purpose. LSTM can be divided to four layers: forget gate, input gate, input moduleation gate, and output gate. Each layers have different purpose.\\
-	 Colah's blog \footnote{\url{http://colah.github.io/posts/2015-08-Understanding-LSTMs}} develops an intuition for concept of LSTM and explains purpose of each layers. The paper \cite{zaremba2014recurrent} describes LSTM in mathematical term. In this paper, I'm going to summarize both the Colah's blog and the paper \cite{zaremba2014recurrent}
+\item Long Short Term Memory (LSTM) networks:
+
+	Basic RNN has problem of long term dependency. It means that RNN is not able to memorize long term knowledge. To solve the problem, LSTM is introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM has cell state and it solves long term memory problem in RNN because cell state can store long term memory {\color{red} [santi: explain what is ``cell state'']}.
+	
+	Bengio mentioned on his paper \cite{bengio2009learning} that each layers in deep neural network should have {\color{red} a} purpose. LSTM can be divided to four layers: forget gate, input gate, input moduleation gate, and output gate. Each layers have different purpose {\color{red} [santi: this paragraph does not flow very well], even if Bengio mentioned it, why is it important? you need to explain WHY is it that each layer should have a purpose. Otherwise, we just have to blindly believe in Bengio :)}.
+	
+	{\color{red} [santi: this paragraph does not read very well, in blue below, I have an alternative version that flows better (just as an example)]}
+	 Colah's blog \footnote{\url{http://colah.github.io/posts/2015-08-Understanding-LSTMs}} develops an intuition for concept of LSTM and explains purpose of each layer{\color{red} \st{s}}. The paper \cite{zaremba2014recurrent} describes LSTM in mathematical term{\color{red}s}. In this paper, I'm going to summarize both the Colah's blog and the paper \cite{zaremba2014recurrent}
+	 
+	{\color{blue} Let us first provide an intuitive description of how LSTMs work (following Christopher Olah's blog \footnote{\url{http://colah.github.io/posts/2015-08-Understanding-LSTMs}}), before providing a more in-depth formalization}:
 	
 	\begin{enumerate}
-	\item An intuitive concept of LSTM\\
-		Colah's blog explains concept of LSTM and summarizes four layers in LSTM with each purpose.\\
-		The first layer is forget gate. The forget gate filters what data to forget or throw away. It consists of sigmod layer with previous output and current input data. The result of the forget gate is multiplied by previous cell state to build current cell state.\\
-		The second layer is input gate and also consists of sigmod layer with previous output and current input data. The result of the input gate is multiplied by the result of input modulation gate then it affects to cell state. The meaning of input gate is to decides what data to remember.\\
-		The third layer is input modulation gate. It consists of tanh with previous output and current input. It is multiplied by the result of second layer and affects to current cell state.\\
+	\item An intuitive {\color{red} \st{concept} explanation} of LSTM{\color{red}s}:
+	
+		Colah's {\color{red} [santi: ``Colah'' $\to$ ``Christopher Olah'']} blog explains concept of LSTM and summarizes four layers in LSTM with each purpose. {\color{red} [santi: in LaTeX, the way to separate paragraphs is to leave a blank line between them, not using the double backslash (which should not be used often).]}
+		
+		The first layer is forget gate. The forget gate filters what data to forget or throw away. It consists of sigmod {\color{red} [santi: instead of saying ``It consists of sigmod'', you should say something like ``The units in this layer use a sigmoid activation function'' (same comment for all the other layers below)]} layer with previous output and current input data {\color{red} [santi: a reader not familiar with LSTMs will not know what is ``previous output'' or ``current input'', so you need a figure that explains it]}. The result of the forget gate is multiplied by previous cell state to build current cell state.
+		
+		The second layer is input gate and also consists of sigmod layer with previous output and current input data. The result of the input gate is multiplied by the result of input modulation gate then it affects to cell state {\color{red} [santi: all of these terms should appear in a figure, otherwise, a reader not familiar with it will not understand what you are saying. But also, even if you have a figure, you need to explain what each term is, e.g., explain what is ``input modulation'', what is ``cell state'', etc.]}. The meaning of input gate is to decide{\color{red} \st{s}} what data to remember.
+		
+		The third layer is input modulation gate. It consists of tanh with previous output and current input. It is multiplied by the result of second layer and affects to current cell state.
+		
 		The last layer is output gate. The layer decides what data should be passed to current output from previous output and current input. the output gate also consists of sigmoid with two inputs: last output and current input. The result of the layer is multiplied by current cell state passed tanh.
 	
-	\item Modeling LSTM in mathematical term\\
+	\item Modeling LSTM in mathematical term{\color{red}s}:
 		LSTM is described in mathematical term in the paper \cite{zaremba2014recurrent}. I'm going to summarize it on this paper.\\
 	Let\\
 	$T_{n,m}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be an affine transform\\
