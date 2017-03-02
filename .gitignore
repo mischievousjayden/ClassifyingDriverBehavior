@@ -1,7 +1,11 @@
 # exclude data files
 datasampling/raw_data
-data/expert
-data/inexpert
+datasampling/__pycache__
+datasampling/maskfilter.pyc
+data/sample
+data/last
+data/mean
+data/gaussian
 src/__pycache__
 src/util/__pycache__
 src/logs

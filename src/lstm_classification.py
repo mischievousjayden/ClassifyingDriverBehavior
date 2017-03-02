@@ -51,7 +51,7 @@ class ClassificationLstm:
         return tf.matmul(outputs, self._weight) + self._bias
 
 
-def classify_drivers(num_hidden, logdir):
+def classify_drivers(input_data_path, num_hidden, logdir):
     # start time
     start_time = datetime.datetime.now()
 
@@ -60,8 +60,7 @@ def classify_drivers(num_hidden, logdir):
 
     # read data
     report.output("read data")
-    data_path = "../data"
-    data = dl.driverdata(data_path)
+    data = dl.driverdata(input_data_path)
 
     # Parameters
     n_cross_validation = 4
@@ -165,14 +164,16 @@ def classify_drivers(num_hidden, logdir):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("num_hidden", help="the number of hidden neurons in LSTM", type=int, default=64)
-    parser.add_argument("logdir", help="log directory", default="./logs/default")
+    parser.add_argument("input_data_path", help="input data path")
+    parser.add_argument("-n", "--num_hidden", help="the number of hidden neurons in LSTM", type=int, default=64)
+    parser.add_argument("-l", "--logdir", help="log directory", default="./logs/default")
 
     args = parser.parse_args()
+    input_data_path = args.input_data_path
     num_hidden = args.num_hidden
     logdir = args.logdir
 
-    classify_drivers(num_hidden, logdir)
+    classify_drivers(input_data_path, num_hidden, logdir)
 
 if __name__ == "__main__":
     main()
