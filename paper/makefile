@@ -7,5 +7,5 @@ build:
 	pdflatex ${FILE}
 
 clean:
-	rm -rf *.log *.aux *.bbl *.blg *.dvi *.pdf
+	rm -rf *.aux *.bbl *.blg *.lof *.log *.lot *.out *.gz *.toc
 

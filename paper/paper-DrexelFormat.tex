@@ -102,25 +102,39 @@ Introduction Section
 \chapter{Background}\label{sec:bg}
 % ====================================================================================================================================
 % ====================================================================================================================================
+This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived to three sections. First section \ref{sec:DL} covers basic deep learning including recurrent neural network and auto-encoder. Second section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. The last section \ref{sec:MLDD} introduces current trend of machine learning with driving data.
 
-{\color{red} [santi: you need some text here that says something like ``This chapter presents the necessary background tu understand the experiments presented later in this Thesis. Specifically, the following sections present XXX, YYY and ZZZ]'' }
+\section{Deep Learning}\label{sec:DL}
+This section covers basic concept of deep learning. First subsection \ref{subsec:basicDL} introduces to deep learning, and next section \ref{subsec:RNN} deals with recurrent neural network and long short term memory neural network. The last subsection \ref{subsec:AE} covers auto-encoder.
 
-\section{Deep Learning}
-
-{\color{red} [santi: again, you need some intro text here. First explain what is Deep Learning in general (give citations if necessary), and then say that the two types of networks that are important for your work are RNNs and BMs, which you will describe in the next two subsections (to refer to a subsection, in LaTeX, you just do this: Subsection \ref{subsec:RNN})]}
+\subsection{Basic Concept}\label{subsec:basicDL}
+This part Explain basic deep learning
 
 \subsection{Recurrent Neural Network}\label{subsec:RNN}
 
 \begin{enumerate}
-\item Basic concept of recurrent neural network (RNN)\\
-	RNN is a neural network with two input: one is from data, another is from previous output. Usually RNN is used with serial data. For example, human language sentence has series of words and data has time domain like driving data and stock data. {\color{red} [santi: provide a citation for RNNs the first time you mention the term, also, you always need to explain the figures. You cannot have a figure that is not explained in the text. So, after the explanation, add a few sentences explaining Figure \ref{fig:RNN}]}
+\item Basic concept of recurrent neural network
 
+	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. The figure \ref{fig:RNN} illustrates abstract structure of RNN. RNN has two input. One input is from data such as normal neural network input but another input is from previous output and the property gives benefit for sequential input data. This is because past output affects to current output. With sequential data, previous data can affect to current data and RNN considers previous output for current output. It means that even input from data are equal if previous output are different, current output are also different.
+	
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/RNN.png}
-    \caption{RNN {\color{red} [santi: Figures should never be placed within the text (that's a bad habit of using MicroSoft Word :)), they should be at the top or bottom of a page, so, I moved it]}}
+    \includegraphics[width=0.65\textwidth]{pictures/figures/RNN.png}
+    \caption{RNN}
     \label{fig:RNN}
 \end{figure}
+	
+	For example, human language sentences have series of words and meaning of words is different in different context. RNN can be used for that. Another example is driving data which is used later on the paper.  Driving data are multi-dimension data with time domain. RNN can be used for the data because it is sequential data with time domain.
+	
+	To describe RNN in math equation, let $x^{t}$ be input data on time $t$, $h^{t}$ be result from hidden layer on time $t$, and $o^{t}$ be output on time $t$. The tensor $U$ is a set of neurons for input data, The tensor $V$ is a set of neurons for data from hidden layer and the tensor $W$ is a set of neurons for previous output. The figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The value for hidden layer can be calculated by $h^{t} = Ux^{t} + Wo^{t-1}$ then the output can be calculated by $o^{t} = Vh^{t}$. Therefore, RNN can be written in $o^{t} = V(Ux^{t} + Wo^{t-1})$
+	
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/figures/unfold_RNN.png}
+    \caption{Unfold RNN}
+    \label{fig:unfold_RNN}
+\end{figure}
+
 
 \item Long Short Term Memory (LSTM) networks:
 
@@ -241,7 +255,7 @@ the current output $h_t = o \cdot tanh(c_t)$
 	\end{enumerate}
 \end{enumerate}
 
-\subsection{Auto-encoder}
+\subsection{Auto-encoder}\label{subsec:AE}
 In this section, I summarize 'Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces to the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA. \\
 \begin{enumerate}
 \item Intuition concepts of auto-encoder\\
@@ -251,7 +265,7 @@ When auto-encoder is traind, it has two layers: encode and decode. The encode la
 
 \end{enumerate}
 
-\section{Deep Learning Library}
+\section{Deep Learning Library}\label{sec:DLL}
 \subsection{DL4J}
 DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed deep-learning library for Java and Scala. It also integrates with Hadoop and Spark. 
 
@@ -262,7 +276,7 @@ Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a Python lib
 Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operator as node. Another strong point is that Tesorflow allows developer to deploy computation to one or more CPUs or GPUs. 
 
 
-\section{Machine Learning in Driving Data}
+\section{Machine Learning with Driving Data}\label{sec:MLDD}
 
 % ####################################################################################################################################
 \chapter{Data Set}
