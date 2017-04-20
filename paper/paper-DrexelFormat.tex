@@ -102,20 +102,20 @@ Introduction Section
 \chapter{Background}\label{sec:bg}
 % ====================================================================================================================================
 % ====================================================================================================================================
-This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived to three sections. First section \ref{sec:DL} covers basic deep learning including recurrent neural network and auto-encoder. Second section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. The last section \ref{sec:MLDD} introduces current trend of machine learning with driving data.
+This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived to three sections. First Section \ref{sec:DL} covers basic deep learning including recurrent neural network and auto-encoder. Second Section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. The last Section \ref{sec:MLDD} introduces current trend of machine learning with driving data.
 
 \section{Deep Learning}\label{sec:DL}
-This section covers basic concept of deep learning. First subsection \ref{subsec:basicDL} introduces to deep learning, and next section \ref{subsec:RNN} deals with recurrent neural network and long short term memory neural network. The last subsection \ref{subsec:AE} covers auto-encoder.
+This section covers basic concept of deep learning. First Subsection \ref{subsec:basicDL} introduces to deep learning, and next Section \ref{subsec:RNN} deals with recurrent neural network and long short term memory neural network. The last Subsection \ref{subsec:AE} covers auto-encoders.
 
-\subsection{Basic Concept}\label{subsec:basicDL}
-This part Explain basic deep learning
+\subsection{Basic Concepts}\label{subsec:basicDL}
+{\color{blue} This part Explain basic deep learning [...]}
 
 \subsection{Recurrent Neural Network}\label{subsec:RNN}
 
 \begin{enumerate}
-\item Basic concept of recurrent neural network
+\item Basic concepts of recurrent neural networks:
 
-	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. The figure \ref{fig:RNN} illustrates abstract structure of RNN. RNN has two input. One input is from data such as normal neural network input but another input is from previous output and the property gives benefit for sequential input data. This is because past output affects to current output. With sequential data, previous data can affect to current data and RNN considers previous output for current output. It means that even input from data are equal if previous output are different, current output are also different.
+	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. Figure \ref{fig:RNN} illustrates abstract structure of RNN. RNN has two input. One input is from data such as normal neural network input but another input is from previous output and the property gives benefit for sequential input data. This is because past output affects to current output. With sequential data, previous data can affect to current data and RNN considers previous output for current output. It means that even input from data are equal if previous output are different, current output are also different.
 	
 \begin{figure}[t!]
     \centering
@@ -126,7 +126,7 @@ This part Explain basic deep learning
 	
 	For example, human language sentences have series of words and meaning of words is different in different context. RNN can be used for that. Another example is driving data which is used later on the paper.  Driving data are multi-dimension data with time domain. RNN can be used for the data because it is sequential data with time domain.
 	
-	To describe RNN in math equation, let $x^{t}$ be input data on time $t$, $h^{t}$ be result from hidden layer on time $t$, and $o^{t}$ be output on time $t$. The tensor $U$ is a set of neurons for input data, The tensor $V$ is a set of neurons for data from hidden layer and the tensor $W$ is a set of neurons for previous output. The figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by 
+	To describe RNN in math equation, let $\vec{x}^t = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $h^{t} = \{ h_1^t, ..., h_m^t\} $ be result from hidden layer on time $t$, and $o^{t}$ be output on time $t$. The tensor $U$ is a set of neurons for input data, The tensor $V$ is a set of neurons for data from hidden layer and the tensor $W$ is a set of neurons for previous output. The figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by 
 	$$h^{t} = f(Ux^{t} + Wo^{t-1} + b_h)$$ where $f()$ is activation function for hidden layer and $b$ is bias for hidden layer. Then the output can be calculated by
 	$$o^{t} = g(Vh^{t}+b_o)$$ where $g()$ is activation function for output layer and $b_o$ is bias for output layer. Therefore, RNN can be written in
 	$$o^{t} = g(Vf(Ux^{t} + Wo^{t-1} + b_h) + b_o)$$
@@ -143,7 +143,7 @@ This part Explain basic deep learning
 
 \item Long Short Term Memory (LSTM) networks:
 
-	Basic RNN has problem of long term dependency. It means that RNN is not able to memorize long term knowledge. To solve the problem, LSTM is introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM has cell state and it solves long term memory problem in RNN because cell state can store long term memory {\color{red} [santi: explain what is ``cell state'']}.
+	Basic RNN have the problem of long term dependency. It means that an RNN is not able to memorize long term knowledge. To solve the problem, LSTMs were introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. An LSTM has a cell state and it solves the long term memory problem in RNN because cell state can store long term memory {\color{red} [santi: explain what is ``cell state'']}.
 	
 	Bengio mentioned on his paper \cite{bengio2009learning} that each layers in deep neural network should have {\color{red} a} purpose. LSTM can be divided to four layers: forget gate, input gate, input moduleation gate, and output gate. Each layers have different purpose {\color{red} [santi: this paragraph does not flow very well], even if Bengio mentioned it, why is it important? you need to explain WHY is it that each layer should have a purpose. Otherwise, we just have to blindly believe in Bengio :)}.
 	
