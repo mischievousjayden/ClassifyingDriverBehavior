@@ -126,7 +126,10 @@ This part Explain basic deep learning
 	
 	For example, human language sentences have series of words and meaning of words is different in different context. RNN can be used for that. Another example is driving data which is used later on the paper.  Driving data are multi-dimension data with time domain. RNN can be used for the data because it is sequential data with time domain.
 	
-	To describe RNN in math equation, let $x^{t}$ be input data on time $t$, $h^{t}$ be result from hidden layer on time $t$, and $o^{t}$ be output on time $t$. The tensor $U$ is a set of neurons for input data, The tensor $V$ is a set of neurons for data from hidden layer and the tensor $W$ is a set of neurons for previous output. The figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The value for hidden layer can be calculated by $h^{t} = Ux^{t} + Wo^{t-1}$ then the output can be calculated by $o^{t} = Vh^{t}$. Therefore, RNN can be written in $o^{t} = V(Ux^{t} + Wo^{t-1})$
+	To describe RNN in math equation, let $x^{t}$ be input data on time $t$, $h^{t}$ be result from hidden layer on time $t$, and $o^{t}$ be output on time $t$. The tensor $U$ is a set of neurons for input data, The tensor $V$ is a set of neurons for data from hidden layer and the tensor $W$ is a set of neurons for previous output. The figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by 
+	$$h^{t} = f(Ux^{t} + Wo^{t-1} + b_h)$$ where $f()$ is activation function for hidden layer and $b$ is bias for hidden layer. Then the output can be calculated by
+	$$o^{t} = g(Vh^{t}+b_o)$$ where $g()$ is activation function for output layer and $b_o$ is bias for output layer. Therefore, RNN can be written in
+	$$o^{t} = g(Vf(Ux^{t} + Wo^{t-1} + b_h) + b_o)$$
 	
 \begin{figure}[t!]
     \centering
@@ -135,6 +138,8 @@ This part Explain basic deep learning
     \label{fig:unfold_RNN}
 \end{figure}
 
+	RNN is not always like the figure \ref{fig:unfold_RNN}. Input from previous output can be replaced by result of previous hidden layer. The main idea of RNN is when neural network decides current output it considers previous state.
+	
 
 \item Long Short Term Memory (LSTM) networks:
 
