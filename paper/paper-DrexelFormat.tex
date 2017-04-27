@@ -205,11 +205,51 @@ Each gates have transform matrices for inputs. Let $\bold{T_{n,m}}: \mathbb{R}^n
 	LSTM neural network described above is one example of LSTMs. There are many other LSTMs but all LSTMs has memory cells to store information for long term memory and has four gates: input, input modulation, forget, and output gate.
 \end{enumerate}
 
+
 \subsection{Auto-encoder}\label{subsec:AE}
-In this section, I summarize 'Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces to the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA. \\
+
+This subsection introduces Auto-encoder and different kind of Auto-encoder: undercomplete Auto-encoder, overcomplete Auto-encoder, and multilayer Auto-encoder.
+
+% and summarizes 'Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces to the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA.
+
 \begin{enumerate}
-\item Intuition concepts of auto-encoder\\
-When auto-encoder is traind, it has two layers: encode and decode. The encode layer receives input and passes output in lower dimension data to decode layer. The decode layer recovers dimension to input data dimention from output of encode layer. The error of auto-encoder is measured by difference between input data and output from decode layer. In other words, encoder layer compresses input data and decoder layer decompresses data from encoder layer that should be similar as original input data. That methods guarantees that the data from encoder layer keeps almost all properties of input data in lower dimension. That is the reason why output data from decode layer is similar as original input data. In math, relationship between encoder and decoder layer is similar as inverse matrix of each other.
+\item Basic Auto-encoder
+
+An Auto-encoder (AE) is defined as a neural network that is trained to attempt to copy its input to its output on \cite{Goodfellow-et-al-2016}. It means that AE takes input and sends it as output. However, AE does not directly send input to output. AE has two layers: encode layer and decode layer. The figure \ref{fig:AE} illustrates abstract structure of AE. Purpose of AE is to make output from decode same as input.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/figures/AE.png}
+    \caption{Abstract structure of Auto-encoder}
+    \label{fig:AE}
+\end{figure}
+
+To describe AE, let $\vec{X} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ be input, $\vec{E} = \{e_1, ..., e_m\} \in \mathbb{R}^m$ be output from encoder layer, and $\vec{D} = \{d_1, ..., d_n\} \in \mathbb{R}^n$ be output of AE and output from decoder layer. For transform matrix, let $\bold{U}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for encode layer, $\bold{V}: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be a transform matrix for decode layer. The figure \ref{fig:basic_AE} describes all variables defined above.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/figures/basic_AE.png}
+    \caption{Basic Auto-encoder}
+    \label{fig:basic_AE}
+\end{figure}
+
+The output of encoder is
+$$\vec{E} = \bold{f}(\vec{X}\bold{U}+\vec{b_e})$$
+Where $\bold{f}$ is the activation function for encoder layer and $\vec{b_e}$ is the bias for encoder layer.
+
+The output of decoder is
+$$\vec{D} = \bold{g}(\vec{E}\bold{V}+\vec{b_d})$$
+Where $\bold{g}$ is the activation function for decoder layer and $\vec{b_d}$ is the bias for decoder layer.
+
+The purpose of AE copies input as output. Therefore, cost or loss function is calculated by
+$$L(\vec{X}, \vec{D}) = L(\vec{X}, \bold{g}(\bold{f}(\vec{X}\bold{U}+\vec{b_e})\bold{V}+\vec{b_d}))$$
+
+AE seems not useful because it only tries to copy input. However, AE is usually used with other neural network and other neural network uses data from encoder layer of AE not from decoder layer. Making similar values of input and decoder output guarantees that result from encode layer contains all information of input. It means that AE can represent same information of input data in different dimension. When dimension of encoder is higher than dimension of input, it is called overcomplete Auto-encoder. When dimension of encoder is lower than dimension of input, it is called undercomplete Auto-encoder.
+
+On this paper and experiment, undercomplete AE is used for reducing input dimension. Undercomplete AE is often compared with PCA because both methods reduce dimension. The paper \cite{hinton2006reducing} compares undercomplete AE and PCA. The result on the paper is that undercomplete AE could keep more information than PCA. It means that reducing data to low dimension by undercomplete AE gives better performance. However, training AE takes long time than computing information gain for PCA.
+
+
+% When auto-encoder is traind, it has two layers: encode and decode. The encode layer receives input and passes output in lower dimension data to decode layer. The decode layer recovers dimension to input data dimention from output of encode layer. The error of auto-encoder is measured by difference between input data and output from decode layer. In other words, encoder layer compresses input data and decoder layer decompresses data from encoder layer that should be similar as original input data. That methods guarantees that the data from encoder layer keeps almost all properties of input data in lower dimension. That is the reason why output data from decode layer is similar as original input data. In math, relationship between encoder and decoder layer is similar as inverse matrix of each other.
 
 \item Multilayer Auto-encoder\\
 
