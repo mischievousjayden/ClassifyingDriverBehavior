@@ -1,5 +1,5 @@
 # exclude data files
-datasampling/raw_data
+datasampling/driving_data
 datasampling/__pycache__
 datasampling/maskfilter.pyc
 data/sample
