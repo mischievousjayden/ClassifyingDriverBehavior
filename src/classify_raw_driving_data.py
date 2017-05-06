@@ -29,6 +29,7 @@ def classify_drivers(input_data_path, num_hidden, logdir):
     ae_training_iters = 500
     training_iters = 1000
     batch_size = 12
+    ae_display_step = 100
     display_step = 10
 
 
@@ -40,6 +41,7 @@ def classify_drivers(input_data_path, num_hidden, logdir):
     # num_neurons_in_layer = [n_features, n_final_features]
 
     # Autoencoder Network
+    report.output("create multi-layer autoencoder: {}".format(num_neurons_in_layer))
     x_raw = tf.placeholder("float", [max_seq_len, n_features], name="x-raw-input-data")
     final_encoded_x = x_raw
     saes = list()
@@ -144,7 +146,7 @@ def classify_drivers(input_data_path, num_hidden, logdir):
                             feed_dict[encoders[k]["bias"]] = sess.run(sae.encoder["bias"])
                         # sess.run(ae_optimizers[i], feed_dict={x_raw: td})
                         sess.run(ae_optimizers[j], feed_dict=feed_dict)
-                        if step % display_step == display_step-1:
+                        if step == 0 or step % ae_display_step == ae_display_step-1:
                             # loss = sess.run(ae_costs[0], feed_dict={x_raw: td})
                             loss = sess.run(ae_costs[j], feed_dict=feed_dict)
                             logstr = "Layer {}".format(j) + ", Iter {}".format(step) + ", Minibatch Loss= {:.6f}".format(loss)
@@ -166,7 +168,7 @@ def classify_drivers(input_data_path, num_hidden, logdir):
                 for td in train_data:
                     feed_dict = {x_raw: td}
                     sess.run(whole_ae_optimizer, feed_dict={x_raw: td})
-                    if step % display_step == display_step-1:
+                    if step == 0 or step % ae_display_step == ae_display_step-1:
                         loss = sess.run(whole_ae_cost, feed_dict=feed_dict)
                         logstr = "Whole AE" + ", Iter {}".format(step) + ", Minibatch Loss= {:.6f}".format(loss)
                         report.output(logstr)
