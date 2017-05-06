@@ -1,4 +1,3 @@
-
 import argparse
 import datetime
 
@@ -8,46 +7,7 @@ import numpy as np
 import datalayer as dl
 import util.outpututil as ou
 
-
-class ClassificationLstm:
-    def __init__(self, n_features, n_hidden, n_classes, forget_bias=1.0):
-        """lstm neural network for classification
-        Args:
-            n_hidden (int): the number of neuron in lstm
-            n_classes (int): the number of classes
-            forget_bias (float): forget bias for lstm. default value is 1.0
-        """
-        self._n_features = n_features
-        self._n_hidden = n_hidden
-        self._n_classes = n_classes
-        self._forget_bias = forget_bias
-
-        self._weight = tf.Variable(tf.random_normal([n_hidden, n_classes]), name="classification_lstm_weight")
-        self._bias = tf.Variable(tf.random_normal([n_classes]), name="classification_lstm_bias")
-
-        self._hist_weight = tf.summary.histogram("weight", self._weight)
-        self._hist_bias = tf.summary.histogram("bias", self._bias)
-
-    def run_lstm(self, x, seq_len, max_seq_len):
-
-        x = tf.transpose(x, [1, 0, 2])
-        x = tf.reshape(x, [-1, self._n_features])
-        x = tf.split(0, max_seq_len, x)
-
-        # Define a lstm cell with tensorflow
-        lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(self._n_hidden, forget_bias=self._forget_bias)
-
-        # Get lstm cell output
-        outputs, states = tf.nn.rnn(lstm_cell, x, dtype=tf.float32, sequence_length=seq_len)
-
-        outputs = tf.pack(outputs)
-        outputs = tf.transpose(outputs, [1, 0, 2])
-
-        batch_size = tf.shape(outputs)[0]
-        index = tf.range(0, batch_size) * max_seq_len + (seq_len - 1)
-        outputs = tf.gather(tf.reshape(outputs, [-1, self._n_hidden]), index)
-
-        return tf.matmul(outputs, self._weight) + self._bias
+from solution_layer import *
 
 
 def classify_drivers(input_data_path, num_hidden, logdir):
@@ -81,7 +41,7 @@ def classify_drivers(input_data_path, num_hidden, logdir):
     seq_len = tf.placeholder(tf.int32, [None])
 
     report.output("create lstm nn: {} features, {} sequence length, {} hidden neurons, {} classes".format(n_features, max_seq_len, n_hidden, n_classes))
-    cl = ClassificationLstm(n_features, n_hidden, n_classes)
+    cl = LstmClassification(n_features, n_hidden, n_classes)
     pred = cl.run_lstm(x, seq_len, max_seq_len)
 
     # Define loss
