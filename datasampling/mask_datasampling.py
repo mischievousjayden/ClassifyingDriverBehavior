@@ -7,6 +7,8 @@ import pandas as pd
 
 import maskfilter
 
+import pdb
+
 
 def sample_data(period, mask, inputdata):
     """The function samples data. 
@@ -35,7 +37,8 @@ def sample_data_set(period, mask, inputpath, outputpath):
         inputfile = join(inputpath, f)
         outputfile = join(outputpath, "sample_" + f)
         with open(inputfile) as f:
-            inputdata = pd.read_table(f, sep=' ', header=0)
+            # inputdata = pd.read_table(f, sep=' ', header=0)
+            inputdata = pd.read_table(f, sep=' ', header=0).ix[:,2:-1]
             outputdata = sample_data(period, mask, inputdata)
             outputdata.to_csv(outputfile, sep=' ', index=False)
 
