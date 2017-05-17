@@ -14,7 +14,7 @@ from solution_layer import *
 import pdb
 
 
-def classify_drivers(input_data_path, num_hidden, logdir):
+def classify_drivers(input_data_path, logdir):
     # start time
     start_time = datetime.datetime.now()
 
@@ -31,8 +31,6 @@ def classify_drivers(input_data_path, num_hidden, logdir):
     n_cross_validation = 4
     learning_rate = 0.001
     ae_training_iters = 500
-    training_iters = 1000
-    batch_size = 12
     ae_display_step = 100
     display_step = 10
 
@@ -190,15 +188,13 @@ def classify_drivers(input_data_path, num_hidden, logdir):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("input_data_path", help="input data path")
-    parser.add_argument("-n", "--num_hidden", help="the number of hidden neurons in LSTM", type=int, default=64)
     parser.add_argument("-l", "--logdir", help="log directory", default="./logs/default")
 
     args = parser.parse_args()
     input_data_path = args.input_data_path
-    num_hidden = args.num_hidden
     logdir = args.logdir
 
-    classify_drivers(input_data_path, num_hidden, logdir)
+    classify_drivers(input_data_path, logdir)
 
 if __name__ == "__main__":
     main()
