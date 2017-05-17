@@ -1,13 +1,17 @@
 import argparse
 import datetime
+import os
 
 import tensorflow as tf
 import numpy as np
+import pandas as pd
 
 import datalayer as dl
 import util.outpututil as ou
 
 from solution_layer import *
+
+import pdb
 
 
 def classify_drivers(input_data_path, num_hidden, logdir):
@@ -44,6 +48,7 @@ def classify_drivers(input_data_path, num_hidden, logdir):
     report.output("create multi-layer autoencoder: {}".format(num_neurons_in_layer))
     x_raw = tf.placeholder("float", [max_seq_len, n_features], name="x-raw-input-data")
     final_encoded_x = x_raw
+
     saes = list()
     encoders = list()
     ae_costs = list()
@@ -71,40 +76,6 @@ def classify_drivers(input_data_path, num_hidden, logdir):
 
     whole_ae_cost = tf.reduce_mean(tf.pow(x_raw - whole_decoded_x, 2))
     whole_ae_optimizer = tf.train.RMSPropOptimizer(learning_rate).minimize(whole_ae_cost)
-
-
-    ## LSTM
-
-    # LSTM Parameters
-    lstm_features = n_final_features
-    lstm_hidden = num_hidden # the number of hidden neurons in lstm
-    n_classes = 2 # two classes: expert vs inexpert
-    forget_bias = 1.0 # forget bias for lstm
-
-    # LSTM Network
-    x = tf.placeholder("float", [None, max_seq_len, lstm_features], name="x-input-data")
-    y = tf.placeholder("float", [None, n_classes], name="y-output-label")
-    seq_len = tf.placeholder(tf.int32, [None])
-
-    report.output("create lstm nn: {} features, {} sequence length, {} hidden neurons, {} classes".format(lstm_features, max_seq_len, lstm_hidden, n_classes))
-    cl = LstmClassification(lstm_features, lstm_hidden, n_classes)
-    pred = cl.run_lstm(x, seq_len, max_seq_len)
-
-    # Define loss
-    with tf.name_scope("cost") as scope:
-        cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
-        tf.summary.scalar("cost", cost)
-
-    # Minimize
-    with tf.name_scope("train") as scope:
-        optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
-
-    # Evaluate model
-    with tf.name_scope("evaluate") as scope:
-        correct_pred = tf.equal(tf.argmax(pred,1), tf.argmax(y,1))
-        accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
-        tf.summary.scalar("accuracy", accuracy)
-
 
     ##
     # Initializing the variables
@@ -177,50 +148,33 @@ def classify_drivers(input_data_path, num_hidden, logdir):
             for td in test_data:
                 report.output("Autoencoder Testing Loss: {}".format(sess.run(whole_ae_cost, feed_dict={x_raw: td})))
 
+            ## original data vs decoded data
+            root_output_file_path = "{}/groupid{}".format(logdir, i)
 
-            ## build train test data from autoencoder
-            encoded_train_data = list()
-            for td in train_data:
-                feed_dict = {x_raw: td}
-                for k, sae in enumerate(saes):
-                    feed_dict[encoders[k]["weight"]] = sess.run(sae.encoder["weight"])
-                    feed_dict[encoders[k]["bias"]] = sess.run(sae.encoder["bias"])
-                encoded_train_data.append(sess.run(final_encoded_x, feed_dict=feed_dict))
+            train_output_file_path = "{}/train".format(root_output_file_path)
+            os.makedirs(train_output_file_path)
+            for j, td in enumerate(train_data):
+                filename = "{}/original{}.csv".format(train_output_file_path, j)
+                pd.DataFrame(td[0:train_seq_len[j]]).to_csv(filename, sep=',', index=False)
 
-            encoded_test_data = list()
-            for td in test_data:
-                feed_dict = {x_raw: td}
-                for k, sae in enumerate(saes):
-                    feed_dict[encoders[k]["weight"]] = sess.run(sae.encoder["weight"])
-                    feed_dict[encoders[k]["bias"]] = sess.run(sae.encoder["bias"])
-                encoded_test_data.append(sess.run(final_encoded_x, feed_dict=feed_dict))
+                filename = "{}/encoded{}.csv".format(train_output_file_path, j)
+                pd.DataFrame(sess.run(whole_encoded_x, feed_dict=feed_dict)[0:train_seq_len[j]]).to_csv(filename, sep=',', index=False)
+
+                filename = "{}/decoded{}.csv".format(train_output_file_path, j)
+                pd.DataFrame(sess.run(whole_decoded_x, feed_dict=feed_dict)[0:train_seq_len[j]]).to_csv(filename, sep=',', index=False)
 
 
-            logtensorboard = "{}/groupid{}".format(logdir, i)
-            summary_writer = tf.summary.FileWriter(logtensorboard, sess.graph)
-            step = 0
-            while step * batch_size < training_iters:
-                # Run optimization op (backprop)
-                sess.run(optimizer, \
-                        feed_dict={x: encoded_train_data, y: train_label, seq_len: train_seq_len})
-                if step % display_step == 0:
-                    # Calculate batch accuracy and loss
-                    summary, loss, acc = \
-                            sess.run([merged, cost, accuracy], \
-                            feed_dict={x: encoded_train_data, y: train_label, seq_len: train_seq_len})
-                    summary_writer.add_summary(summary, step*batch_size)
-                    logstr = "Iter {}".format(step*batch_size) + \
-                            ", Minibatch Loss= {:.6f}".format(loss) + \
-                            ", Training Accuracy= {:.5f}".format(acc)
-                    report.output(logstr)
-                step += 1
+            test_output_file_path = "{}/test".format(root_output_file_path)
+            os.makedirs(test_output_file_path)
+            for j, td in enumerate(test_data):
+                filename = "{}/original{}.csv".format(test_output_file_path, j)
+                pd.DataFrame(td[0:test_seq_len[j]]).to_csv(filename, sep=',', index=False)
 
-            report.output("Optimization Finished!")
-            # test network with test data
-            report.output("Testing Accuracy: {}".format( \
-                    sess.run(accuracy, \
-                    feed_dict={x: encoded_test_data, \
-                    y: test_label, seq_len: test_seq_len})))
+                filename = "{}/encoded{}.csv".format(test_output_file_path, j)
+                pd.DataFrame(sess.run(whole_encoded_x, feed_dict=feed_dict)[0:test_seq_len[j]]).to_csv(filename, sep=',', index=False)
+
+                filename = "{}/decoded{}.csv".format(test_output_file_path, j)
+                pd.DataFrame(sess.run(whole_decoded_x, feed_dict=feed_dict)[0:test_seq_len[j]]).to_csv(filename, sep=',', index=False)
 
 
     report.output("Cross Validation end")
