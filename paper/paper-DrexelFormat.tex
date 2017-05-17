@@ -4,7 +4,7 @@
 
 
 \author{Jae Hoon Kim}
-\title{This is the Title}
+\title{Classifying Human Driving Behavior via Deep Neural Networks}
 \DUTmonth{June}
 \DUTyear{2017}
 \degree{Master in Computer Science}
@@ -78,7 +78,11 @@
 % \iffinal{}{\newpage}
 
 \begin{abstract}
-{\color{blue}[To do: Write an abstract here]}
+The average person spends several hours a day behind the wheel of their vehicles, which are usually equipped with on-board computers capable of collecting real-time data concerning driving behavior. However, this data source has rarely been tapped for healthcare and behavioral research purposes. This MS thesis is done in the context of the {\em Diagnostic Driving} project, an NSF funded collaborative project between Drexel, Children Hospital of Philadelphia (CHOP) and the University of Central Florida that aims at studying the possibility of using driving behavior data to diagnose medical conditions. 
+%
+Specifically, this paper introduces focuses on the classification of driving behavior data collected in a driving simulator using deep neural networks. The target classification task is to differentiate novice versus expert drivers. The paper presents a comparative study on using different variants of LSTM (Long-Short Term Memory networks) and Auto-encoder networks to deal with the fact that we have a small amount of labels (16 examples of people driving in the simulator, each labeled with an ``expert'' or ``inexpert'' label), but each simulator drive is high dimensional and too densely sampled (each drive consists of 100 variables sampled at 60Hz).
+%
+Our results show that using an intermediate number of neurons in the LSTM networks and using data filtering (only considering one out of each 10 samples) obtains better results, and that using Auto-encoders works worse than using manual feature selection.
 \end{abstract}
 \end{preamble}
 
@@ -120,7 +124,7 @@ This section covers basic concept of deep learning. First Subsection \ref{subsec
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.65\textwidth]{pictures/figures/RNN.png}
-    \caption{RNN {\color{red} change variables}}
+    \caption{RNN}
     \label{fig:RNN}
 \end{figure}
 	
