@@ -30,6 +30,7 @@
 \usepackage{mathtools}
 \usepackage{soul}
 \usepackage[detect-all]{siunitx} % Aligning numbers by decimal points in table columns
+\usepackage{bm}
 
 \usepackage{algorithm, soul}
 \usepackage[noend]{algpseudocode}
@@ -106,10 +107,10 @@ Introduction Section
 \chapter{Background}\label{sec:bg}
 % ====================================================================================================================================
 % ====================================================================================================================================
-This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived to three sections. First Section \ref{sec:DL} covers basic deep learning including recurrent neural network and auto-encoder. Second Section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. The last Section \ref{sec:MLDD} introduces current trend of machine learning with driving data.
+This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived into three sections. First Section \ref{sec:DL} covers basic deep learning including recurrent neural network and auto-encoders. Second Section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. The last Section \ref{sec:MLDD} introduces current trends in machine learning for driving data.
 
 \section{Deep Learning}\label{sec:DL}
-This section covers basic concept of deep learning. First Subsection \ref{subsec:basicDL} introduces to deep learning, and next Section \ref{subsec:RNN} deals with recurrent neural network and long short term memory neural network. The last Subsection \ref{subsec:AE} covers auto-encoders.
+This section covers basic concepts of deep learning. First Subsection \ref{subsec:basicDL} introduces deep learning, and next Section \ref{subsec:RNN} deals with recurrent neural networks and long short term memory neural networks (LSTMs). The last Subsection \ref{subsec:AE} covers auto-encoders.
 
 \subsection{Basic Concepts}\label{subsec:basicDL}
 {\color{blue} This part Explain basic deep learning [...]}
@@ -154,35 +155,35 @@ $$o = \phi(\vec{x}\cdot\vec{w}+b)$$
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.65\textwidth]{pictures/figures/detail_NN.png}
-    \caption{Neural Network}
+    \caption{Single Layer in a Neural Network}
     \label{fig:detail_NN}
 \end{figure}
 
-Using single neuron has limitation because it can solve few problems. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for first neuron is $\vec{w_1} = \{w_{11}, ..., w_{1n}\} \in \mathbb{R}^n$, weights for second neuron is $\vec{w_2} = \{w_{21}, ..., w_{2n}\} \in \mathbb{R}^n$, ..., and weights for $m$th neuron is $\vec{w_m} = \{w_{m1}, ..., w_{mn}\} \in \mathbb{R}^n$. Also bias for first neuron is $b_1$, bias for second neuron is $b_2$, ... and bias for $m$th neuron is $b_m$. The math equation model for the figure is
-$$\vec{o} = \bold{\phi}(\{(\vec{x}\cdot\vec{w_1}+b_1),(\vec{x}\cdot\vec{w_2}+b_2),...,(\vec{x}\cdot\vec{w_m}+b_m)\})$$
-Where activation function is applied on each element of its input and output is $m$ dimension vector $\vec{o} = \{o_1, ..., o_n\} \in \mathbb{R}^m$
+Using single neuron has limitation because it can solve few problems. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for $i$th neuron are $\vec{w_i} = \{w_{i1}, ..., w_{in}\} \in \mathbb{R}^n$. The bias term for the $i$th neuron is $b_i$. The output $\vec{o}$ of the network is calculated as follows:
+$$\vec{o} = \bm{\phi}(\{(\vec{x}\cdot\vec{w_1}+b_1),(\vec{x}\cdot\vec{w_2}+b_2),...,(\vec{x}\cdot\vec{w_m}+b_m)\})$$
+Where activation function is applied on each element of its input and output is $m$ dimension vector $\vec{o} = \{o_1, ..., o_n\} \in \mathbb{R}^m$.
 
 To simplify the equation, let a transform matrix $\bold{W}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be
 $\bold{W}=
 \begin{bmatrix}
 	\vec{w_1} & \vec{w_2} & \cdots & \vec{w_m}
 \end{bmatrix}$
-and bias vector $\vec{b} = \{b_1, ..., b_m\} \in \mathbb{R}^m$
+and bias vector $\vec{b} = \{b_1, ..., b_m\} \in \mathbb{R}^m$.
 
 The equation is
-$$\vec{o} = \bold{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$$
+$$\vec{o} = \bm{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$$
 
-From this point on the paper, sigma, add and bias node are skipped from figures for convenient. Square shape node represents input node, circle shape node represents compute node, edge with transform matrix represents weight matrix, edge without transform matrix represents identity matrix for weight matrix and arrow with small filled circle on end represents output vector. Figure \ref{fig:NN} is same as Figure \ref{fig:detail_NN}.
+From this point on the paper, $\Sigma$, $+$ and bias nodes are skipped from figures for convenience. Square shape node represents input node, circle shape node represents compute node, edge with transform matrix represents weight matrix, edge without transform matrix represents identity matrix for weight matrix and arrow with small filled circle on end represents output vector. Figure \ref{fig:NN} is same as Figure \ref{fig:detail_NN}.
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/figures/NN.png}
+    \includegraphics[width=0.4\textwidth]{pictures/figures/NN.png}
     \caption{Simplified Neural Network}
     \label{fig:NN}
 \end{figure}
 
-%Also to simplify equation, transit matrix symbol and bias vector are skipped and all vector from this point is row vector. For example, $\vec{o} = \bold{\phi}(\vec{x}\bold{W})$ is equal to $\vec{o} = \bold{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$.
-Also to simplify equation, transit matrix symbol is skipped and all vector from this point is row vector. For example, $\vec{o} = \bold{\phi}(\vec{x}\bold{W}+\vec{b})$ is equal to $\vec{o} = \bold{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$.
+%Also to simplify equation, transit matrix symbol and bias vector are skipped and all vector from this point is row vector. For example, $\vec{o} = \bm{\phi}(\vec{x}\bold{W})$ is equal to $\vec{o} = \bm{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$.
+Also to simplify equation, transit matrix symbol is skipped and all vector from this point is row vector. For example, $\vec{o} = \bm{\phi}(\vec{x}\bold{W}+\vec{b})$ is equal to $\vec{o} = \bm{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$.
 
 
 \subsubsection{Multilayer Neural Network}\label{subsubsec:MNN}
@@ -196,7 +197,7 @@ Also to simplify equation, transit matrix symbol is skipped and all vector from 
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.65\textwidth]{pictures/figures/RNN.png}
+    \includegraphics[width=0.5\textwidth]{pictures/figures/RNN.png}
     \caption{RNN}
     \label{fig:RNN}
 \end{figure}
