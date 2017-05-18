@@ -114,13 +114,87 @@ This section covers basic concept of deep learning. First Subsection \ref{subsec
 \subsection{Basic Concepts}\label{subsec:basicDL}
 {\color{blue} This part Explain basic deep learning [...]}
 
+\subsubsection{Artificial Neuron}\label{subsubsec:AN}
+Artificial neurons were introduced by Warren McCullock and Walter Pitts \cite{raschka2015python}. Initial artificial neurons are described as binary output logic gate from inputs. If sum of weighted inputs is greater than threshold, the output is 1. Otherwise, the output is 0.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.65\textwidth]{pictures/figures/basic_AN.png}
+    \caption{Basic Artificial Neuron}
+    \label{fig:basic_AN}
+\end{figure}
+
+Figure \ref{fig:basic_AN} shows a basic artificial neuron. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ and the weights for each input are $\vec{w} = \{w_1, ..., w_n\} \in \mathbb{R}^n$. Let $\theta$ be threshold and define step function as below:
+
+$$U(z)=
+	\begin{cases} 
+		\hfill 1 \hfill & \text{if $z > 0$} \\
+		\hfill 0 \hfill & \text{otherwise} \\
+	\end{cases}
+$$
+
+The function deciding output is called activation function. In this case, the step function $U(z)$ is activation function.
+
+Figure \ref{fig:basic_AN} also can be described by following equation:
+$$ o = U(\vec{x}\cdot\vec{w}-\theta)$$
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.65\textwidth]{pictures/figures/general_AN.png}
+    \caption{General Artificial Neuron}
+    \label{fig:general_AN}
+\end{figure}
+
+Figure \ref{fig:general_AN} shows an general artificial neuron. Threshold is replaced by bias and subtract node is replaced by add node. In general artificial neuron, activation function $\phi$ can be many different functions such as step, linear, or sigmoid function. An general artificial neuron also can be described by equation as follow:
+$$o = \phi(\vec{x}\cdot\vec{w}+b)$$
+
+
+\subsubsection{Neural Network}\label{subsubsec:NN}
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.65\textwidth]{pictures/figures/detail_NN.png}
+    \caption{Neural Network}
+    \label{fig:detail_NN}
+\end{figure}
+
+Using single neuron has limitation because it can solve few problems. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for first neuron is $\vec{w_1} = \{w_{11}, ..., w_{1n}\} \in \mathbb{R}^n$, weights for second neuron is $\vec{w_2} = \{w_{21}, ..., w_{2n}\} \in \mathbb{R}^n$, ..., and weights for $m$th neuron is $\vec{w_m} = \{w_{m1}, ..., w_{mn}\} \in \mathbb{R}^n$. Also bias for first neuron is $b_1$, bias for second neuron is $b_2$, ... and bias for $m$th neuron is $b_m$. The math equation model for the figure is
+$$\vec{o} = \bold{\phi}(\{(\vec{x}\cdot\vec{w_1}+b_1),(\vec{x}\cdot\vec{w_2}+b_2),...,(\vec{x}\cdot\vec{w_m}+b_m)\})$$
+Where activation function is applied on each element of its input and output is $m$ dimension vector $\vec{o} = \{o_1, ..., o_n\} \in \mathbb{R}^m$
+
+To simplify the equation, let a transform matrix $\bold{W}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be
+$\bold{W}=
+\begin{bmatrix}
+	\vec{w_1} & \vec{w_2} & \cdots & \vec{w_m}
+\end{bmatrix}$
+and bias vector $\vec{b} = \{b_1, ..., b_m\} \in \mathbb{R}^m$
+
+The equation is
+$$\vec{o} = \bold{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$$
+
+From this point on the paper, sigma, add and bias node are skipped from figures for convenient. Square shape node represents input node, circle shape node represents compute node, edge with transform matrix represents weight matrix, edge without transform matrix represents identity matrix for weight matrix and arrow with small filled circle on end represents output vector. Figure \ref{fig:NN} is same as Figure \ref{fig:detail_NN}.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/figures/NN.png}
+    \caption{Simplified Neural Network}
+    \label{fig:NN}
+\end{figure}
+
+Also to simplify equation, transit matrix symbol and bias vector are skipped and vector is row vector. For example, $\vec{o} = \bold{\phi}(\vec{x}\bold{W})$ is equal to $\vec{o} = \bold{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$.
+
+
+\subsubsection{Multilayer Neural Network}\label{subsubsec:MNN}
+\subsubsection{Backpropagation}\label{subsubsec:BP}
+
+
 \subsection{Recurrent Neural Network}\label{subsec:RNN}
 
 \begin{enumerate}
 \item Basic concepts of recurrent neural networks:
 
 	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. Figure \ref{fig:RNN} illustrates abstract structure of RNN. RNN has two input. One input is from data such as normal neural network input but another input is from previous output. The property gives benefit for sequential input data. This is because past output affects to current output. With sequential data, previous data can affect to current data and RNN considers previous output for current output. It means that even input from data are equal if previous output are different, current output are also different.
-	
+
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.65\textwidth]{pictures/figures/RNN.png}
