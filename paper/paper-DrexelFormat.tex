@@ -354,15 +354,65 @@ Where $\vec{b_e} = \{b_{e1}, ..., b_{em}\} \in \mathbb{R}^m$ is bias for encoder
 
 AE seems not useful because it only tries to copy input. However, AE is usually used with other neural network and other neural network uses data from encoder layer of AE not from decoder layer. Making similar values of input and decoder output guarantees that result from encode layer contains all information of input. It means that AE can represent same information of input data in different dimension. When dimension of encoder is higher than dimension of input, it is called overcomplete Auto-encoder. When dimension of encoder is lower than dimension of input, it is called undercomplete Auto-encoder.
 
-On this paper and experiment, undercomplete AE is used for reducing input dimension. Undercomplete AE is often compared with PCA because both methods reduce dimension. The paper \cite{hinton2006reducing} compares undercomplete AE and PCA. The result on the paper is that undercomplete AE could keep more information than PCA. It means that reducing data to low dimension by undercomplete AE gives better performance. However, training AE takes long time than computing information gain for PCA.
+On this paper and experiment, undercomplete AE is used for reducing input dimension. Undercomplete AE is often compared with principal components analysis (PCA) because both methods reduce dimension. The paper \cite{hinton2006reducing} compares undercomplete AE and PCA. The result on the paper is that undercomplete AE could keep more information than PCA. It means that reducing data to low dimension by undercomplete AE gives better performance. However, training AE takes long time than computing information gain for PCA.
 
 % When auto-encoder is traind, it has two layers: encode and decode. The encode layer receives input and passes output in lower dimension data to decode layer. The decode layer recovers dimension to input data dimention from output of encode layer. The error of auto-encoder is measured by difference between input data and output from decode layer. In other words, encoder layer compresses input data and decoder layer decompresses data from encoder layer that should be similar as original input data. That methods guarantees that the data from encoder layer keeps almost all properties of input data in lower dimension. That is the reason why output data from decode layer is similar as original input data. In math, relationship between encoder and decoder layer is similar as inverse matrix of each other.
 
 
 \subsubsection{Multilayer Auto-encoder}\label{subsubsec:MAE}
-{\color{blue} need to add tutorial}
+	Sometimes AE is designed with multiple encoder and decoder layers to reduce dimension. Figure \ref{fig:MAE} shows multilayer auto-encoder (MAE). However, it is difficult to find the all weights of encoder and decoder in MAE because all weights are initialized with random numbers and it makes difficult to find optimize weights \cite{zaremba2014recurrent}. So if the initial weights are close to optimize weights, training algorithm gradient descent can find optimize weights. The paper \cite{zaremba2014recurrent} shows "pretraining" method to initialize good weights. 
+	
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{pictures/figures/MAE.png}
+    \caption{Multilayer Auto-encoder}
+    \label{fig:MAE}
+\end{figure}
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{pictures/figures/example_MAE.png}
+    \caption{Multilayer Auto-encoder Example}
+    \label{fig:example_MAE}
+\end{figure}
+
+	Pretraining is to train each layer separately before train whole layers. For example, Figure \ref{fig:example_MAE} has three encoder and decoder layers. Let $\vec{x} \in \mathbb{R}^n$ be input vector, $\bold{e_1}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be transform matrix for first encoder layer, $\bold{e_2}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be transform matrix for second encoder layer, $\bold{e_3}: \mathbb{R}^l \rightarrow \mathbb{R}^k$ be transform matrix for third encoder layer, $\bold{d_1}: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be transform matrix for first decoder layer, $\bold{d_2}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be transform matrix for second decoder layer, $\bold{d_3}: \mathbb{R}^k \rightarrow \mathbb{R}^l$ be transform matrix for third decoder layer, and $\vec{o} \in \mathbb{R}^n$ be output vector.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{pictures/figures/train_MAE1.png}
+    \caption{Pretraining First Step}
+    \label{fig:train_MAE1}
+\end{figure}
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{pictures/figures/train_MAE2.png}
+    \caption{Pretraining Second Step}
+    \label{fig:train_MAE2}
+\end{figure}
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{pictures/figures/train_MAE3.png}
+    \caption{Pretraining Thrid Step}
+    \label{fig:train_MAE3}
+\end{figure}
+
+	In this case, pretraining has three steps because it has three encoder and decoder layers. Figure \ref{fig:train_MAE1} shows train of first encoder and decoder layer. While first encoder and decoder layer are trained, rest encoder and decoder are ignored. So loss function is
+$$L(\vec{x}, \bold{g_1}(\bold{f_1}(\vec{X}\bold{E_1})\bold{D_1}))$$
+Figure \ref{fig:train_MAE2} shows train of second encoder and decoder layer. While second encoder and decoder layer are trained, transform matrix $\bold{e_1}$ and $\bold{d_1}$ are fixed because two transform matrix are already trained previous step. So loss function is
+$$L(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2})\bold{D_2})\bold{D_1^{fixed}}))$$
+The last step is Figure \ref{fig:train_MAE3} and it trains third encoder and decoder. During this, first and second encoder and decoder weights are fixed. So loss function is
+$$L(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2^{fixed}})\bold{E_3})\bold{D_3})\bold{D_2^{fixed}})\bold{D_1^{fixed}}))$$
+	
+	After finishing pretraining step, all weights are close enough to optimal weights for train algorithm to find optimize answer when it train whole neural network. So loss function training whole network is
+$$L(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{E_3})\bold{D_3})\bold{D_2})\bold{D_1}))$$
+
 
 \section{Deep Learning Library}\label{sec:DLL}
+{\color{blue} need to add tutorial}
+
 \subsection{DL4J}
 DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed deep-learning library for Java and Scala. It also integrates with Hadoop and Spark. 
 
