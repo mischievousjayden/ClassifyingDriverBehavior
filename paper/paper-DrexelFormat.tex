@@ -436,33 +436,57 @@ The drive simulation data is from \textit{Children's Hospital of Philadelphia} (
 \chapter{Technical Approach}
 % ####################################################################################################################################
 
+This chapter covers technical methods for experiment on the paper also introduces to three different neural network used for the experiment.
+
+
 \section{Cross Validation}
-There are only 16 data set. It is not enough to train neural network for general case. Whether the neural network works well on the problem or not, I used cross validation. I split 16 data set to 4 groups. Each groups have 2 expert and 2 inexpert data. The neural network is trained four times with different train (3 groups) and test (1 group) set. 
+Cross validation (CV) is used to validate model when data is not enough. CV divides data set to $K$ folds then applies $k$th fold as test set and other folds as train set to target model. For example, experiment on the paper uses only 16 data set but it is not enough to train neural network. To validate neural network model whether the neural network works well or not, 16 data set is divided to 4 folds. Each folds contain two expert driver simulation data and two inexpert driver simulation data. The neural network is trained four times with different train (3 folds) and test (1 fold) set. Figure \ref{fig:CV} shows four folds cross validation which is used on the paper.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pictures/figures/CV.png}
+    \caption{Cross Validation}
+    \label{fig:CV}
+\end{figure}
+
 
 \section{LSTM}
-The LSTM neural network is used to classify data because the data has time domain and LSTM neural network can handle serial data. On the paper, LSTM neural network is built with 16, 32, 64, 128, and 256 hidden neurons. The output from LSTM is sent to output layer which has two neurons. By using softmax, output from two neurons is classified. If it has [0, 1], it is classified to expert. Otherwise, it is classified to inexpert.
+The LSTM neural network is used on experiment data set to classify expert or inexpert driver because the data has time domain and RNN, specially LSTM, neural network gives good performance for serial data. On the paper, LSTM neural network is built with 16, 32, 64, 128, and 256 hidden neurons. The output from LSTM is sent to output layer which has two neurons. By using softmax, output from two neurons is classified. If it has [0, 1], it is classified to expert. Otherwise, it is classified to inexpert.
 
-\begin{figure}[H]
+Figure \ref{fig:exp_NN1} shows first neural network for experiment on the paper. Its input diver simulation data has 23 features which is meaningful dimensions chosen from original data with 100 features. The filtered input is feed to LSTM neural network then the result is passed to output layer.
+
+\begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/applied_lstm.png}
-    \caption{LSTM without Auto-Encoder}
-    \label{fig:Applied LSTM}
+    \includegraphics[width=0.7\textwidth]{pictures/figures/exp_NN1.png}
+    \caption{First experiment NN}
+    \label{fig:exp_NN1}
 \end{figure}
 
-\section{Dimensionality Reduction}
-The data has 100 features so dimensionality reduction is necessary. First way is selecting meaningful features and 23 features are selected. Another way to reduce dimension is auto-encoder. Before giving data to LSTM neural network, data is sent to auto-encoder layer and less dimension data from auto-encoder is sent to LSTM. 
 
-\begin{figure}[H]
+\section{Single layer Auto-encoder}
+The original data has 100 features and it is too many features. Single layer AE (SAE) can be used to reduce dimensions. On the second experiment, second neural network has SAE to reduce 100 features to 25 features. Figure \ref{fig:exp_NN2} shows abstract neural network for second experiment. Notice that the figure only has encoder because after train encoder and decoder in SAE, only encoder is used to reduce dimensions. The output from encoder is passed to LSTM.
+
+\begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/applied_lstm_autoencoder.png}
-    \caption{LSTM with Auto-Encoder}
-    \label{fig:Applied LSTM With Auto-Encoder}
+    \includegraphics[width=0.8\textwidth]{pictures/figures/exp_NN2.png}
+    \caption{Second experiment NN}
+    \label{fig:exp_NN2}
 \end{figure}
 
-%\subsection{Raw vs. Filtered data}
+
+\section{Multiple layer Auto-encoder}
+To compare performance of SAE, the third experiment neural network has MAE. It has three layer AE. First AE reduces 100 dimensions to 75 dimensions, second AE reduces 75 dimensions to 50 dimensions and the last AE reduces 50 dimensions to 25 dimensions. Figure \ref{fig:exp_NN3} describes it with three encoder layers.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=\textwidth]{pictures/figures/exp_NN3.png}
+    \caption{Third experiment NN}
+    \label{fig:exp_NN3}
+\end{figure}
+
 
 \section{Sampling}
-The simulator records 60 samples per second. It is too often recorded. I reduce data by two way. First way is sampling one per ten and sampling one per twenty. The sampled data might not represent ten or twenty data, so average data from every ten or twenty data is used. The second way can reduce noise because there is case in first way that sampled data has more noise than other data.
+The simulator records 60 samples per second. It is too often recorded. The original data is resampled by three different period: 1 over 10, 1 over 20, and 1 over 50. When it is resample, three methods are used. First method choose last sample of period, second method computes mean of data in period, and third method applies Gaussian windows. For third method, window size is 11, 21, and 51 for each period.
 
 
 % ####################################################################################################################################
@@ -472,7 +496,7 @@ The simulator records 60 samples per second. It is too often recorded. I reduce 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{pictures/accuracy.png}
+    \includegraphics[width=0.75\textwidth]{pictures/result_pictures/filtered_1_10_result.png}
     \caption{Accuracy}
     \label{fig:Accuracy}
 \end{figure}
