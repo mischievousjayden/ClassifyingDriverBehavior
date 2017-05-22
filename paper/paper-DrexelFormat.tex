@@ -113,7 +113,6 @@ This chapter presents the necessary background to understand the experiments pre
 This section covers basic concepts of deep learning. First Subsection \ref{subsec:basicDL} introduces deep learning, and next Section \ref{subsec:RNN} deals with recurrent neural networks and long short term memory neural networks (LSTMs). The last Subsection \ref{subsec:AE} covers auto-encoders.
 
 \subsection{Basic Concepts}\label{subsec:basicDL}
-{\color{blue} This part Explain basic deep learning [...]}
 
 \subsubsection{Artificial Neuron}\label{subsubsec:AN}
 Artificial neurons were introduced by Warren McCullock and Walter Pitts \cite{raschka2015python}. Initial artificial neurons are described as binary output logic gate from inputs. If sum of weighted inputs is greater than threshold, the output is 1. Otherwise, the output is 0.
@@ -159,22 +158,38 @@ $$o = \phi(\vec{x}\cdot\vec{w}+b)$$
     \label{fig:detail_NN}
 \end{figure}
 
-Using single neuron has limitation because it can solve few problems. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for $i$th neuron are $\vec{w_i} = \{w_{i1}, ..., w_{in}\} \in \mathbb{R}^n$. The bias term for the $i$th neuron is $b_i$. The output $\vec{o}$ of the network is calculated as follows:
+Using single neuron has limitation because it can solve only few problems. For example, single neuron cannot solve xor problem. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for $i$th neuron are $\vec{w_i} = \{w_{i1}, ..., w_{in}\} \in \mathbb{R}^n$. The bias term for the $i$th neuron is $b_i$. The output $\vec{o}$ of the network is calculated as follows:
 $$\vec{o} = \bm{\phi}(\{(\vec{x}\cdot\vec{w_1}+b_1),(\vec{x}\cdot\vec{w_2}+b_2),...,(\vec{x}\cdot\vec{w_m}+b_m)\})$$
-Where activation function is applied on each element of its input and output is $m$ dimension vector $\vec{o} = \{o_1, ..., o_n\} \in \mathbb{R}^m$.
+Where activation function is applied on each element of its input and output is $m$ dimension vector $\vec{o} = \{o_1, ..., o_m\} \in \mathbb{R}^m$.
 
-To simplify the equation, let a transform matrix $\bold{W}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be
-$\bold{W}=
+To simplify the equation, let a transform matrix $\bold{w}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be
+$\bold{w}=
 \begin{bmatrix}
 	\vec{w_1} & \vec{w_2} & \cdots & \vec{w_m}
 \end{bmatrix}$
 and bias vector $\vec{b} = \{b_1, ..., b_m\} \in \mathbb{R}^m$.
 
 The equation is
-$$\vec{o} = \bm{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$$
+$$\vec{o} = \bm{\phi}((\vec{x}^T\bold{w})^T+\vec{b})$$
 
-From this point on the paper, $\Sigma$, $+$ and bias nodes are skipped from figures for convenience. Square shape node represents input node, circle shape node represents compute node, edge with transform matrix represents weight matrix, edge without transform matrix represents identity matrix for weight matrix and arrow with small filled circle on end represents output vector. Figure \ref{fig:NN} is same as Figure \ref{fig:detail_NN}.
+The bias term can be skipped by changing input vector and weight transform matrix. Let $\vec{X} \in \mathbb{R}^{n+1}$ be $\{x_1, x_2, ..., x_n, 1\}$ which is added one more dimension from $\vec{x}$ with value 1 and $\vec{W_i} \in \mathbb{R}^{n+1}$ be $\{w_{i1}, ..., w_{in}, b_i\}$ which is added by bias term into weights and $\bold{W}: \mathbb{R}^{n+1} \rightarrow \mathbb{R}^m$ be
+$\bold{W}=
+\begin{bmatrix}
+	\vec{W_1} & \vec{W_2} & \cdots & \vec{W_m}
+\end{bmatrix}$
 
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{pictures/figures/detail_NN_with_bias.png}
+    \caption{Simplified Neural Network}
+    \label{fig:withoutBiasNN}
+\end{figure}
+
+Figure \ref{fig:withoutBiasNN} shows same neural network as Figure \ref{fig:detail_NN} with $\vec{X}$ and $\bold{W}$. Notice that the figure does not have add node anymore.
+
+	From this point on the paper, vector in large case is with bias term and vector in small case is without bias term. For example, $\vec{X}$ is with bias and $\vec{x}$ is without bias. Also all vectors is row vector. Transform matrix is bold character and if it includes bias, transform matrix uses large case, otherwise small case. For example, $\bold{W}$ is transform matrix with bias and $\bold{w}$ is transform matrix without bias. By applying this, the equation for neural network is
+$$\vec{o} = \bm{\phi}(\vec{X}\bold{W})$$
+	
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.4\textwidth]{pictures/figures/NN.png}
@@ -182,18 +197,39 @@ From this point on the paper, $\Sigma$, $+$ and bias nodes are skipped from figu
     \label{fig:NN}
 \end{figure}
 
-%Also to simplify equation, transit matrix symbol and bias vector are skipped and all vector from this point is row vector. For example, $\vec{o} = \bm{\phi}(\vec{x}\bold{W})$ is equal to $\vec{o} = \bm{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$.
-Also to simplify equation, transit matrix symbol is skipped and all vector from this point is row vector. For example, $\vec{o} = \bm{\phi}(\vec{x}\bold{W}+\vec{b})$ is equal to $\vec{o} = \bm{\phi}((\vec{x}^T\bold{W})^T+\vec{b})$.
+	For all figures under this point, $\Sigma$ node is skipped, square shape node represents input node, circle shape node represents compute node, edge with transform matrix represents weight matrix, edge without transform matrix represents identity matrix for weight matrix and arrow with small filled circle on end represents output vector. Figure \ref{fig:detail_NN}, Figure \ref{fig:withoutBiasNN}, and \ref{fig:NN} are equal.
 
 
 \subsubsection{Multilayer Neural Network}\label{subsubsec:MNN}
+Single layer neural network has input layer and output layer but multilayer neural network has several hidden layers between input layer and output layer. This part introduces to multilayer neural network by explaining neural network with one hidden layer. Let $\vec{x} \in \mathbb{R}^n$ be input, $\vec{h} \in \mathbb{R}^m$ be output from hidden layer, $\vec{c} \in \mathbb{R}^m$ be bias for hidden layer, $\vec{o} \in \mathbb{R}^l$ be output from output layer, $\vec{b} \in \mathbb{R}^l$ be bias for output layer, $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be transform matrix for hidden layer and $\bold{w}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be transform matrix for output layer. The activation function $\bold{h}$ is for hidden layer and the activation function $\bm{\phi}$ is for output layer. Figure \ref{fig:MNN} shows two layer neural network.
+
+The output from hidden layer can be computed
+$$\vec{h} = \bold{h}(\vec{x}\bold{u}+\vec{c}) = \bold{h}(\vec{X}\bold{U})$$
+The output of the neural network can be computed
+$$\vec{o} = \bm{\phi}(\vec{h}\bold{w}+\vec{b}) = \bm{\phi}(\vec{H}\bold{W})$$
+Therefore, final equation for two layer neural network is
+$$\vec{o} = \bm{\phi}(\bold{h}(\vec{x}\bold{u}+\vec{c})\bold{w}+\vec{b})$$
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/figures/MNN.png}
+    \caption{Two Layer Neural Network}
+    \label{fig:MNN}
+\end{figure}
+
+
 \subsubsection{Backpropagation}\label{subsubsec:BP}
+{\color{blue} add backpropagation}
+
+%Training neural network means finding weights and biases. Process of finding weights and biases is 'training neural network'. This part shows how to train neural network by backpropagation.
+%Let $\vec{x} \in \mathbb{R}^n$ be input, $\vec{y} \in \mathbb{R}^m$ be label, $\vec{b} \in \mathbb{R}^m$ be bias, and  $\bold{w}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be transform matrix.
+
 
 
 \subsection{Recurrent Neural Network}\label{subsec:RNN}
 
 \subsubsection{Basic concepts of recurrent neural networks:}\label{basicRNN}
-	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. Figure \ref{fig:RNN} illustrates abstract structure of RNN. RNN has two input. One input is from data such as normal neural network input but another input is from previous output. The property gives benefit for sequential input data. This is because past output affects to current output. With sequential data, previous data can affect to current data and RNN considers previous output for current output. It means that even input from data are equal if previous output are different, current output are also different.
+	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. Figure \ref{fig:RNN} illustrates abstract structure of RNN. RNN has two input. One input is from data such as normal neural network input but another input is from previous output. The property gives benefit for sequential input data. This is because past outputs affect to current output. With sequential data, previous data can affect to current data and RNN considers previous outputs for current output. It means that even input from data are equal if previous outputs are different, current output are also different.
 
 \begin{figure}[t!]
     \centering
@@ -204,10 +240,10 @@ Also to simplify equation, transit matrix symbol is skipped and all vector from 
 	
 	For example, human language sentences have series of words and meaning of words is different in different context. RNN can be used for that. Another example is driving data which is used later on the paper.  Driving data are multi-dimension data with time domain. RNN can be used for the data because it is sequential data with time domain.
 	
-	To describe RNN in math equation, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{h^t} = \{ h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be result from hidden layer on time $t$, and $\vec{o^t} = \{ o_1^t, ..., o_l^t\} \in \mathbb{R}^l$ be output on time $t$. For transform matrix, let $\bold{U}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for input data, $\bold{V}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for data from hidden layer, and $\bold{W}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be a transform matrix for previous output. Figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by 
-	$$\vec{h^t} = \bold{f}(\vec{x^t}\bold{U} + \vec{o^{t-1}}\bold{W} + \vec{b_h})$$ where $\bold{f}()$ is activation function for hidden layer and it is applied for each elements in given vector, $\vec{b_h} \in \mathbb{R}^m$ is a vector for hidden layer bias. Then the output can be calculated by
-	$$\vec{o^t} = \bold{g}(\vec{h^t}\bold{V}+\vec{b_o})$$ where $\bold{g}()$ is activation function for output layer and it is applied for each elements in given vector, $\vec{b_o} \in \mathbb{R}^l$ is a vector for output layer bias. Therefore, RNN can be written in
-	$$\vec{o^t} = \bold{g}(\bold{f}(\vec{x^t}\bold{U} + \vec{o^{t-1}}\bold{W} + \vec{b_h})\bold{V}+\vec{b_o})$$
+	To describe RNN in math equation, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{h^t} = \{ h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be result from hidden layer on time $t$, and $\vec{o^t} = \{ o_1^t, ..., o_l^t\} \in \mathbb{R}^l$ be output on time $t$. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for input data, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for data from hidden layer, and $\bold{w}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be a transform matrix for previous output. Figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by 
+	$$\vec{h^t} = \bold{f}(\vec{X^t}\bold{U} + \vec{O^{t-1}}\bold{W})$$ where $\bold{f}$ is activation function for hidden layer. Then the output can be calculated by
+	$$\vec{o^t} = \bold{g}(\vec{H^t}\bold{V})$$ where $\bold{g}$ is activation function for output layer. Therefore, the RNN with bias is
+	$$\vec{o^t} = \bold{g}(\bold{f}(\vec{x^t}\bold{u}+\vec{b_x} + \vec{o^{t-1}}\bold{w}+\vec{b_o})\bold{v}+\vec{b_h})$$ where $\vec{b_x} = \{b_{x1}, ..., b_{xm}\} \in \mathbb{R}^m$ is bias for input data, $\vec{b_o} = \{b_{o1}, ..., b_{om}\} \in \mathbb{R}^m$ is bias for previous output data, and $\vec{b_h} = \{b_{h1}, ..., b_{hl}\} \in \mathbb{R}^l$ is bias for data from hidden layer. 
 	
 \begin{figure}[t!]
     \centering
@@ -225,12 +261,9 @@ Also to simplify equation, transit matrix symbol is skipped and all vector from 
 	LSTM is a type of RNN and introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM solves long term dependency problems in RNN by memory cells. LSTM manages memory cells as storage of knowledge. LSTM filters unnecessary information from memory cells and records necessary information on memory cells.
 	
 	The structure of LSTM consists of four gates: forget gate, input gate, input modulation gate, and output gate. Each gates have different purpose and Christopher Olah's blog \footnote{\url{http://colah.github.io/posts/2015-08-Understanding-LSTMs}} develops an intuition for concept of LSTM and explains purpose of each gates. The paper \cite{zaremba2014recurrent}  describes LSTM in mathematical term. Let us first provide an intuitive description of how LSTM work by following Christopher Olah's blog, before providing a more in-depth formalization.
-	
-%	and the paper \cite{zaremba2014recurrent} 
-	
+		
 %	Bengio mentioned on his paper \cite{bengio2009learning} that each layers in deep neural network should have {\color{red} a} purpose. LSTM can be divided to four layers: forget gate, input gate, input modulation gate, and output gate. Each layers have different purpose {\color{red} [santi: this paragraph does not flow very well], even if Bengio mentioned it, why is it important? you need to explain WHY is it that each layer should have a purpose. Otherwise, we just have to blindly believe in Bengio :)}.
 
-%	 Colah's blog \footnote{\url{http://colah.github.io/posts/2015-08-Understanding-LSTMs}} develops an intuition for concept of LSTM and explains purpose of each layer{\color{red} \st{s}}. The paper \cite{zaremba2014recurrent} describes LSTM in mathematical term{\color{red}s}. In this paper, I'm going to summarize both the Colah's blog and the paper \cite{zaremba2014recurrent}
 	
 \begin{enumerate}
 \item An intuitive explanation of LSTMs:
@@ -257,19 +290,18 @@ Also to simplify equation, transit matrix symbol is skipped and all vector from 
 \item Modeling LSTMs in mathematical terms:
 	
 	To describe LSTM in mathematical terms, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{i^t} = \{i_1^t, ..., i_m^t\} \in \mathbb{R}^m$ be result from input gate on time $t$, $\vec{m^t} = \{m_1^t, ..., m_m^t\} \in \mathbb{R}^m$ be result from input modulation gate on time $t$, $\vec{f^t} = \{f_1^t, ..., f_m^t\} \in \mathbb{R}^m$ be result from forget gate on time $t$, $\vec{o^t} = \{o_1^t, ..., o_m^t\} \in \mathbb{R}^m$ be result from output gate on time $t$, $\vec{c^t} = \{c_1^t, ..., c_m^t\} \in \mathbb{R}^m$ be memory cells on time $t$, and $\vec{h^t} = \{h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be final result on time $t$.
-Each gates have transform matrices for inputs. Let $\bold{T_{n,m}}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix from $n$ dimension to $m$ dimension. Let $\bold{T_{n,m}^{ii}}$ be a transform matrix for input from data in input gate, $\bold{T_{m,m}^{oi}}$ be a transform matrix for input from previous output in input gate, $\bold{T_{n,m}^{im}}$ be a transform matrix for input from data in input modulation gate, $\bold{T_{m,m}^{om}}$ be a transform matrix for input from previous output in input modulation gate, $\bold{T_{n,m}^{if}}$ be a transform matrix for input from data in forget gate, $\bold{T_{m,m}^{of}}$ be a transform matrix for input from previous output in forget gate, $\bold{T_{n,m}^{io}}$ be a transform matrix for input from data in output gate, $\bold{T_{m,m}^{oo}}$ be a transform matrix for input from previous output in output gate.
+Each gates have transform matrices for inputs. Let $\bold{t_{n,m}}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix from $n$ dimension to $m$ dimension. Let $\bold{t_{n,m}^{ii}}$ be a transform matrix for input from data in input gate, $\bold{t_{m,m}^{oi}}$ be a transform matrix for input from previous output in input gate, $\bold{t_{n,m}^{im}}$ be a transform matrix for input from data in input modulation gate, $\bold{t_{m,m}^{om}}$ be a transform matrix for input from previous output in input modulation gate, $\bold{t_{n,m}^{if}}$ be a transform matrix for input from data in forget gate, $\bold{t_{m,m}^{of}}$ be a transform matrix for input from previous output in forget gate, $\bold{t_{n,m}^{io}}$ be a transform matrix for input from data in output gate, $\bold{t_{m,m}^{oo}}$ be a transform matrix for input from previous output in output gate.
 
 	The result of each gates are computed as following:
-	$$\vec{i^t} = \bold{sigm}(\vec{x^t}\bold{T_{n,m}^{ii}} + \vec{h^{t-1}}\bold{T_{m,m}^{oi}} + \vec{b_i})$$
-	Input gate uses sigmoid function $\bold{sigm()}$ for activation function and $\vec{b_i} \in \mathbb{R}^m$ is a vector for input gate bias.
-	$$\vec{m^t} = \bold{tanh}(\vec{x^t}\bold{T_{n,m}^{im}} + \vec{h^{t-1}}\bold{T_{m,m}^{om}} + \vec{b_m})$$
-	Input modulation gate uses tanh function $\bold{tanh()}$ for activation function and $\vec{b_m} \in \mathbb{R}^m$ is a vector for input modulation gate bias.
-	$$\vec{f^t} = \bold{sigm}(\vec{x^t}\bold{T_{n,m}^{if}} + \vec{h^{t-1}}\bold{T_{m,m}^{of}} + \vec{b_f})$$
-	Forget gate uses sigmoid function $\bold{sigm()}$ for activation function and $\vec{b_f} \in \mathbb{R}^m$ is a vector for forget gate bias.
-	$$\vec{o^t} = \bold{sigm}(\vec{x^t}\bold{T_{n,m}^{io}} + \vec{h^{t-1}}\bold{T_{m,m}^{oo}} + \vec{b_o})$$
-	Output gate uses sigmoid function $\bold{sigm()}$ for activation function and $\vec{b_o} \in \mathbb{R}^m$ is a vector for output gate bias.
-		
-		
+	$$\vec{i^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{ii}} + \vec{H^{t-1}}\bold{T_{m,m}^{oi}})$$
+	Input gate uses sigmoid function $\bold{sigm()}$ for activation function
+	$$\vec{m^t} = \bold{tanh}(\vec{X^t}\bold{T_{n,m}^{im}} + \vec{H^{t-1}}\bold{T_{m,m}^{om}})$$
+	Input modulation gate uses tanh function $\bold{tanh()}$ for activation function.
+	$$\vec{f^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{if}} + \vec{H^{t-1}}\bold{T_{m,m}^{of}})$$
+	Forget gate uses sigmoid function $\bold{sigm()}$ for activation function.
+	$$\vec{o^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{io}} + \vec{H^{t-1}}\bold{T_{m,m}^{oo}})$$
+	Output gate uses sigmoid function $\bold{sigm()}$ for activation function.
+
 	Memory cells are computed as
 	$$\vec{c^t} = \vec{i^t} * \vec{m^t} + \vec{f^t} * \vec{c^{t-1}}$$
 		
@@ -289,10 +321,8 @@ This subsection introduces Auto-encoder and different kind of Auto-encoder: unde
 
 % and summarizes 'Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces to the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA.
 
-\begin{enumerate}
-\item Basic Auto-encoder
-
-An Auto-encoder (AE) is defined as a neural network that is trained to attempt to copy its input to its output on \cite{Goodfellow-et-al-2016}. It means that AE takes input and sends it as output. However, AE does not directly send input to output. AE has two layers: encode layer and decode layer. Figure \ref{fig:AE} illustrates abstract structure of AE. Purpose of AE is to make output from decode same as input.
+\subsubsection{Basic Auto-encoder}\label{subsubsec:BAE}
+An Auto-encoder (AE) is defined as a neural network that is trained to attempt to copy its input to its output \cite{Goodfellow-et-al-2016}. It means that AE takes input and sends it as output. However, AE does not directly send input to output. AE has two layers: encode layer and decode layer. Figure \ref{fig:AE} illustrates abstract structure of AE. Purpose of AE is to make output from decode same as input.
 
 \begin{figure}[t!]
     \centering
@@ -301,7 +331,7 @@ An Auto-encoder (AE) is defined as a neural network that is trained to attempt t
     \label{fig:AE}
 \end{figure}
 
-To describe AE, let $\vec{X} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ be input, $\vec{E} = \{e_1, ..., e_m\} \in \mathbb{R}^m$ be output from encoder layer, and $\vec{D} = \{d_1, ..., d_n\} \in \mathbb{R}^n$ be output of AE and output from decoder layer. For transform matrix, let $\bold{U}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for encode layer, $\bold{V}: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be a transform matrix for decode layer. Figure \ref{fig:basic_AE} describes all variables defined above.
+To describe AE, let $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ be input, $\vec{e} = \{e_1, ..., e_m\} \in \mathbb{R}^m$ be output from encoder layer, and $\vec{d} = \{d_1, ..., d_n\} \in \mathbb{R}^n$ be output from decoder layer. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for encode layer, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be a transform matrix for decode layer. Usually AE uses sigmoid for activation function. Figure \ref{fig:basic_AE} describes AE.
 
 \begin{figure}[t!]
     \centering
@@ -311,35 +341,35 @@ To describe AE, let $\vec{X} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ be input, $\v
 \end{figure}
 
 The output of encoder is
-$$\vec{E} = \bold{f}(\vec{X}\bold{U}+\vec{b_e})$$
-Where $\bold{f}$ is the activation function for encoder layer and $\vec{b_e}$ is the bias for encoder layer.
+$$\vec{e} = \bold{f}(\vec{X}\bold{U})$$
+Where $\bold{f}$ is the activation function for encoder layer. It is usually sigmoid function.
 
 The output of decoder is
-$$\vec{D} = \bold{g}(\vec{E}\bold{V}+\vec{b_d})$$
-Where $\bold{g}$ is the activation function for decoder layer and $\vec{b_d}$ is the bias for decoder layer.
+$$\vec{d} = \bold{g}(\vec{E}\bold{V})$$
+Where $\bold{g}$ is the activation function for decoder layer. It is usually sigmoid or linear function.
 
 The purpose of AE copies input as output. Therefore, cost or loss function is calculated by
-$$L(\vec{X}, \vec{D}) = L(\vec{X}, \bold{g}(\bold{f}(\vec{X}\bold{U}+\vec{b_e})\bold{V}+\vec{b_d}))$$
+$$L(\vec{x}, \vec{d}) = L(\vec{x}, \bold{g}(\vec{E}\bold{V})) = L(\vec{x}, \bold{g}(\bold{f}(\vec{x}\bold{u}+\vec{b_e})\bold{v}+\vec{b_d}))$$
+Where $\vec{b_e} = \{b_{e1}, ..., b_{em}\} \in \mathbb{R}^m$ is bias for encoder layer and $\vec{b_d} = \{b_{d1}, ..., b_{dm}\} \in \mathbb{R}^n$ is bias for decoder layer.
 
 AE seems not useful because it only tries to copy input. However, AE is usually used with other neural network and other neural network uses data from encoder layer of AE not from decoder layer. Making similar values of input and decoder output guarantees that result from encode layer contains all information of input. It means that AE can represent same information of input data in different dimension. When dimension of encoder is higher than dimension of input, it is called overcomplete Auto-encoder. When dimension of encoder is lower than dimension of input, it is called undercomplete Auto-encoder.
 
 On this paper and experiment, undercomplete AE is used for reducing input dimension. Undercomplete AE is often compared with PCA because both methods reduce dimension. The paper \cite{hinton2006reducing} compares undercomplete AE and PCA. The result on the paper is that undercomplete AE could keep more information than PCA. It means that reducing data to low dimension by undercomplete AE gives better performance. However, training AE takes long time than computing information gain for PCA.
 
-
 % When auto-encoder is traind, it has two layers: encode and decode. The encode layer receives input and passes output in lower dimension data to decode layer. The decode layer recovers dimension to input data dimention from output of encode layer. The error of auto-encoder is measured by difference between input data and output from decode layer. In other words, encoder layer compresses input data and decoder layer decompresses data from encoder layer that should be similar as original input data. That methods guarantees that the data from encoder layer keeps almost all properties of input data in lower dimension. That is the reason why output data from decode layer is similar as original input data. In math, relationship between encoder and decoder layer is similar as inverse matrix of each other.
 
-\item Multilayer Auto-encoder\\
 
-\end{enumerate}
+\subsubsection{Multilayer Auto-encoder}\label{subsubsec:MAE}
+{\color{blue} need to add tutorial}
 
 \section{Deep Learning Library}\label{sec:DLL}
 \subsection{DL4J}
 DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed deep-learning library for Java and Scala. It also integrates with Hadoop and Spark. 
 
-\subsubsection{Theano}
+\subsection{Theano}
 Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a Python library for machine learning research. It integrates with Numpy and uses GPU power. The library is written in C code and optimizes user functions.
 
-\subsubsection{Tensorflow}
+\subsection{Tensorflow}
 Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operator as node. Another strong point is that Tesorflow allows developer to deploy computation to one or more CPUs or GPUs. 
 
 
