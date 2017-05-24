@@ -429,8 +429,29 @@ Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source softwa
 \chapter{Data Set}
 % ####################################################################################################################################
 
+The Center for Injury Research Prevention at \textit{Children’s Hospital of Philadelphia} (CHOP) has a high-fidelity simulator \cite{lee2017learning}. The driving simulator gives similar environment as real driving to users. It has 160 degree of front view, rear-view, left side, and right side mirror images. It also consist of active pedals, steering system, and audio environment.
 
-The drive simulation data is from \textit{Children's Hospital of Philadelphia} (CHOP). The simulator for the data can record 100 features with 60 samples per second from driver. The simulator has four different tracks. On the paper, the data has 16 set: 8 from expert and 8 from inexpert. Each expert and inexpert data set consist of two set of four different tracks.
+The experiments on the paper uses 16 data set from 4 drivers: 2 people are expert drivers and 2 people are inexpert drivers. Each person drives four different tracks and each tracks has traffic situations and interactions with other vehicles. Each drive has multiple times of three serious crash scenarios {\color{red}questions about three scenarios}
+
+The simulator records 100 features which include car status: velocity, steer, Brake, throttle and etc. and include environment status:  speed limit, intersection turn left, and etc. The simulator also records many other data. These data is collected at 60Hz.
+
+On this paper, two different data set are used. First data set is filtered to 23 features from 100 features. The 23 features can be though more important than other features. Reducing size of features helps save time to train neural network. Another data set is original data with 100 features. The data is fed to AE then reduced to 25 features from 100 features.
+
+
+
+
+%\begin{table}[t!]
+%\centering
+%\caption{Data Information}
+%\label{data_pair}
+%\begin{tabular}{|l|llllllllllllllll|}
+%\hline
+%       & Data0   & Data1   & Data2   & Data3   & Data4   & Data5   & Data6   & Data7   & Data8     & Data9     & Data10    & Data11    & Data12    & Data13    & Data14    & Data15    \\ \hline
+%Driver & Expert0 & Expert0 & Expert0 & Expert0 & Expert1 & Expert1 & Expert1 & Expert1 & Inexpert0 & Inexpert0 & Inexpert0 & Inexpert0 & Inexpert1 & Inexpert1 & Inexpert1 & Inexpert1 \\
+%Track  & Track0  & Track1  & Track2  & Track3  & Track0  & Track1  & Track2  & Track3  & Track0    & Track1    & Track2    & Track3    & Track0    & Track1    & Track2    & Track3    \\ \hline
+%\end{tabular}
+%\end{table}
+
 
 % ####################################################################################################################################
 \chapter{Technical Approach}
