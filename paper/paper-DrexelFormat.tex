@@ -219,10 +219,11 @@ $$\vec{o} = \bold{g}(\bold{h}(\vec{x}\bold{v}+\vec{c})\bold{w}+\vec{b})$$
 
 
 \subsubsection{Back-propagation}\label{subsubsec:BP}
-Training neural network means finding weights and biases. Similar as forward-propagation, back-propagation is used when MNN is trained. As forward-propagation passes input $\vec{x}$ to output, back-propagation passes error from output layer to hidden layer \cite{murphy2012machine}. Error function or loss function usually uses sum square error as follow:
-$$E=L(\vec{y}, \vec{o}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2$$
-Where $\vec{y}$ is expected output from MNN. It means that the goal of MNN is to find weights and biases that make $\vec{o}$ have same values of $\vec{y}$. Therefore, error function is the function on weights and biases. For example, error function of two layers MNN can be written as follow:
-$$E=J(\bold{V}, \bold{W})$$
+Training neural network means finding weights and biases. Similar as forward-propagation, back-propagation is used when MNN is trained. As forward-propagation passes input $\vec{x}$ to output, back-propagation passes error from output layer to hidden layer \cite{murphy2012machine}. Error function $E$ (some times called a loss function) usually uses sum square error as follow:
+$$E(\vec{y}, \vec{o}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2$$
+Where $\vec{y}$ is expected output from MNN. It means that the goal of MNN is to find weights and biases that make $\vec{o}$ have same values of $\vec{y}$. Error function is a function of weights and biases. In general, the function of two layers of an MNN can be seen as a function of $\bold{V}$ and $\bold{W}$: {\color{red} [santi: I don't like that we don't have x and y in the function below, since you actually need those to calculate the error, so make sure we have everything we need]}
+
+$$E(\bold{V}, \bold{W})$$
 
 To update weights, let $\vec{h'}=\vec{X}\bold{V}$ be input for hidden layer activation function $\bold{f}$ and $\vec{o'}=\vec{H}\bold{W}$ be input for output layer activation function $\bold{g}$. So $\vec{h}=\bold{f}(\vec{h'})=\bold{f}(\vec{X}\bold{V})$ and $\vec{o}=\bold{g}(\vec{o'})=\bold{g}(\vec{H}\bold{W})$. Let $V_{ij}$ be $i$th neuron weight in hidden layer for input $X_j$ and $W_{ij}$ be $i$th neuron weight in output layer for input $H_j$.
 
@@ -522,7 +523,7 @@ $$L(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\
 $$L(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{E_3})\bold{D_3})\bold{D_2})\bold{D_1}))$$
 
 
-\section{Deep Learning Library}\label{sec:DLL}
+\section{Deep Learning Libraries}\label{sec:DLL}
 {\color{blue} need to add tutorial}
 
 \subsection{DL4J}
@@ -541,13 +542,38 @@ Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source softwa
 \chapter{Data Set}
 % ####################################################################################################################################
 
-The Center for Injury Research Prevention at \textit{Childrenâ€™s Hospital of Philadelphia} (CHOP) has a high-fidelity simulator \cite{lee2017learning}. The driving simulator gives similar environment as real driving to users. It has 160 degree of front view, rear-view, left side, and right side mirror images. It also consist of active pedals, steering system, and audio environment.
+Data was collected in the high-fidelity simulator \cite{lee2017learning} of the Center for Injury Research Prevention Studies at the \textit{Children'€™s Hospital of Philadelphia} (CHOP). The driving simulator provides an environment similar to real driving to test users. It has a 160 degree front view, rear-view, left side, and right side mirror images. It also features a full car chasis with active pedals, steering wheel, and a full dashboard with even audio equipment.
 
-The experiments on the paper uses 16 data set from 4 drivers: 2 people are expert drivers and 2 people are inexpert drivers. Each person drives four different tracks and each tracks has traffic situations and interactions with other vehicles. Each drive has multiple times of three serious crash scenarios {\color{red}questions about three scenarios}
+The experiments on this paper use 16 traces from 4 drivers: 2 people are expert drivers and 2 people are inexpert drivers. Each person drove four different tracks and each track represent different traffic situations and interactions with other vehicles. Each track has multiple instances of three scenarios that have been found to result in a high likelihood of crashing for 16-18 year- old teen drivers driving alone or with a peer passenger according to the NMVCCS (National Motor Vehicle Crash Causation Survey): 1) turning into opposite directions (turning left), 2) right roadside departure, and 3) rear-end events \cite{mcdonald2012using}. Thus, this results on a dataset that contains 8 traces of expert drivers, and 8 traces of inexpert drivers.
 
-The simulator records 100 features which include car status: velocity, steer, Brake, throttle and etc. and include environment status:  speed limit, intersection turn left, and etc. The simulator also records many other data. These data is collected at 60Hz.
+The simulator records 100 features which include car status: velocity, steer, Brake, throttle and etc. and include environment status features such as the current speed limit, whether the driver is instructed to make the next left or right turn, etc. These data is collected at 60Hz. The traces vary in length from {\color{red} MINIMUM} to {\color{red} MAXIMUM}, with an average of {\color{red} AVERAGE} instances. The specific lengths of each trace are shown on Table \ref{tbl:traces}
 
-On this paper, two different data set are used. First data set is filtered to 23 features from 100 features. The 23 features can be though more important than other features. Reducing size of features helps save time to train neural network. Another data set is original data with 100 features. The data is fed to AE then reduced to 25 features from 100 features.
+In this paper, we used two versions of the collected data set. A first version ({\em raw dataset}) contains 98 of the 100 features collected by the driving simulator (the two features that are removed are time stamps). A second version ({\em filtered dataset}) contains only 23 features. These 23 features were manually selected as are those that are most important for the classification task at hand. Reducing size of features helps save time to train neural network.
+
+\begin{table}[!t]
+\caption{Length of each of the traces used in our experiments.}
+\label{tbl:traces}
+\centering
+\begin{tabular}{|l|c|c|} \hline
+{\em Trace} 	& {\em Length} & 	{\em Label} \\ \hline
+Trace 1 		&	?		&	Expert \\
+Trace 2 		&	?		&	Expert \\
+Trace 3 		&	?		&	Expert \\
+Trace 4 		&	?		&	Expert \\
+Trace 5 		&	?		&	Expert \\
+Trace 6 		&	?		&	Expert \\
+Trace 7 		&	?		&	Expert \\
+Trace 8 		&	?		&	Expert \\
+Trace 9 		&	?		&	Inexpert \\
+Trace 10 		&	?		&	Inexpert \\
+Trace 11 		&	?		&	Inexpert \\
+Trace 12 		&	?		&	Inexpert \\
+Trace 13 		&	?		&	Inexpert \\
+Trace 14 		&	?		&	Inexpert \\
+Trace 15 		&	?		&	Inexpert \\
+Trace 16 		&	?		&	Inexpert \\ \hline
+\end{tabular}
+\end{table}
 
 
 
