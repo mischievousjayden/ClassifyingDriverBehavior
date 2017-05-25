@@ -203,12 +203,12 @@ $$\vec{o} = \bm{\phi}(\vec{X}\bold{W})$$
 \subsubsection{Multilayer Neural Network}\label{subsubsec:MNN}
 Single layer neural network has input layer and output layer but multilayer neural network has several hidden layers between input layer and output layer. This part introduces to multilayer neural network by explaining neural network with one hidden layer. Let $\vec{x} \in \mathbb{R}^n$ be input, $\vec{h} \in \mathbb{R}^m$ be output from hidden layer, $\vec{c} \in \mathbb{R}^m$ be bias for hidden layer, $\vec{o} \in \mathbb{R}^l$ be output from output layer, $\vec{b} \in \mathbb{R}^l$ be bias for output layer, $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be transform matrix for hidden layer and $\bold{w}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be transform matrix for output layer. The activation function $\bold{h}$ is for hidden layer and the activation function $\bm{\phi}$ is for output layer. Figure \ref{fig:MNN} shows two layer neural network.
 
-The output from hidden layer can be computed
-$$\vec{h} = \bold{h}(\vec{x}\bold{u}+\vec{c}) = \bold{h}(\vec{X}\bold{U})$$
-The output of the neural network can be computed
-$$\vec{o} = \bm{\phi}(\vec{h}\bold{w}+\vec{b}) = \bm{\phi}(\vec{H}\bold{W})$$
+To compute output of MNN, forward-propagation is used. forward-propagation is to pass input $\vec{x}$ to output through hidden layers \cite{murphy2012machine}. For example, the output from hidden layer on Figure \ref{fig:MNN} can be computed
+$$\vec{h} = \bold{f}(\vec{x}\bold{v}+\vec{c}) = \bold{f}(\vec{X}\bold{V})$$
+Then output layer uses output from hidden layer as input. The output of the neural network can be computed
+$$\vec{o} = \bold{g}(\vec{h}\bold{w}+\vec{b}) = \bold{g}(\vec{H}\bold{W})$$
 Therefore, final equation for two layer neural network is
-$$\vec{o} = \bm{\phi}(\bold{h}(\vec{x}\bold{u}+\vec{c})\bold{w}+\vec{b})$$
+$$\vec{o} = \bold{g}(\bold{h}(\vec{x}\bold{v}+\vec{c})\bold{w}+\vec{b})$$
 
 \begin{figure}[t!]
     \centering
@@ -218,11 +218,123 @@ $$\vec{o} = \bm{\phi}(\bold{h}(\vec{x}\bold{u}+\vec{c})\bold{w}+\vec{b})$$
 \end{figure}
 
 
-\subsubsection{Backpropagation}\label{subsubsec:BP}
-{\color{blue} add backpropagation}
+\subsubsection{Back-propagation}\label{subsubsec:BP}
+Training neural network means finding weights and biases. Similar as forward-propagation, back-propagation is used when MNN is trained. As forward-propagation passes input $\vec{x}$ to output, back-propagation passes error from output layer to hidden layer \cite{murphy2012machine}. Error function or loss function usually uses sum square error as follow:
+$$E=L(\vec{y}, \vec{o}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2$$
+Where $\vec{y}$ is expected output from MNN. It means that the goal of MNN is to find weights and biases that make $\vec{o}$ have same values of $\vec{y}$. Therefore, error function is the function on weights and biases. For example, error function of two layers MNN can be written as follow:
+$$E=J(\bold{V}, \bold{W})$$
 
-%Training neural network means finding weights and biases. Process of finding weights and biases is 'training neural network'. This part shows how to train neural network by backpropagation.
-%Let $\vec{x} \in \mathbb{R}^n$ be input, $\vec{y} \in \mathbb{R}^m$ be label, $\vec{b} \in \mathbb{R}^m$ be bias, and  $\bold{w}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be transform matrix.
+To update weights, let $\vec{h'}=\vec{X}\bold{V}$ be input for hidden layer activation function $\bold{f}$ and $\vec{o'}=\vec{H}\bold{W}$ be input for output layer activation function $\bold{g}$. So $\vec{h}=\bold{f}(\vec{h'})=\bold{f}(\vec{X}\bold{V})$ and $\vec{o}=\bold{g}(\vec{o'})=\bold{g}(\vec{H}\bold{W})$. Let $V_{ij}$ be $i$th neuron weight in hidden layer for input $X_j$ and $W_{ij}$ be $i$th neuron weight in output layer for input $H_j$.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pictures/figures/BP1.png}
+    \caption{Back-propagation for $W_{ij}$}
+    \label{fig:BP1}
+\end{figure}
+
+Let's first update $W_{ij}$ and Figure \ref{fig:BP1} shows detail of output layer related with ${W_{ij}}$. The updated weight ${{W_{ij}}^{next}}$ can be calculated as follow:
+$${{W_{ij}}^{next}}=W_{ij} - \eta\frac{\partial E}{\partial W_{ij}}$$ where $\eta$ is learning rate. The equation tells to remove error, updated weight should be move opposite direction of gradient of error function. The method is called 'gradient descent'.
+
+Let's compute $\frac{\partial E}{\partial W_{ij}}$
+$$
+\frac{\partial E}{\partial W_{ij}}
+= \frac{\partial E}{\partial o_i}\frac{\partial o_i}{\partial W_{ij}}
+= \frac{\partial E}{\partial o_i}\frac{\partial o_i}{\partial o'_i}\frac{\partial o'_i}{\partial W_{ij}}
+$$
+So the equation has three parts.
+
+First part is
+$$
+\frac{\partial o'_i}{\partial W_{ij}}
+= \frac{\partial}{\partial W_{ij}}\sum_k(H_kW_{ik})
+= \frac{\partial}{\partial W_{ij}}(H_jW_{ij})
+= H_j
+$$
+
+Assume all activation function is sigmoid function $sigm()$ then second part is
+$$
+\frac{\partial o_i}{\partial o'_i}
+= \frac{\partial}{\partial o'_i}sigm(o'_i)
+= sigm(o'_i)\{1-sigm(o'_i)\}
+= o_i(1-o_i)
+$$
+
+Assume error function is sum square then the last part is
+$$
+\frac{\partial E}{\partial o_i}
+= \frac{\partial}{\partial o_i}\frac{1}{2}\sum_k(y_k-o_k)^2
+= \frac{\partial}{\partial o_i}\frac{1}{2}(y_i-o_i)^2
+= (o_i-y_i)
+$$
+
+Therefore,
+$$
+{{W_{ij}}^{next}}
+= W_{ij} - \eta\frac{\partial E}{\partial W_{ij}}
+= W_{ij} - \eta\frac{\partial E}{\partial o_i}\frac{\partial o_i}{\partial o'_i}\frac{\partial o'_i}{\partial W_{ij}}
+= W_{ij} - \eta(o_i-y_i)o_i(1-o_i)H_j
+$$
+
+Before moving to update weights for hidden layer, define $\delta_i$ as follow:
+$$
+\delta_i
+= \frac{\partial E}{\partial o'_i}
+= \frac{\partial E}{\partial o_i}\frac{\partial o_i}{\partial o'_i}
+$$
+
+The $\delta_i$ is useful because it is shared when back-propagation updates all weights related with $i$th neuron. Also the $\delta_i$ is used when back-propagation updates weights on hidden layers.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=\textwidth]{pictures/figures/BP2.png}
+    \caption{Back-propagation for $V_{ij}$}
+    \label{fig:BP2}
+\end{figure}
+
+The next step is to update weights in hidden layer. Let's update $V_{ij}$ and Figure \ref{fig:BP2} shows detail of neural network related with $V_{ij}$. The updated weight ${{V_{ij}}^{next}}$ can be calculated as follow:
+$${{V_{ij}}^{next}}=V_{ij} - \eta\frac{\partial E}{\partial V_{ij}}$$ where $\eta$ is learning rate. The equation is similar as ${{W_{ij}}^{next}}$
+
+Let's compute $\frac{\partial E}{\partial V_{ij}}$
+$$
+\frac{\partial E}{\partial V_{ij}}
+= \frac{\partial E}{\partial h'_i}\frac{\partial h'_i}{\partial V_{ij}}
+= \frac{\partial E}{\partial h_i}\frac{\partial h_i}{\partial h'_i}\frac{\partial h'_i}{\partial V_{ij}}
+$$
+So the equation also has three parts.
+
+First part is
+$$
+\frac{\partial h'_i}{\partial V_{ij}}
+= \frac{\partial}{\partial V_{ij}}\sum_k(X_kV_{ik})
+= \frac{\partial}{\partial V_{ij}}(X_jV_{ij})
+= X_j
+$$
+
+Assume the activation function for hidden layer is also sigmoid function $sigm()$ then second part is
+$$
+\frac{\partial h_i}{\partial h'_i}
+= \frac{\partial}{\partial h'_i}sigm(h_i)
+= sigm(h'_i)\{1-sigm(h'_i)\}
+= h_i(1-h_i)
+$$
+
+Then the last part is
+$$
+\frac{\partial E}{\partial h_i}
+= \sum_k(\frac{\partial E}{\partial o'_k}\frac{\partial o'_k}{\partial h_i})
+= \sum_k(\delta_kw_{ki})
+$$
+
+Therefore,
+$$
+{{V_{ij}}^{next}}
+= V_{ij} - \eta\frac{\partial E}{\partial V_{ij}}
+= W_{ij} - \eta\frac{\partial E}{\partial h_i}\frac{\partial h_i}{\partial h'_i}\frac{\partial h'_i}{\partial V_{ij}}
+= W_{ij} - \eta\sum_k(\delta_kw_{ki})h_i(1-h_i)X_j
+$$
+
+Notice that as forward-propagation sends output of a layer as input of next layer, back-propagation sends error of a layer to previous layer. For example, the $\delta_i=\frac{\partial E}{\partial o'_i}$ is error on output layer then sends it to hidden layer. 
 
 
 
