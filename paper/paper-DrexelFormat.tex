@@ -133,9 +133,9 @@ $$U(z)=
 	\end{cases}
 $$
 
-The function deciding output $o$ is called activation function. In this case, the step function $U(z)$ is activation function.
+The function deciding output $o$ is called an activation function. In this case, the step function $U(z)$ is activation function.
 
-Figure \ref{fig:basic_AN} also can be described by following equation:
+Figure \ref{fig:basic_AN} also can be described by the following equation:
 $$ o = U(\vec{x}\cdot\vec{w}-\theta)$$
 
 \begin{figure}[t!]
@@ -158,7 +158,7 @@ $$o = \phi(\vec{x}\cdot\vec{w}+b)$$
     \label{fig:detail_NN}
 \end{figure}
 
-Using single neuron has limitation because it can solve only few problems. For example, single neuron cannot solve xor problem. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for $i$th neuron are $\vec{w_i} = \{w_{i1}, ..., w_{in}\} \in \mathbb{R}^n$, and a bias term for the $i$th neuron is $b_i$. The output $\vec{o} = \{o_1, ..., o_m\} \in \mathbb{R}^m$ of the network is calculated as follows:
+Using single neuron has a limitation since it can solve only specific problems. For example, single neuron cannot solve xor problem. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for $i$th neuron are $\vec{w_i} = \{w_{i1}, ..., w_{in}\} \in \mathbb{R}^n$, and a bias term for the $i$th neuron is $b_i$. The output $\vec{o} = \{o_1, ..., o_m\} \in \mathbb{R}^m$ of the network is calculated as follows:
 $$\vec{o} = \bm{\phi}(\{(\vec{x}\cdot\vec{w_1}+b_1),(\vec{x}\cdot\vec{w_2}+b_2),...,(\vec{x}\cdot\vec{w_m}+b_m)\})$$
 Where activation function is applied on each element of its input.
 
@@ -185,7 +185,7 @@ $\bold{W}=
     \label{fig:withoutBiasNN}
 \end{figure}
 
-Figure \ref{fig:withoutBiasNN} shows same neural network as Figure \ref{fig:detail_NN} with $\vec{X}$ and $\bold{W}$. Notice that the figure does not have add node anymore.
+Figure \ref{fig:withoutBiasNN} shows same neural network as Figure \ref{fig:detail_NN} with $\vec{X}$ and $\bold{W}$. Notice that the figure does not have an added node anymore.
 
 	From this point on the paper, vector in large case is with bias term and vector in small case is without bias term. For example, $\vec{X}$ is with bias and $\vec{x}$ is without bias. Also all vectors is row vector. Transform matrix is bold character and if it includes bias, transform matrix uses large case, otherwise small case. For example, $\bold{W}$ is transform matrix with bias and $\bold{w}$ is transform matrix without bias. By applying this, the equation for neural network is
 $$\vec{o} = \bm{\phi}(\vec{X}\bold{W})$$
@@ -201,13 +201,13 @@ $$\vec{o} = \bm{\phi}(\vec{X}\bold{W})$$
 
 
 \subsubsection{Multilayer Perceptron}\label{subsubsec:MLP}
-Single layer perceptron neural network has only input layer and output layer such as Figure \ref{fig:NN} but multilayer perceptron (MLP) has several hidden layers between input layer and output layer. This part introduces to MLP by explaining neural network with one hidden layer. Let $\vec{x} \in \mathbb{R}^n$ be input, $\vec{h} \in \mathbb{R}^m$ be output from hidden layer, $\vec{c} \in \mathbb{R}^m$ be bias for hidden layer, $\vec{o} \in \mathbb{R}^l$ be output from output layer, $\vec{b} \in \mathbb{R}^l$ be bias for output layer, $\bold{v}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be transform matrix for hidden layer and $\bold{w}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be transform matrix for output layer. The activation function $\bold{f}()$ is for hidden layer and the activation function $\bold{g}()$ is for output layer. Figure \ref{fig:MLP} shows one hidden layer MLP.
+Single layer perceptron neural network has only an input layer and an output layer such as Figure \ref{fig:NN} but multilayer perceptron (MLP) has several hidden layers between an input layer and an output layer. This part introduces to MLP by explaining neural network with one hidden layer. Let $\vec{x} \in \mathbb{R}^n$ be inputs, $\vec{h} \in \mathbb{R}^m$ be outputs from hidden layers, $\vec{c} \in \mathbb{R}^m$ be bias for hidden layers, $\vec{o} \in \mathbb{R}^l$ be outputs from an output layer, $\vec{b} \in \mathbb{R}^l$ be a bias for an output layer, $\bold{v}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for hidden layers and $\bold{w}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for an output layer. The activation function $\bold{f}()$ is for hidden layers and the activation function $\bold{g}()$ is for an output layer. Figure \ref{fig:MLP} shows one hidden layer MLP.
 
-To compute output of MLP, forward-propagation is used. forward-propagation is to pass input $\vec{x}$ to output through hidden layers \cite{murphy2012machine}. For example, the output from hidden layer on Figure \ref{fig:MLP} can be computed
+To compute output of MLP, forward-propagation is used. Forward-propagation is to pass inputs $\vec{x}$ to outputs through hidden layers \cite{murphy2012machine}. For example, the output from hidden layers on Figure \ref{fig:MLP} can be computed
 $$\vec{h} = \bold{f}(\vec{x}\bold{v}+\vec{c}) = \bold{f}(\vec{X}\bold{V})$$
-Then output layer uses output from hidden layer as input. The output of the neural network can be computed
+Then the output layer uses outputs from hidden layer as inputs. The outputs of the neural network can be computed
 $$\vec{o} = \bold{g}(\vec{h}\bold{w}+\vec{b}) = \bold{g}(\vec{H}\bold{W})$$
-Therefore, final equation for two layer neural network is
+Therefore, a final equation for two layer neural network is
 $$\vec{o} = \bold{g}(\bold{h}(\vec{x}\bold{v}+\vec{c})\bold{w}+\vec{b}) = \bold{g}(\bold{h}(\vec{X}\bold{V})\bold{W})$$
 
 \begin{figure}[t!]
@@ -219,17 +219,17 @@ $$\vec{o} = \bold{g}(\bold{h}(\vec{x}\bold{v}+\vec{c})\bold{w}+\vec{b}) = \bold{
 
 
 \subsubsection{Back-propagation}\label{subsubsec:BP}
-Training neural network means finding weights and biases. Similar as forward-propagation, back-propagation is used when MLP is trained. As forward-propagation passes input $\vec{x}$ to output, back-propagation passes error from output layer to hidden layers \cite{murphy2012machine}. Error function $E()$ (some times called a loss function) usually uses sum square error as follow:
+Training neural network means finding weights and biases. Similar as forward-propagation, back-propagation is used when MLP is trained. As forward-propagation passes inputs $\vec{x}$ to outputs, back-propagation passes an error from the output layer to hidden layers \cite{murphy2012machine}. An error function $E()$ (some times called a loss function) usually uses a sum square error as follow:
 $$E(\vec{y}, \vec{o}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2$$
-where $\vec{y}$ is expected output from MLP.
+where $\vec{y}$ is an expected output from MLP.
 
-Training neural network means finding weights and biases that make $\vec{o}$ close to $\vec{y}$. It means that training neural network needs a function of weights and biases. The train function $J()$ to train a neural network can be defined from error function $E()$. The error function $E()$ is a function of expected output and output from neural network with fixed weights and biases. Let weights and biases be changeable and input be fixed on the error function, then the output is depends on weights and biases and the train function $J()$ for one hidden MLP (Figure \ref{fig:MLP}) can define below:
+Training neural network means finding weights and biases that make $\vec{o}$ close to $\vec{y}$. It means that training neural network needs a function of weights and biases. The train function $J()$ to train a neural network can be defined from error function $E()$. The error function $E()$ is a function of expected output and output from neural network with fixed weights and biases. Let weights and biases be changeable and the input be fixed on the error function, then the output is depends on weights and biases and the trained function $J()$ for one hidden MLP (Figure \ref{fig:MLP}) can be define below:
 $$J(\bold{V}, \bold{W}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2 = \frac{1}{2}\sum_{i}(y_i-g(\vec{H}\bold{W_i})^2 =\frac{1}{2}\sum_{i}(y_i-g(\bold{h}(\vec{X}\bold{V})\bold{W_i}))^2$$
 where $\bold{W_i}$ is $i$th column of $\bold{W}$
 
 The training function $J()$ for one hidden layer MLP is a function of $\bold{V}$ and $\bold{W}$ with fixed input. Again capital letter of transform matrix contains bias. So $\bold{V}$ is weights and biases for hidden layer and $\bold{W}$ is weights and biases for output layer.
 
-To train the neural network, weights and biases are regulated. To update weighs and biases, let $\vec{h'}=\vec{X}\bold{V}$ be input for hidden layer activation function $\bold{f}$ and $\vec{o'}=\vec{H}\bold{W}$ be input for output layer activation function $\bold{g}$. So $\vec{h}=\bold{f}(\vec{h'})=\bold{f}(\vec{X}\bold{V})$ and $\vec{o}=\bold{g}(\vec{o'})=\bold{g}(\vec{H}\bold{W})$. Let $V_{ij}$ be $i$th neuron weight in hidden layer for input $X_j$ and $W_{ij}$ be $i$th neuron weight in output layer for input $H_j$.
+To train the neural network, weights and biases are regulated. To update weights and biases, let $\vec{h'}=\vec{X}\bold{V}$ be inputs for a hidden layer activation function $\bold{f}$ and $\vec{o'}=\vec{H}\bold{W}$ be inputs for an output layer activation function $\bold{g}$. So $\vec{h}=\bold{f}(\vec{h'})=\bold{f}(\vec{X}\bold{V})$ and $\vec{o}=\bold{g}(\vec{o'})=\bold{g}(\vec{H}\bold{W})$. Let $V_{ij}$ be $i$th neuron weights in hidden layers for inputs  $X_j$ and $W_{ij}$ be $i$th neuron weight in an output layer for inputs $H_j$.
 
 \begin{figure}[t!]
     \centering
@@ -238,8 +238,8 @@ To train the neural network, weights and biases are regulated. To update weighs 
     \label{fig:BP1}
 \end{figure}
 
-Let's first update $W_{ij}$ and Figure \ref{fig:BP1} shows detail of output layer related with ${W_{ij}}$. The updated weight ${{W_{ij}}^{next}}$ can be calculated as follow:
-$${{W_{ij}}^{next}}=W_{ij} - \eta\frac{\partial J}{\partial W_{ij}}$$ where $\eta$ is learning rate. The equation tells to remove error, updated weight should be move opposite direction of gradient of error function. The method is called 'gradient descent'.
+Let's first update $W_{ij}$ and Figure \ref{fig:BP1} shows the detail of an output layer related with ${W_{ij}}$. The updated weight ${{W_{ij}}^{next}}$ can be calculated as follow:
+$${{W_{ij}}^{next}}=W_{ij} - \eta\frac{\partial J}{\partial W_{ij}}$$ where $\eta$ is a learning rate. The equation tells to remove error, updated weight should be move opposite direction of gradient of error function. The method is called 'gradient descent'.
 
 Let's compute $\frac{\partial J}{\partial W_{ij}}$
 $$
@@ -257,7 +257,7 @@ $$
 = H_j
 $$
 
-Assume the activation function for output layer is sigmoid function $sigm()$ then second part is
+Assume the activation function for an output layer is a sigmoid function $sigm()$ then the second part is
 $$
 \frac{\partial o_i}{\partial o'_i}
 = \frac{\partial}{\partial o'_i}sigm(o'_i)
@@ -297,8 +297,8 @@ The $\delta_i$ is useful because it is shared when back-propagation updates all 
     \label{fig:BP2}
 \end{figure}
 
-The next step is to update weights in hidden layer. Let's update $V_{ij}$ and Figure \ref{fig:BP2} shows detail of neural network related with $V_{ij}$. The updated weight ${{V_{ij}}^{next}}$ can be calculated as follow:
-$${{V_{ij}}^{next}}=V_{ij} - \eta\frac{\partial J}{\partial V_{ij}}$$ where $\eta$ is learning rate. The equation is similar as ${{W_{ij}}^{next}}$
+The next step is to update weights in hidden layers. Let's update $V_{ij}$ and Figure \ref{fig:BP2} shows the detail of neural network related with $V_{ij}$. The updated weight ${{V_{ij}}^{next}}$ can be calculated as follow:
+$${{V_{ij}}^{next}}=V_{ij} - \eta\frac{\partial J}{\partial V_{ij}}$$ where $\eta$ is a learning rate. The equation is similar as ${{W_{ij}}^{next}}$
 
 Let's compute $\frac{\partial J}{\partial V_{ij}}$
 $$
@@ -316,7 +316,7 @@ $$
 = X_j
 $$
 
-Assume the activation function for hidden layer is also sigmoid function $sigm()$ then second part is
+Assume the activation function for hidden layers is also a sigmoid function $sigm()$ then the second part is
 $$
 \frac{\partial h_i}{\partial h'_i}
 = \frac{\partial}{\partial h'_i}sigm(h_i)
@@ -339,7 +339,7 @@ $$
 = W_{ij} - \eta\sum_k(\delta_kw_{ki})h_i(1-h_i)X_j
 $$
 
-Notice that as forward-propagation sends output of a layer as input of next layer, back-propagation sends error of a layer to previous layer. For example, the $\delta_i=\frac{\partial J}{\partial o'_i}$ is error on output layer then sends it to hidden layer. 
+Notice that as forward-propagation sends outputs of a layer as inputs of the next layer, back-propagation sends error of a layer to the previous layer. For example, the $\delta_i=\frac{\partial J}{\partial o'_i}$ is error on the output layer then sends it to hidden layers. 
 
 
 
