@@ -643,9 +643,128 @@ Figure \ref{fig:exp_NN3} shows third neural network model ({\em third model}) on
 \end{figure}
 
 
-\section{Sampling and Standardization}
-The simulator records 60 samples per second. It is too often recorded. The dataset is re-sampled by three different periods: 1 over 10, 1 over 20, and 1 over 50. When it is re-sampled, three methods are used. First method chooses last sample of period, second method computes mean of data in period, and third method applies Gaussian filter. For third method, window size is 11, 21, and 51 for each period.
+\section{Sampling}
+The simulator records 60 samples per second. It is too often recorded. The dataset is re-sampled by three different periods: 1 over 10, 1 over 20, and 1 over 50. When it is re-sampled, three methods are used. First method {\em last} chooses last sample of period, second method {\em mean} computes mean of data in period, and third method {\em gaussian} applies Gaussian filter. For third method, window size is 11, 21, and 51 for each periods which are one more greater than periods. Below example explains how to re-sample data.
 
+\begin{table}[!t]
+\centering
+\caption{Example Data}
+\label{tbl:example_data}
+\begin{tabular}{|l|}
+\hline
+Example Data \\ \hline
+1            \\
+2            \\
+3            \\
+4            \\
+5            \\
+6            \\
+7            \\
+8            \\
+9            \\
+10           \\
+11           \\
+12           \\
+13           \\
+14           \\
+15           \\
+16           \\
+17           \\
+18           \\
+19           \\
+20           \\
+21           \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!t]
+\centering
+\caption{Result of Re-Sampled Data}
+\label{tbl:result_resample}
+\begin{tabular}{|l|l|l|}
+\hline
+{\em last} & {\em mean} & {\em gaussian}    \\ \hline
+10   & 5.5  & 5.999996063 \\
+20   & 15.5 & 15.9999895  \\ \hline
+\end{tabular}
+\end{table}
+
+Table \ref{tbl:example_data} shows example data and Table \ref{tbl:result_resample} shows result of re-sampled data by 1 over 10 from each methods. To explain three re-sample methods, let {\em first period} be $(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)$ and {\em second period} be $(11, 12, 13, 14, 15, 16, 17, 18, 19, 20)$. The {\em last} method takes last sample from each periods. The result from {\em last} method is $(10, 20)$ because last sample from {\em first period} is $10$ and last sample from {\em second period} is $20$. The {\em mean} method computes mean of samples in a period. The result from {\em mean} is $(5.5, 15.5)$ because mean of {\em first period} is $5.5$ and mean of {\em second period} is $15.5$.
+
+Before explaining {\em gaussian} method, Gaussian filter should be defined. The filter size is one more greater than sampling size. In this case, Gaussian filter size is 11 because sampling size is 10. Below equation is Gaussian equation and used to make Gaussian filter.
+$$g(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{x^2}{2\sigma^2}}$$
+where $\sigma = \frac{filter\_size-1}{6.0}$ because the sum of filter closes to 1 with the $\sigma$. With filter size 11, $\sigma$ is $1.667$.
+
+\begin{table}[!t]
+\centering
+\caption{Gaussian Filter (size=11, $\sigma$=1.667)}
+\label{tbl:gaussian_filter}
+\begin{tabular}{|l|l|}
+\hline
+x  & Gaussian Value \\ \hline
+5  & 0.00266126292  \\
+4  & 0.01344760189  \\
+3  & 0.04740846466  \\
+2  & 0.1166060072   \\
+1  & 0.2000967085   \\
+0  & 0.2395592537   \\
+-1 & 0.2000967085   \\
+-2 & 0.1166060072   \\
+-3 & 0.04740846466  \\
+-4 & 0.01344760189  \\
+-5 & 0.00266126292  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!t]
+\centering
+\caption{First Period applied by Gaussian Filter}
+\label{tbl:first_period}
+\begin{tabular}{|l|ll|}
+\hline
+First Period & \multicolumn{1}{l|}{Gaussian Value} & Filtered Value \\ \hline
+1            & \multicolumn{1}{l|}{0.00266126292}  & 0.00266126292  \\
+2            & \multicolumn{1}{l|}{0.01344760189}  & 0.02689520378  \\
+3            & \multicolumn{1}{l|}{0.04740846466}  & 0.142225394    \\
+4            & \multicolumn{1}{l|}{0.1166060072}   & 0.4664240287   \\
+5            & \multicolumn{1}{l|}{0.2000967085}   & 1.000483542    \\
+6            & \multicolumn{1}{l|}{0.2395592537}   & 1.437355522    \\
+7            & \multicolumn{1}{l|}{0.2000967085}   & 1.400676959    \\
+8            & \multicolumn{1}{l|}{0.1166060072}   & 0.9328480573   \\
+9            & \multicolumn{1}{l|}{0.04740846466}  & 0.4266761819   \\
+10           & \multicolumn{1}{l|}{0.01344760189}  & 0.1344760189   \\
+11           & \multicolumn{1}{l|}{0.00266126292}  & 0.02927389212  \\ \hline
+\multicolumn{2}{|l|}{Sum}                          & 5.999996063    \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[!t]
+\centering
+\caption{Second Period applied by Gaussian Filter}
+\label{tbl:second_period}
+\begin{tabular}{|l|l|l|}
+\hline
+First Period & Gaussian Value & Filtered Value \\ \hline
+11           & 0.00266126292  & 0.02927389212  \\
+12           & 0.01344760189  & 0.1613712227   \\
+13           & 0.04740846466  & 0.6163100406   \\
+14           & 0.1166060072   & 1.6324841      \\
+15           & 0.2000967085   & 3.001450627    \\
+16           & 0.2395592537   & 3.832948059    \\
+17           & 0.2000967085   & 3.401644044    \\
+18           & 0.1166060072   & 2.098908129    \\
+19           & 0.04740846466  & 0.9007608285   \\
+20           & 0.01344760189  & 0.2689520378   \\
+21           & 0.00266126292  & 0.05588652132  \\ \hline
+\multicolumn{2}{|l|}{Sum}     & 15.9999895     \\ \hline
+\end{tabular}
+\end{table}
+
+Table \ref{tbl:gaussian_filter} shows size 11 Gaussian filter with $\sigma=1.667$. Re-sampling example data by the Gaussian filter is just multiplication between filter and data. Table \ref{tbl:first_period} shows Gaussian filtered values for {\em first period}. The re-sampled value from {\em first period} is sum of Gaussian filtered values. That is 5.999996063. Table \ref{tbl:second_period} shows Gaussian filtered values for {\em second period}. The re-sampled value is 15.9999895.
+
+
+\section{Standardization}
+After feeding re-sampled data to three neural network models, the data is standardized: mean is 0, standard deviation is 1. CV is used for all experiments. Therefore, standardization is done in training set without testing set in CV. This is because testing set should be hidden until final neural network models are applied on that. Testing set refers mean and standard deviation from training set to standardize.
 
 
 % ####################################################################################################################################
