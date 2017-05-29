@@ -79,7 +79,7 @@
 % \iffinal{}{\newpage}
 
 \begin{abstract}
-The average person spends several hours a day behind the wheel of their vehicles, which are usually equipped with on-board computers capable of collecting real-time data concerning driving behavior. However, this data source has rarely been tapped for healthcare and behavioral research purposes. This MS thesis is done in the context of the {\em Diagnostic Driving} project, an NSF funded collaborative project between Drexel, Children Hospital of Philadelphia (CHOP) and the University of Central Florida that aims at studying the possibility of using driving behavior data to diagnose medical conditions. 
+The average person spends several hours a day behind the wheel of their vehicles, which are usually equipped with on-board computers capable of collecting real-time data concerning driving behavior. However, this data source has rarely been tapped for healthcare and behavioral research purposes. This MS thesis is done in the context of the {\em Diagnostic Driving} project, an NSF funded collaborative project between Drexel, Children Hospital of Philadelphia (CHOP) and the University of Central Florida that aims at studying the possibility of using driving behavior data to diagnose medical conditions.
 %
 Specifically, this paper introduces focuses on the classification of driving behavior data collected in a driving simulator using deep neural networks. The target classification task is to differentiate novice versus expert drivers. The paper presents a comparative study on using different variants of LSTM (Long-Short Term Memory networks) and Auto-encoder networks to deal with the fact that we have a small amount of labels (16 examples of people driving in the simulator, each labeled with an ``expert'' or ``inexpert'' label), but each simulator drive is high dimensional and too densely sampled (each drive consists of 100 variables sampled at 60Hz).
 %
@@ -127,15 +127,15 @@ The concept of artificial neurons or perseptrons was introduced by Warren McCull
 Figure \ref{fig:basic_AN} shows a basic artificial neuron. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ and the weights for each input are $\vec{w} = \{w_1, ..., w_n\} \in \mathbb{R}^n$. Let $\theta$ be threshold and define step function as below:
 
 $$U(z)=
-	\begin{cases} 
+	\begin{cases}
 		\hfill 1 \hfill & \text{if $z > 0$} \\
 		\hfill 0 \hfill & \text{otherwise} \\
 	\end{cases}
 $$
 
-The function deciding output $o$ is called activation function. In this case, the step function $U(z)$ is activation function.
+The function deciding output $o$ is called an activation function. In this case, the step function $U(z)$ is activation function.
 
-Figure \ref{fig:basic_AN} also can be described by following equation:
+Figure \ref{fig:basic_AN} also can be described by the following equation:
 $$ o = U(\vec{x}\cdot\vec{w}-\theta)$$
 
 \begin{figure}[t!]
@@ -158,7 +158,7 @@ $$o = \phi(\vec{x}\cdot\vec{w}+b)$$
     \label{fig:detail_NN}
 \end{figure}
 
-Using single neuron has limitation because it can solve only few problems. For example, single neuron cannot solve xor problem. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for $i$th neuron are $\vec{w_i} = \{w_{i1}, ..., w_{in}\} \in \mathbb{R}^n$, and a bias term for the $i$th neuron is $b_i$. The output $\vec{o} = \{o_1, ..., o_m\} \in \mathbb{R}^m$ of the network is calculated as follows:
+Using single neuron has a limitation since it can solve only specific problems. For example, single neuron cannot solve xor problem. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for $i$th neuron are $\vec{w_i} = \{w_{i1}, ..., w_{in}\} \in \mathbb{R}^n$, and a bias term for the $i$th neuron is $b_i$. The output $\vec{o} = \{o_1, ..., o_m\} \in \mathbb{R}^m$ of the network is calculated as follows:
 $$\vec{o} = \bm{\phi}(\{(\vec{x}\cdot\vec{w_1}+b_1),(\vec{x}\cdot\vec{w_2}+b_2),...,(\vec{x}\cdot\vec{w_m}+b_m)\})$$
 Where activation function is applied on each element of its input.
 
@@ -185,11 +185,11 @@ $\bold{W}=
     \label{fig:withoutBiasNN}
 \end{figure}
 
-Figure \ref{fig:withoutBiasNN} shows same neural network as Figure \ref{fig:detail_NN} with $\vec{X}$ and $\bold{W}$. Notice that the figure does not have add node anymore.
+Figure \ref{fig:withoutBiasNN} shows same neural network as Figure \ref{fig:detail_NN} with $\vec{X}$ and $\bold{W}$. Notice that the figure does not have an added node anymore.
 
 	From this point on the paper, vector in large case is with bias term and vector in small case is without bias term. For example, $\vec{X}$ is with bias and $\vec{x}$ is without bias. Also all vectors is row vector. Transform matrix is bold character and if it includes bias, transform matrix uses large case, otherwise small case. For example, $\bold{W}$ is transform matrix with bias and $\bold{w}$ is transform matrix without bias. By applying this, the equation for neural network is
 $$\vec{o} = \bm{\phi}(\vec{X}\bold{W})$$
-	
+
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.4\textwidth]{pictures/figures/NN.png}
@@ -201,13 +201,13 @@ $$\vec{o} = \bm{\phi}(\vec{X}\bold{W})$$
 
 
 \subsubsection{Multilayer Perceptron}\label{subsubsec:MLP}
-Single layer perceptron neural network has only input layer and output layer such as Figure \ref{fig:NN} but multilayer perceptron (MLP) has several hidden layers between input layer and output layer. This part introduces to MLP by explaining neural network with one hidden layer. Let $\vec{x} \in \mathbb{R}^n$ be input, $\vec{h} \in \mathbb{R}^m$ be output from hidden layer, $\vec{c} \in \mathbb{R}^m$ be bias for hidden layer, $\vec{o} \in \mathbb{R}^l$ be output from output layer, $\vec{b} \in \mathbb{R}^l$ be bias for output layer, $\bold{v}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be transform matrix for hidden layer and $\bold{w}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be transform matrix for output layer. The activation function $\bold{f}()$ is for hidden layer and the activation function $\bold{g}()$ is for output layer. Figure \ref{fig:MLP} shows one hidden layer MLP.
+Single layer perceptron neural network has only an input layer and an output layer such as Figure \ref{fig:NN} but multilayer perceptron (MLP) has several hidden layers between an input layer and an output layer. This part introduces to MLP by explaining neural network with one hidden layer. Let $\vec{x} \in \mathbb{R}^n$ be inputs, $\vec{h} \in \mathbb{R}^m$ be outputs from hidden layers, $\vec{c} \in \mathbb{R}^m$ be bias for hidden layers, $\vec{o} \in \mathbb{R}^l$ be outputs from an output layer, $\vec{b} \in \mathbb{R}^l$ be a bias for an output layer, $\bold{v}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for hidden layers and $\bold{w}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for an output layer. The activation function $\bold{f}()$ is for hidden layers and the activation function $\bold{g}()$ is for an output layer. Figure \ref{fig:MLP} shows one hidden layer MLP.
 
-To compute output of MLP, forward-propagation is used. forward-propagation is to pass input $\vec{x}$ to output through hidden layers \cite{murphy2012machine}. For example, the output from hidden layer on Figure \ref{fig:MLP} can be computed
+To compute output of MLP, forward-propagation is used. Forward-propagation is to pass inputs $\vec{x}$ to outputs through hidden layers \cite{murphy2012machine}. For example, the output from hidden layers on Figure \ref{fig:MLP} can be computed
 $$\vec{h} = \bold{f}(\vec{x}\bold{v}+\vec{c}) = \bold{f}(\vec{X}\bold{V})$$
-Then output layer uses output from hidden layer as input. The output of the neural network can be computed
+Then the output layer uses outputs from hidden layer as inputs. The outputs of the neural network can be computed
 $$\vec{o} = \bold{g}(\vec{h}\bold{w}+\vec{b}) = \bold{g}(\vec{H}\bold{W})$$
-Therefore, final equation for two layer neural network is
+Therefore, a final equation for two layer neural network is
 $$\vec{o} = \bold{g}(\bold{h}(\vec{x}\bold{v}+\vec{c})\bold{w}+\vec{b}) = \bold{g}(\bold{h}(\vec{X}\bold{V})\bold{W})$$
 
 \begin{figure}[t!]
@@ -219,17 +219,17 @@ $$\vec{o} = \bold{g}(\bold{h}(\vec{x}\bold{v}+\vec{c})\bold{w}+\vec{b}) = \bold{
 
 
 \subsubsection{Back-propagation}\label{subsubsec:BP}
-Training neural network means finding weights and biases. Similar as forward-propagation, back-propagation is used when MLP is trained. As forward-propagation passes input $\vec{x}$ to output, back-propagation passes error from output layer to hidden layers \cite{murphy2012machine}. Error function $E()$ (some times called a loss function) usually uses sum square error as follow:
+Training neural network means finding weights and biases. Similar as forward-propagation, back-propagation is used when MLP is trained. As forward-propagation passes inputs $\vec{x}$ to outputs, back-propagation passes an error from the output layer to hidden layers \cite{murphy2012machine}. An error function $E()$ (some times called a loss function) usually uses a sum square error as follow:
 $$E(\vec{y}, \vec{o}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2$$
-where $\vec{y}$ is expected output from MLP.
+where $\vec{y}$ is an expected output from MLP.
 
-Training neural network means finding weights and biases that make $\vec{o}$ close to $\vec{y}$. It means that training neural network needs a function of weights and biases. The train function $J()$ to train a neural network can be defined from error function $E()$. The error function $E()$ is a function of expected output and output from neural network with fixed weights and biases. Let weights and biases be changeable and input be fixed on the error function, then the output is depends on weights and biases and the train function $J()$ for one hidden MLP (Figure \ref{fig:MLP}) can define below:
+Training neural network means finding weights and biases that make $\vec{o}$ close to $\vec{y}$. It means that training neural network needs a function of weights and biases. The train function $J()$ to train a neural network can be defined from error function $E()$. The error function $E()$ is a function of expected output and output from neural network with fixed weights and biases. Let weights and biases be changeable and the input be fixed on the error function, then the output is depends on weights and biases and the trained function $J()$ for one hidden MLP (Figure \ref{fig:MLP}) can be define below:
 $$J(\bold{V}, \bold{W}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2 = \frac{1}{2}\sum_{i}(y_i-g(\vec{H}\bold{W_i})^2 =\frac{1}{2}\sum_{i}(y_i-g(\bold{h}(\vec{X}\bold{V})\bold{W_i}))^2$$
 where $\bold{W_i}$ is $i$th column of $\bold{W}$
 
 The training function $J()$ for one hidden layer MLP is a function of $\bold{V}$ and $\bold{W}$ with fixed input. Again capital letter of transform matrix contains bias. So $\bold{V}$ is weights and biases for hidden layer and $\bold{W}$ is weights and biases for output layer.
 
-To train the neural network, weights and biases are regulated. To update weighs and biases, let $\vec{h'}=\vec{X}\bold{V}$ be input for hidden layer activation function $\bold{f}$ and $\vec{o'}=\vec{H}\bold{W}$ be input for output layer activation function $\bold{g}$. So $\vec{h}=\bold{f}(\vec{h'})=\bold{f}(\vec{X}\bold{V})$ and $\vec{o}=\bold{g}(\vec{o'})=\bold{g}(\vec{H}\bold{W})$. Let $V_{ij}$ be $i$th neuron weight in hidden layer for input $X_j$ and $W_{ij}$ be $i$th neuron weight in output layer for input $H_j$.
+To train the neural network, weights and biases are regulated. To update weights and biases, let $\vec{h'}=\vec{X}\bold{V}$ be inputs for a hidden layer activation function $\bold{f}$ and $\vec{o'}=\vec{H}\bold{W}$ be inputs for an output layer activation function $\bold{g}$. So $\vec{h}=\bold{f}(\vec{h'})=\bold{f}(\vec{X}\bold{V})$ and $\vec{o}=\bold{g}(\vec{o'})=\bold{g}(\vec{H}\bold{W})$. Let $V_{ij}$ be $i$th neuron weights in hidden layers for inputs  $X_j$ and $W_{ij}$ be $i$th neuron weight in an output layer for inputs $H_j$.
 
 \begin{figure}[t!]
     \centering
@@ -238,8 +238,8 @@ To train the neural network, weights and biases are regulated. To update weighs 
     \label{fig:BP1}
 \end{figure}
 
-Let's first update $W_{ij}$ and Figure \ref{fig:BP1} shows detail of output layer related with ${W_{ij}}$. The updated weight ${{W_{ij}}^{next}}$ can be calculated as follow:
-$${{W_{ij}}^{next}}=W_{ij} - \eta\frac{\partial J}{\partial W_{ij}}$$ where $\eta$ is learning rate. The equation tells to remove error, updated weight should be move opposite direction of gradient of error function. The method is called 'gradient descent'.
+Let's first update $W_{ij}$ and Figure \ref{fig:BP1} shows the detail of an output layer related with ${W_{ij}}$. The updated weight ${{W_{ij}}^{next}}$ can be calculated as follow:
+$${{W_{ij}}^{next}}=W_{ij} - \eta\frac{\partial J}{\partial W_{ij}}$$ where $\eta$ is a learning rate. The equation tells to remove error, updated weight should be move opposite direction of gradient of error function. The method is called 'gradient descent'.
 
 Let's compute $\frac{\partial J}{\partial W_{ij}}$
 $$
@@ -257,7 +257,7 @@ $$
 = H_j
 $$
 
-Assume the activation function for output layer is sigmoid function $sigm()$ then second part is
+Assume the activation function for an output layer is a sigmoid function $sigm()$ then the second part is
 $$
 \frac{\partial o_i}{\partial o'_i}
 = \frac{\partial}{\partial o'_i}sigm(o'_i)
@@ -297,8 +297,8 @@ The $\delta_i$ is useful because it is shared when back-propagation updates all 
     \label{fig:BP2}
 \end{figure}
 
-The next step is to update weights in hidden layer. Let's update $V_{ij}$ and Figure \ref{fig:BP2} shows detail of neural network related with $V_{ij}$. The updated weight ${{V_{ij}}^{next}}$ can be calculated as follow:
-$${{V_{ij}}^{next}}=V_{ij} - \eta\frac{\partial J}{\partial V_{ij}}$$ where $\eta$ is learning rate. The equation is similar as ${{W_{ij}}^{next}}$
+The next step is to update weights in hidden layers. Let's update $V_{ij}$ and Figure \ref{fig:BP2} shows the detail of neural network related with $V_{ij}$. The updated weight ${{V_{ij}}^{next}}$ can be calculated as follow:
+$${{V_{ij}}^{next}}=V_{ij} - \eta\frac{\partial J}{\partial V_{ij}}$$ where $\eta$ is a learning rate. The equation is similar as ${{W_{ij}}^{next}}$
 
 Let's compute $\frac{\partial J}{\partial V_{ij}}$
 $$
@@ -316,7 +316,7 @@ $$
 = X_j
 $$
 
-Assume the activation function for hidden layer is also sigmoid function $sigm()$ then second part is
+Assume the activation function for hidden layers is also a sigmoid function $sigm()$ then the second part is
 $$
 \frac{\partial h_i}{\partial h'_i}
 = \frac{\partial}{\partial h'_i}sigm(h_i)
@@ -339,7 +339,8 @@ $$
 = W_{ij} - \eta\sum_k(\delta_kw_{ki})h_i(1-h_i)X_j
 $$
 
-Notice that as forward-propagation sends output of a layer as input of the next layer, back-propagation sends the error of a the layer to the previous layer. For example, if the $\delta_i=\frac{\partial J}{\partial o'_i}$ is an error on the output layer, then it is sent to hidden layers. 
+Notice that as forward-propagation sends output of a layer as input of the next layer, back-propagation sends the error of a the layer to the previous layer. For example, if the $\delta_i=\frac{\partial J}{\partial o'_i}$ is an error on the output layer, then it is sent to hidden layers.
+
 
 
 
@@ -354,14 +355,14 @@ Notice that as forward-propagation sends output of a layer as input of the next 
     \caption{RNN}
     \label{fig:RNN}
 \end{figure}
-	
+
 	For example, human language sentences have series of words and meaning of words is different in different context. RNN can be used for that. Another example is driving data which is used later on the paper.  Driving data are multi-dimension data with time domain. RNN can be used for the data because it is sequential data with time domain.
-	
-	To describe RNN in math equation, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{h^t} = \{ h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be result from hidden layer on time $t$, and $\vec{o^t} = \{ o_1^t, ..., o_l^t\} \in \mathbb{R}^l$ be output on time $t$. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for input data, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for data from hidden layer, and $\bold{w}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be a transform matrix for previous output. Figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by 
+
+	To describe RNN in math equation, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{h^t} = \{ h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be result from hidden layer on time $t$, and $\vec{o^t} = \{ o_1^t, ..., o_l^t\} \in \mathbb{R}^l$ be output on time $t$. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for input data, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for data from hidden layer, and $\bold{w}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be a transform matrix for previous output. Figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by
 	$$\vec{h^t} = \bold{f}(\vec{X^t}\bold{U} + \vec{O^{t-1}}\bold{W})$$ where $\bold{f}$ is activation function for hidden layer. Then the output can be calculated by
 	$$\vec{o^t} = \bold{g}(\vec{H^t}\bold{V})$$ where $\bold{g}$ is activation function for output layer. Therefore, the RNN with bias is
-	$$\vec{o^t} = \bold{g}(\bold{f}(\vec{x^t}\bold{u}+\vec{b_x} + \vec{o^{t-1}}\bold{w}+\vec{b_o})\bold{v}+\vec{b_h})$$ where $\vec{b_x} = \{b_{x1}, ..., b_{xm}\} \in \mathbb{R}^m$ is bias for input data, $\vec{b_o} = \{b_{o1}, ..., b_{om}\} \in \mathbb{R}^m$ is bias for previous output data, and $\vec{b_h} = \{b_{h1}, ..., b_{hl}\} \in \mathbb{R}^l$ is bias for data from hidden layer. 
-	
+	$$\vec{o^t} = \bold{g}(\bold{f}(\vec{x^t}\bold{u}+\vec{b_x} + \vec{o^{t-1}}\bold{w}+\vec{b_o})\bold{v}+\vec{b_h})$$ where $\vec{b_x} = \{b_{x1}, ..., b_{xm}\} \in \mathbb{R}^m$ is bias for input data, $\vec{b_o} = \{b_{o1}, ..., b_{om}\} \in \mathbb{R}^m$ is bias for previous output data, and $\vec{b_h} = \{b_{h1}, ..., b_{hl}\} \in \mathbb{R}^l$ is bias for data from hidden layer.
+
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.65\textwidth]{pictures/figures/unfold_RNN.png}
@@ -370,23 +371,23 @@ Notice that as forward-propagation sends output of a layer as input of the next 
 \end{figure}
 
 	RNN is not always like Figure \ref{fig:unfold_RNN}. Input from previous output can be replaced by result of previous hidden layer. The main idea of RNN is when neural network decides current output it considers previous state.
-	
-	
+
+
 \subsubsection{Long Short Term Memory (LSTM) networks:}\label{LSTM}
 	Basic RNN has the problems of long term dependency. When RNN passes previous output for current output, some information in the input might not need or might need for future. RNN does not have ability to filter unnecessary information or to store necessary information. Long Short Term Memory (LSTM) neural network can handle these problems.
-	
+
 	LSTM is a type of RNN and introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM solves long term dependency problems in RNN by memory cells. LSTM manages memory cells as storage of knowledge. LSTM filters unnecessary information from memory cells and records necessary information on memory cells.
-	
+
 	The structure of LSTM consists of four gates: forget gate, input gate, input modulation gate, and output gate. Each gates have different purpose and Christopher Olah's blog \footnote{\url{http://colah.github.io/posts/2015-08-Understanding-LSTMs}} develops an intuition for concept of LSTM and explains purpose of each gates. The paper \cite{zaremba2014recurrent}  describes LSTM in mathematical term. Let us first provide an intuitive description of how LSTM work by following Christopher Olah's blog, before providing a more in-depth formalization.
-		
+
 %	Bengio mentioned on his paper \cite{bengio2009learning} that each layers in deep neural network should have {\color{red} a} purpose. LSTM can be divided to four layers: forget gate, input gate, input modulation gate, and output gate. Each layers have different purpose {\color{red} [santi: this paragraph does not flow very well], even if Bengio mentioned it, why is it important? you need to explain WHY is it that each layer should have a purpose. Otherwise, we just have to blindly believe in Bengio :)}.
 
-	
+
 \begin{enumerate}
 \item An intuitive explanation of LSTMs:
-	
+
 	The easiest way to understand LSTM is to understand memory cell and purpose of four different gates. Memory cell makes LSTM different from RNN. Memory cell stores important information and filters unimportant information for future. Three of four gates are involved in the memory cells to store and filter information.
-		
+
 	The first gate affecting to memory cells is forget gate. The forget gate decides unnecessary data from input data and previous output then applies it to memory cells. Other two gates are input gate and input modulation gate and these also affect to memory cells. The two gates decide what information remember then apply it to memory cells. The last gate is output gate and it does not directly affect to memory cells. Output gate also has two inputs from input data and previous output, and output from output gate is multiplied by memory cells to make final output. Figure \ref{fig:LSTM} illustrates LSTM neural network with four gates and next part describes more detail of LSTM and the figure in mathematical terms.
 
 \begin{figure}[t!]
@@ -395,17 +396,17 @@ Notice that as forward-propagation sends output of a layer as input of the next 
     \caption{LSTM}
     \label{fig:LSTM}
 \end{figure}
-		
+
 		% It consists of sigmod {\color{red} [santi: instead of saying ``It consists of sigmod'', you should say something like ``The units in this layer use a sigmoid activation function'' (same comment for all the other layers below)]} layer with previous output and current input data {\color{red} [santi: a reader not familiar with LSTMs will not know what is ``previous output'' or ``current input'', so you need a figure that explains it]}. The result of the forget gate is multiplied by previous cell state to build current cell state.
-		
+
 		% The second layer is input gate and also consists of sigmod layer with previous output and current input data. The result of the input gate is multiplied by the result of input modulation gate then it affects to cell state {\color{red} [santi: all of these terms should appear in a figure, otherwise, a reader not familiar with it will not understand what you are saying. But also, even if you have a figure, you need to explain what each term is, e.g., explain what is ``input modulation'', what is ``cell state'', etc.]}. The meaning of input gate is to decide{\color{red} \st{s}} what data to remember.
-		
+
 		% The third layer is input modulation gate. It consists of tanh with previous output and current input. It is multiplied by the result of second layer and affects to current cell state.
-		
+
 		% The last layer is output gate. The layer decides what data should be passed to current output from previous output and current input. the output gate also consists of sigmoid with two inputs: last output and current input. The result of the layer is multiplied by current cell state passed tanh.
-	
+
 \item Modeling LSTMs in mathematical terms:
-	
+
 	To describe LSTM in mathematical terms, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{i^t} = \{i_1^t, ..., i_m^t\} \in \mathbb{R}^m$ be result from input gate on time $t$, $\vec{m^t} = \{m_1^t, ..., m_m^t\} \in \mathbb{R}^m$ be result from input modulation gate on time $t$, $\vec{f^t} = \{f_1^t, ..., f_m^t\} \in \mathbb{R}^m$ be result from forget gate on time $t$, $\vec{o^t} = \{o_1^t, ..., o_m^t\} \in \mathbb{R}^m$ be result from output gate on time $t$, $\vec{c^t} = \{c_1^t, ..., c_m^t\} \in \mathbb{R}^m$ be memory cells on time $t$, and $\vec{h^t} = \{h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be final result on time $t$.
 Each gates have transform matrices for inputs. Let $\bold{t_{n,m}}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix from $n$ dimension to $m$ dimension. Let $\bold{t_{n,m}^{ii}}$ be a transform matrix for input from data in input gate, $\bold{t_{m,m}^{oi}}$ be a transform matrix for input from previous output in input gate, $\bold{t_{n,m}^{im}}$ be a transform matrix for input from data in input modulation gate, $\bold{t_{m,m}^{om}}$ be a transform matrix for input from previous output in input modulation gate, $\bold{t_{n,m}^{if}}$ be a transform matrix for input from data in forget gate, $\bold{t_{m,m}^{of}}$ be a transform matrix for input from previous output in forget gate, $\bold{t_{n,m}^{io}}$ be a transform matrix for input from data in output gate, $\bold{t_{m,m}^{oo}}$ be a transform matrix for input from previous output in output gate.
 
@@ -421,13 +422,13 @@ Each gates have transform matrices for inputs. Let $\bold{t_{n,m}}: \mathbb{R}^n
 
 	Memory cells are computed as
 	$$\vec{c^t} = \vec{i^t} * \vec{m^t} + \vec{f^t} * \vec{c^{t-1}}$$
-		
+
 	And final result is computed as
 	$$\vec{h^t} = \vec{c^t} * \vec{o^t}$$
-		
+
 	Where $*$ is component-wise multiplication of two vectors.
 \end{enumerate}
-	
+
 	LSTM neural network described above is one example of LSTMs. There are many other LSTMs but all LSTMs has memory cells to store information for long term memory and has four gates: input, input modulation, forget, and output gate.
 
 
@@ -477,8 +478,8 @@ On this paper and experiment, undercomplete AE is used for reducing input dimens
 
 
 \subsubsection{Multilayer Auto-encoder}\label{subsubsec:MAE}
-	Sometimes AE is designed with multiple encoder and decoder layers to reduce dimension. Figure \ref{fig:MAE} shows multilayer auto-encoder (MAE). However, it is difficult to find the all weights of encoder and decoder in MAE because all weights are initialized with random numbers and it makes difficult to find optimize weights \cite{zaremba2014recurrent}. So if the initial weights are close to optimize weights, training algorithm gradient descent can find optimize weights. The paper \cite{zaremba2014recurrent} shows "pretraining" method to initialize good weights. 
-	
+	Sometimes AE is designed with multiple encoder and decoder layers to reduce dimension. Figure \ref{fig:MAE} shows multilayer auto-encoder (MAE). However, it is difficult to find the all weights of encoder and decoder in MAE because all weights are initialized with random numbers and it makes difficult to find optimize weights \cite{zaremba2014recurrent}. So if the initial weights are close to optimize weights, training algorithm gradient descent can find optimize weights. The paper \cite{zaremba2014recurrent} shows "pretraining" method to initialize good weights.
+
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.75\textwidth]{pictures/figures/MAE.png}
@@ -522,7 +523,7 @@ Figure \ref{fig:train_MAE2} shows train of second encoder and decoder layer. Whi
 $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2})\bold{D_2})\bold{D_1^{fixed}}))$$
 The last step is Figure \ref{fig:train_MAE3} and it trains third encoder and decoder. During this, first and second encoder and decoder weights are fixed. So error function is
 $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2^{fixed}})\bold{E_3})\bold{D_3})\bold{D_2^{fixed}})\bold{D_1^{fixed}}))$$
-	
+
 	After finishing pretraining step, all weights are close enough to optimal weights for train algorithm to find optimize answer when it train whole neural network. So error function training whole network is
 $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{E_3})\bold{D_3})\bold{D_2})\bold{D_1}))$$
 
@@ -595,7 +596,7 @@ This chapter covers technical methods for experiments on the paper also introduc
 
 
 \section{Cross Validation}
-Cross validation (CV) is used to validate model when data is not enough \cite{Goodfellow-et-al-2016}. CV divides data set to $K$ folds then applies $i$th fold as test set and other folds as train set to target model. Experiments on the paper use 16 traces but it is not enough to train neural network. CV can be used to validate neural network model and compare performance of three different models. The 16 traces dataset is divided to 4 folds. Each folds contain two traces from expert and two traces from inexpert. The neural networks are trained four times with different train (3 folds) and test (1 fold) set. Figure \ref{fig:CV} shows four folds cross validation. Red color is the fold for testing and other folds are for training. 
+Cross validation (CV) is used to validate model when data is not enough \cite{Goodfellow-et-al-2016}. CV divides data set to $K$ folds then applies $i$th fold as test set and other folds as train set to target model. Experiments on the paper use 16 traces but it is not enough to train neural network. CV can be used to validate neural network model and compare performance of three different models. The 16 traces dataset is divided to 4 folds. Each folds contain two traces from expert and two traces from inexpert. The neural networks are trained four times with different train (3 folds) and test (1 fold) set. Figure \ref{fig:CV} shows four folds cross validation. Red color is the fold for testing and other folds are for training.
 
 \begin{figure}[t!]
     \centering
@@ -619,7 +620,7 @@ Figure \ref{fig:exp_NN1} shows first neural network model ({\em first model}) on
 
 
 \section{Auto-encoder}
-The {\em raw dataset} has 98 features and it takes too much time to train nerual network if all 98 features are used. AE can solve the problem by reducing dimensions. 
+The {\em raw dataset} has 98 features and it takes too much time to train nerual network if all 98 features are used. AE can solve the problem by reducing dimensions.
 
 \subsection{Single layer Auto-encoder}
 Figure \ref{fig:exp_NN2} shows second neural network model ({\em second model}) on the paper. The {\em second model} is added by one AE layer from {\em first model}. The purpose of the AE layer is to reduce 98 features to 25 features on {\em raw dataset}. Notice that the figure only has encoder because after training AE, only encoder is used to reduce dimensions. The output from encoder is passed to LSTM.
@@ -786,21 +787,21 @@ After feeding re-sampled data to three neural network models, the data is standa
 \hline
                        &      & \multicolumn{5}{l|}{The number of neurans} \\ \hline
 Test                   & n    & 16    & 32    & 64      & 128      & 256   \\ \hline
-\multirow{4}{*}{1}     & 1    & 0.5   & 0.25  & 1.0     & 0.5      & 0.5   \\ \cline{2-7} 
-                       & 2    & 0.75  & 0.75  & 0.5     & 0.5      & 0.5   \\ \cline{2-7} 
-                       & 3    & 1.0   & 0.5   & 0.5     & 0.75     & 0.5   \\ \cline{2-7} 
+\multirow{4}{*}{1}     & 1    & 0.5   & 0.25  & 1.0     & 0.5      & 0.5   \\ \cline{2-7}
+                       & 2    & 0.75  & 0.75  & 0.5     & 0.5      & 0.5   \\ \cline{2-7}
+                       & 3    & 1.0   & 0.5   & 0.5     & 0.75     & 0.5   \\ \cline{2-7}
                        & 4    & 0.5   & 0.5   & 0.75    & 0.5      & 0.5   \\ \hline
-\multirow{4}{*}{2}     & 1    & 0.5   & 0.75  & 0.75    & 0.75     & 0.75  \\ \cline{2-7} 
-                       & 2    & 0.25  & 0.25  & 0.75    & 0.5      & 0.25  \\ \cline{2-7} 
-                       & 3    & 0.5   & 0.5   & 0.25    & 0.75     & 0.25  \\ \cline{2-7} 
+\multirow{4}{*}{2}     & 1    & 0.5   & 0.75  & 0.75    & 0.75     & 0.75  \\ \cline{2-7}
+                       & 2    & 0.25  & 0.25  & 0.75    & 0.5      & 0.25  \\ \cline{2-7}
+                       & 3    & 0.5   & 0.5   & 0.25    & 0.75     & 0.25  \\ \cline{2-7}
                        & 4    & 0.25  & 0.25  & 0.5     & 0.25     & 0.75  \\ \hline
-\multirow{4}{*}{3}     & 1    & 0.75  & 0.25  & 1.0     & 0.75     & 0.25  \\ \cline{2-7} 
-                       & 2    & 0.25  & 0.5   & 0.75    & 0.5      & 1.0   \\ \cline{2-7} 
-                       & 3    & 0.5   & 0.75  & 0.75    & 0.5      & 0.5   \\ \cline{2-7} 
+\multirow{4}{*}{3}     & 1    & 0.75  & 0.25  & 1.0     & 0.75     & 0.25  \\ \cline{2-7}
+                       & 2    & 0.25  & 0.5   & 0.75    & 0.5      & 1.0   \\ \cline{2-7}
+                       & 3    & 0.5   & 0.75  & 0.75    & 0.5      & 0.5   \\ \cline{2-7}
                        & 4    & 0.5   & 0.25  & 0.75    & 0.75     & 0.5   \\ \hline
-\multirow{4}{*}{4}     & 1    & 0.75  & 0.5   & 0.5     & 0.5      & 0.5   \\ \cline{2-7} 
-                       & 2    & 0.25  & 0.5   & 0.5     & 1.0      & 0.25  \\ \cline{2-7} 
-                       & 3    & 0.0   & 0.75  & 1.0     & 0.75     & 0.25  \\ \cline{2-7} 
+\multirow{4}{*}{4}     & 1    & 0.75  & 0.5   & 0.5     & 0.5      & 0.5   \\ \cline{2-7}
+                       & 2    & 0.25  & 0.5   & 0.5     & 1.0      & 0.25  \\ \cline{2-7}
+                       & 3    & 0.0   & 0.75  & 1.0     & 0.75     & 0.25  \\ \cline{2-7}
                        & 4    & 0.75  & 0.75  & 0.75    & 0.25     & 0.75  \\ \hline
 \multicolumn{2}{|l|}{Average} & 0.5   & 0.5   & 0.6875  & 0.59375  & 0.5   \\ \hline
 \end{tabular}
@@ -822,4 +823,3 @@ Conclusion and Future work\\
 
 \end{document}
 \endinput
-
