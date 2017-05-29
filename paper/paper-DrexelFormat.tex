@@ -347,7 +347,7 @@ Notice that as forward-propagation sends output of a layer as input of the next 
 \subsection{Recurrent Neural Network}\label{subsec:RNN}
 
 \subsubsection{Basic concepts of recurrent neural networks:}\label{basicRNN}
-	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. Figure \ref{fig:RNN} illustrates abstract structure of RNN. RNN has two input. One input is from data such as normal neural network input but another input is from previous output. The property gives benefit for sequential input data. This is because past outputs affect to current output. With sequential data, previous data can affect to current data and RNN considers previous outputs for current output. It means that even input from data are equal if previous outputs are different, current output are also different.
+	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. Figure \ref{fig:RNN} illustrates an abstract structure of RNN. RNN has two inputs. One input is from data such as a normal neural network input but the other input is from the previous output. The property gives benefit for sequential input data. This is because past outputs affect the current output. With sequential data, the previous data can affect the current data and RNN considers the previous outputs for the current output. It means that even the inputs from the data are equal, if the previous outputs are different, the current output are also different.
 
 \begin{figure}[t!]
     \centering
@@ -356,12 +356,12 @@ Notice that as forward-propagation sends output of a layer as input of the next 
     \label{fig:RNN}
 \end{figure}
 
-	For example, human language sentences have series of words and meaning of words is different in different context. RNN can be used for that. Another example is driving data which is used later on the paper.  Driving data are multi-dimension data with time domain. RNN can be used for the data because it is sequential data with time domain.
+	For example, human language sentences have series of words, and meanings of words are different depending on context. RNN can be used for that. Another example is driving data which is used later on the paper.  Driving data are multi-dimension data with time domain. RNN can be used for the data because it is sequential data with the time domain.
 
-	To describe RNN in math equation, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{h^t} = \{ h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be result from hidden layer on time $t$, and $\vec{o^t} = \{ o_1^t, ..., o_l^t\} \in \mathbb{R}^l$ be output on time $t$. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for input data, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for data from hidden layer, and $\bold{w}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be a transform matrix for previous output. Figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by
-	$$\vec{h^t} = \bold{f}(\vec{X^t}\bold{U} + \vec{O^{t-1}}\bold{W})$$ where $\bold{f}$ is activation function for hidden layer. Then the output can be calculated by
-	$$\vec{o^t} = \bold{g}(\vec{H^t}\bold{V})$$ where $\bold{g}$ is activation function for output layer. Therefore, the RNN with bias is
-	$$\vec{o^t} = \bold{g}(\bold{f}(\vec{x^t}\bold{u}+\vec{b_x} + \vec{o^{t-1}}\bold{w}+\vec{b_o})\bold{v}+\vec{b_h})$$ where $\vec{b_x} = \{b_{x1}, ..., b_{xm}\} \in \mathbb{R}^m$ is bias for input data, $\vec{b_o} = \{b_{o1}, ..., b_{om}\} \in \mathbb{R}^m$ is bias for previous output data, and $\vec{b_h} = \{b_{h1}, ..., b_{hl}\} \in \mathbb{R}^l$ is bias for data from hidden layer.
+	To describe RNN in a mathematical equation, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{h^t} = \{ h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be result from hidden layer on time $t$, and $\vec{o^t} = \{ o_1^t, ..., o_l^t\} \in \mathbb{R}^l$ be output on time $t$. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for input data, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for data from hidden layer, and $\bold{w}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be a transform matrix for previous output. Figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by
+	$$\vec{h^t} = \bold{f}(\vec{X^t}\bold{U} + \vec{O^{t-1}}\bold{W})$$ where $\bold{f}$ is an activation function for the hidden layer. Then the output can be calculated by
+	$$\vec{o^t} = \bold{g}(\vec{H^t}\bold{V})$$ where $\bold{g}$ is an activation function for the output layer. Therefore, the RNN with bias is
+	$$\vec{o^t} = \bold{g}(\bold{f}(\vec{x^t}\bold{u}+\vec{b_x} + \vec{o^{t-1}}\bold{w}+\vec{b_o})\bold{v}+\vec{b_h})$$ where $\vec{b_x} = \{b_{x1}, ..., b_{xm}\} \in \mathbb{R}^m$ is the bias for the input data, $\vec{b_o} = \{b_{o1}, ..., b_{om}\} \in \mathbb{R}^m$ is the bias for the previous output data, and $\vec{b_h} = \{b_{h1}, ..., b_{hl}\} \in \mathbb{R}^l$ is the bias for the data from the hidden layers.
 
 \begin{figure}[t!]
     \centering
@@ -370,25 +370,25 @@ Notice that as forward-propagation sends output of a layer as input of the next 
     \label{fig:unfold_RNN}
 \end{figure}
 
-	RNN is not always like Figure \ref{fig:unfold_RNN}. Input from previous output can be replaced by result of previous hidden layer. The main idea of RNN is when neural network decides current output it considers previous state.
+	RNN is not always like Figure \ref{fig:unfold_RNN}. Input from the previous output can be replaced by the result of the previous hidden layer. The main idea of RNN is that when neural network decides a current output, it considers a previous state.
 
 
 \subsubsection{Long Short Term Memory (LSTM) networks:}\label{LSTM}
-	Basic RNN has the problems of long term dependency. When RNN passes previous output for current output, some information in the input might not need or might need for future. RNN does not have ability to filter unnecessary information or to store necessary information. Long Short Term Memory (LSTM) neural network can handle these problems.
+	Basic RNN has some problems of long term dependency. When RNN passes the previous output for the current output, some information in the input might or might be needed for future. RNN does not have an ability to filter unnecessary information or to store necessary information. Long Short Term Memory (LSTM) neural network can handle these problems.
 
-	LSTM is a type of RNN and introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM solves long term dependency problems in RNN by memory cells. LSTM manages memory cells as storage of knowledge. LSTM filters unnecessary information from memory cells and records necessary information on memory cells.
+	LSTM is a type of RNN introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM solves long term dependency problems in RNN by memory cells. LSTM manages memory cells as a storage of knowledge. LSTM filters unnecessary information from memory cells and records necessary information on memory cells.
 
-	The structure of LSTM consists of four gates: forget gate, input gate, input modulation gate, and output gate. Each gates have different purpose and Christopher Olah's blog \footnote{\url{http://colah.github.io/posts/2015-08-Understanding-LSTMs}} develops an intuition for concept of LSTM and explains purpose of each gates. The paper \cite{zaremba2014recurrent}  describes LSTM in mathematical term. Let us first provide an intuitive description of how LSTM work by following Christopher Olah's blog, before providing a more in-depth formalization.
+	The structure of LSTM consists of four gates: forget gate, input gate, input modulation gate, and output gate. Each gates have different purposes and Christopher Olah's blog \footnote{\url{http://colah.github.io/posts/2015-08-Understanding-LSTMs}} develops an intuition for the concept of LSTM and explains the purpose of each gates. The paper \cite{zaremba2014recurrent}  describes LSTM in a mathematical term. Let us first provide an intuitive description of how LSTM works by following Christopher Olah's blog, before providing a more in-depth formalization.
 
-%	Bengio mentioned on his paper \cite{bengio2009learning} that each layers in deep neural network should have {\color{red} a} purpose. LSTM can be divided to four layers: forget gate, input gate, input modulation gate, and output gate. Each layers have different purpose {\color{red} [santi: this paragraph does not flow very well], even if Bengio mentioned it, why is it important? you need to explain WHY is it that each layer should have a purpose. Otherwise, we just have to blindly believe in Bengio :)}.
+%	Bengio mentioned on his paper \cite{bengio2009learning} that each layer in deep neural network should have {\color{red} a} purpose. LSTM can be divided into four layers: forget gate, input gate, input modulation gate, and output gate. Each layer have different purposes {\color{red} [santi: this paragraph does not flow very well], even if Bengio mentioned it, why is it important? you need to explain WHY is it that each layer should have a purpose. Otherwise, we just have to believe in Bengio :)}.
 
 
 \begin{enumerate}
 \item An intuitive explanation of LSTMs:
 
-	The easiest way to understand LSTM is to understand memory cell and purpose of four different gates. Memory cell makes LSTM different from RNN. Memory cell stores important information and filters unimportant information for future. Three of four gates are involved in the memory cells to store and filter information.
+	The easiest way to understand LSTM is to understand memory cell and the purpose of four different gates. Memory cells are what make LSTM different from RNN. Memory cells store important information and filter unimportant information for future. Three of four gates are involved in the memory cells to store and filter information.
 
-	The first gate affecting to memory cells is forget gate. The forget gate decides unnecessary data from input data and previous output then applies it to memory cells. Other two gates are input gate and input modulation gate and these also affect to memory cells. The two gates decide what information remember then apply it to memory cells. The last gate is output gate and it does not directly affect to memory cells. Output gate also has two inputs from input data and previous output, and output from output gate is multiplied by memory cells to make final output. Figure \ref{fig:LSTM} illustrates LSTM neural network with four gates and next part describes more detail of LSTM and the figure in mathematical terms.
+	The first gate affecting memory cells is a forget gate. The forget gate decides unnecessary data from input data and previous output then applies it to memory cells. Other two gates are an input gate and an input modulation gate and these also influence memory cells. The two gates decide what information to remember to apply to memory cells. The last gate is an output gate and it does not directly affect memory cells. The output gate also has two inputs from the input data and the previous output, and outputs from the output gate is multiplied by memory cells to make a final output. Figure \ref{fig:LSTM} illustrates LSTM neural network with four gates and next part describes more detail of LSTM and the figure in a mathematical terms.
 
 \begin{figure}[t!]
     \centering
@@ -397,7 +397,7 @@ Notice that as forward-propagation sends output of a layer as input of the next 
     \label{fig:LSTM}
 \end{figure}
 
-		% It consists of sigmod {\color{red} [santi: instead of saying ``It consists of sigmod'', you should say something like ``The units in this layer use a sigmoid activation function'' (same comment for all the other layers below)]} layer with previous output and current input data {\color{red} [santi: a reader not familiar with LSTMs will not know what is ``previous output'' or ``current input'', so you need a figure that explains it]}. The result of the forget gate is multiplied by previous cell state to build current cell state.
+		% It consists of sigmoid {\color{red} [santi: instead of saying ``It consists of sigmoid'', you should say something like ``The units in this layer use a sigmoid activation function'' (same comment for all the other layers below)]} layer with previous output and current input data {\color{red} [santi: a reader not familiar with LSTMs will not know what is ``previous output'' or ``current input'', so you need a figure that explains it]}. The result of the forget gate is multiplied by previous cell state to build current cell state.
 
 		% The second layer is input gate and also consists of sigmod layer with previous output and current input data. The result of the input gate is multiplied by the result of input modulation gate then it affects to cell state {\color{red} [santi: all of these terms should appear in a figure, otherwise, a reader not familiar with it will not understand what you are saying. But also, even if you have a figure, you need to explain what each term is, e.g., explain what is ``input modulation'', what is ``cell state'', etc.]}. The meaning of input gate is to decide{\color{red} \st{s}} what data to remember.
 
@@ -407,18 +407,18 @@ Notice that as forward-propagation sends output of a layer as input of the next 
 
 \item Modeling LSTMs in mathematical terms:
 
-	To describe LSTM in mathematical terms, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{i^t} = \{i_1^t, ..., i_m^t\} \in \mathbb{R}^m$ be result from input gate on time $t$, $\vec{m^t} = \{m_1^t, ..., m_m^t\} \in \mathbb{R}^m$ be result from input modulation gate on time $t$, $\vec{f^t} = \{f_1^t, ..., f_m^t\} \in \mathbb{R}^m$ be result from forget gate on time $t$, $\vec{o^t} = \{o_1^t, ..., o_m^t\} \in \mathbb{R}^m$ be result from output gate on time $t$, $\vec{c^t} = \{c_1^t, ..., c_m^t\} \in \mathbb{R}^m$ be memory cells on time $t$, and $\vec{h^t} = \{h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be final result on time $t$.
-Each gates have transform matrices for inputs. Let $\bold{t_{n,m}}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix from $n$ dimension to $m$ dimension. Let $\bold{t_{n,m}^{ii}}$ be a transform matrix for input from data in input gate, $\bold{t_{m,m}^{oi}}$ be a transform matrix for input from previous output in input gate, $\bold{t_{n,m}^{im}}$ be a transform matrix for input from data in input modulation gate, $\bold{t_{m,m}^{om}}$ be a transform matrix for input from previous output in input modulation gate, $\bold{t_{n,m}^{if}}$ be a transform matrix for input from data in forget gate, $\bold{t_{m,m}^{of}}$ be a transform matrix for input from previous output in forget gate, $\bold{t_{n,m}^{io}}$ be a transform matrix for input from data in output gate, $\bold{t_{m,m}^{oo}}$ be a transform matrix for input from previous output in output gate.
+	To describe LSTM in a mathematical terms, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{i^t} = \{i_1^t, ..., i_m^t\} \in \mathbb{R}^m$ be a result from an input gate on time $t$, $\vec{m^t} = \{m_1^t, ..., m_m^t\} \in \mathbb{R}^m$ be a result from an input modulation gate on time $t$, $\vec{f^t} = \{f_1^t, ..., f_m^t\} \in \mathbb{R}^m$ be a result from a forget gate on time $t$, $\vec{o^t} = \{o_1^t, ..., o_m^t\} \in \mathbb{R}^m$ be a result from an output gate on time $t$, $\vec{c^t} = \{c_1^t, ..., c_m^t\} \in \mathbb{R}^m$ be memory cells on time $t$, and $\vec{h^t} = \{h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be a final result on time $t$.
+Each gate has transform matrices for inputs. Let $\bold{t_{n,m}}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix from $n$ dimension to $m$ dimension. Let $\bold{t_{n,m}^{ii}}$ be a transform matrix for the input from data in the input gate, $\bold{t_{m,m}^{oi}}$ be a transform matrix for the input from the previous output in the input gate, $\bold{t_{n,m}^{im}}$ be a transform matrix for the input from the data in the input modulation gate, $\bold{t_{m,m}^{om}}$ be a transform matrix for the input from the previous output in the input modulation gate, $\bold{t_{n,m}^{if}}$ be a transform matrix for the input from the data in the forget gate, $\bold{t_{m,m}^{of}}$ be a transform matrix for the input from the previous output in the forget gate, $\bold{t_{n,m}^{io}}$ be a transform matrix for the input from the data in the output gate, $\bold{t_{m,m}^{oo}}$ be a transform matrix for the input from the previous output in the output gate.
 
-	The result of each gates are computed as following:
+	The results of each gate are computed as following:
 	$$\vec{i^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{ii}} + \vec{H^{t-1}}\bold{T_{m,m}^{oi}})$$
-	Input gate uses sigmoid function $\bold{sigm()}$ for activation function
+	The input gate uses a sigmoid function $\bold{sigm()}$ as an activation function
 	$$\vec{m^t} = \bold{tanh}(\vec{X^t}\bold{T_{n,m}^{im}} + \vec{H^{t-1}}\bold{T_{m,m}^{om}})$$
-	Input modulation gate uses tanh function $\bold{tanh()}$ for activation function.
+	The input modulation gate uses a tanh function $\bold{tanh()}$ as an activation function.
 	$$\vec{f^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{if}} + \vec{H^{t-1}}\bold{T_{m,m}^{of}})$$
-	Forget gate uses sigmoid function $\bold{sigm()}$ for activation function.
+	The forget gate uses a sigmoid function $\bold{sigm()}$ as an activation function.
 	$$\vec{o^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{io}} + \vec{H^{t-1}}\bold{T_{m,m}^{oo}})$$
-	Output gate uses sigmoid function $\bold{sigm()}$ for activation function.
+	The output gate uses a sigmoid function $\bold{sigm()}$ as an activation function.
 
 	Memory cells are computed as
 	$$\vec{c^t} = \vec{i^t} * \vec{m^t} + \vec{f^t} * \vec{c^{t-1}}$$
