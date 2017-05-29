@@ -528,16 +528,22 @@ $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\
 
 
 \section{Deep Learning Libraries}\label{sec:DLL}
-{\color{blue} need to add tutorial}
-
-\subsection{DL4J}
-DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed deep-learning library for Java and Scala. It also integrates with Hadoop and Spark. 
-
-\subsection{Theano}
-Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a Python library for machine learning research. It integrates with Numpy and uses GPU power. The library is written in C code and optimizes user functions.
+This section introduces to three popular libraries for deep learning.
 
 \subsection{Tensorflow}
-Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operator as node. Another strong point is that Tesorflow allows developer to deploy computation to one or more CPUs or GPUs. 
+Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operator as a node. For example, multiplication, addition, or sigmoid function are treated as a node.  This helps developers intuitively build neural network. Another strong points is TensorBoard. TensorBoard is a tool for Tensorflow to visualize neural networks built in Tensorflow. Also developers can review how neural networks are trained from TensorBoard because TensorBoard visualizes logs to track all parameters while neural networks are trained.
+
+The most famous example of Tensorflow is AlphaGo \footnote{\url{https://cloudplatform.googleblog.com/2016/05/Google-supercharges-machine-learning-tasks-with-custom-chip.html}}. Google engineer teams build AlphaGo with Tensorflow and the AlphaGo runs on Tensor Processing Unit (TPU).
+
+
+\subsection{Theano}
+Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a Python library for machine learning. It integrates with Numpy and dynamically generates C code. Theano has many defined computations (called Op) and Theano allows to extend custom Ops written in C code.
+
+Theano has more example codes and more stable than Tensorflow. This is because Tensorflow is newer than Theano and APIs of Tensorlfow keep changing. For example, many APIs in Tensorflow 1.x have different interfaces from APIs in Tensorflow 0.x.
+
+
+\subsection{DL4J}
+DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed deep-learning library for Java and Scala under the Apache 2.0 license. To compare with other deep learning libraries, DL4J can easily interact with Hadoop and Spark so neural networks built in DL4J can be used for big data.
 
 
 \section{Machine Learning with Driving Data}\label{sec:MLDD}
