@@ -1327,8 +1327,8 @@ Mean                  & 3:55:11 & 4:26:36 & 5:45:11 & 6:21:02 & 8:33:53 \\ \hlin
 \end{table}
 
 
-\subsection{Analysis Training LSTM in SAE and MAE}
-The difference between {\em first model} and other models is that other models have AE. Therefore, AE layer from {\em second model} and {\em third model} caused worse performance. The first evidence of this can be implied from training process. Figure \ref{fig:sae_accuracy} and Figure \ref{fig:mae_accuracy} show accuracy on each iterations during training. Figure \ref{fig:sae_loss} and Figure \ref{fig:mae_loss} show loss (error) on each iterations during training. Table \ref{tbl:sae_16_accuracy}, Table \ref{tbl:sae_32_accuracy}, Table \ref{tbl:sae_64_accuracy}, Table \ref{tbl:sae_128_accuracy}, and Table \ref{tbl:sae_256_accuracy} show detail of SAE train accuracy of 16 neurons, 32 neurons, 64 neurons, 128 neurons, and 256 neurons. Table \ref{tbl:mae_16_accuracy}, Table \ref{tbl:mae_32_accuracy}, Table \ref{tbl:mae_64_accuracy}, Table \ref{tbl:mae_128_accuracy}, and Table \ref{tbl:mae_256_accuracy} show detail of MAE train accuracy of 16 neurons, 32 neurons, 64 neurons, 128 neurons, and 256 neurons. Training LSTM in {\em second model} and {\em third model} were slow and most cases did not reach accurach 1 (100\%) unlikely that training LSTM in {\em first model} easily reached accuracy 1 (100\%). it implies data fed to LSTM has noise or problems. It means that AE in {\em second model} and {\em third model} did not work correctly.
+\subsection{Analysis Training LSTM in {\em second model} and {\em third model}}
+The difference between {\em first model} and other models is that other models have AE. Therefore, AE layer from {\em second model} and {\em third model} caused worse performance. The first evidence of this can be found from training LSTM in both models. Figure \ref{fig:sae_accuracy} and Figure \ref{fig:mae_accuracy} show accuracy of result from LSTM on each iterations during training. Figure \ref{fig:sae_loss} and Figure \ref{fig:mae_loss} show loss (error) on each iterations during training. Table \ref{tbl:sae_16_accuracy}, Table \ref{tbl:sae_32_accuracy}, Table \ref{tbl:sae_64_accuracy}, Table \ref{tbl:sae_128_accuracy}, and Table \ref{tbl:sae_256_accuracy} show detail of train accuracy from {\em second model} with 16 neurons, 32 neurons, 64 neurons, 128 neurons, and 256 neurons. Table \ref{tbl:mae_16_accuracy}, Table \ref{tbl:mae_32_accuracy}, Table \ref{tbl:mae_64_accuracy}, Table \ref{tbl:mae_128_accuracy}, and Table \ref{tbl:mae_256_accuracy} show detail of train accuracy from {\em third model} with 16 neurons, 32 neurons, 64 neurons, 128 neurons, and 256 neurons. Training LSTM in {\em second model} and {\em third model} were slow and most cases did not reach accurach 1 (100\%) unlikely that training LSTM in {\em first model} easily reached accuracy 1 (100\%). It implies data fed to LSTM has noise or problems. It means that AE in {\em second model} and {\em third model} did not work correctly. The next subsection covers more detail explain nation about error from AE in {\em second model} and {\em third model}.
 
 \begin{figure}[t!]
     \centering
@@ -1647,6 +1647,7 @@ The difference between {\em first model} and other models is that other models h
 \multicolumn{2}{|c|}{Std}                   & 0.0208325   & 0.04781121248 & 0.08032837701 & 0.07375412734 & 0.08855229679 & \multicolumn{1}{l|}{0.1187070488} & \multicolumn{1}{l|}{0.1074483726} & 0.1325280456 & 0.1030488131 \\ \hline
 \end{tabular}}
 \end{table}
+
 
 
 
