@@ -435,12 +435,12 @@ Each gate has transform matrices for inputs. Let $\bold{t_{n,m}}: \mathbb{R}^n \
 
 \subsection{Auto-encoder}\label{subsec:AE}
 
-This subsection introduces Auto-encoder and different kind of Auto-encoder: undercomplete Auto-encoder, overcomplete Auto-encoder, and multilayer Auto-encoder.
+This subsection introduces Auto-encoder and different kinds of Auto-encoder: undercomplete Auto-encoder, overcomplete Auto-encoder, and multilayer Auto-encoder.
 
-% and summarizes 'Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces to the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA.
+% and summarizes 'Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA.
 
 \subsubsection{Basic Auto-encoder}\label{subsubsec:BAE}
-An Auto-encoder (AE) is defined as a neural network that is trained to attempt to copy its input to its output \cite{Goodfellow-et-al-2016}. It means that AE takes input and sends it as output. However, AE does not directly send input to output. AE has two layers: encode layer and decode layer. Figure \ref{fig:AE} illustrates abstract structure of AE. Purpose of AE is to make output from decode same as input.
+An Auto-encoder (AE) is defined as a neural network that is trained to attempt to copy its inputs to its outputs \cite{Goodfellow-et-al-2016}. It means that AE takes inputs and sends it as outputs. However, AE does not directly send inputs to outputs. AE has two layers: a encode layer and a decode layer. Figure \ref{fig:AE} illustrates an abstract structure of AE. The purpose of AE is to make outputs from a decode layer same as inputs.
 
 \begin{figure}[t!]
     \centering
@@ -449,7 +449,7 @@ An Auto-encoder (AE) is defined as a neural network that is trained to attempt t
     \label{fig:AE}
 \end{figure}
 
-To describe AE, let $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ be input, $\vec{e} = \{e_1, ..., e_m\} \in \mathbb{R}^m$ be output from encoder layer, and $\vec{d} = \{d_1, ..., d_n\} \in \mathbb{R}^n$ be output from decoder layer. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for encode layer, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be a transform matrix for decode layer. Usually AE uses sigmoid for activation function. Figure \ref{fig:basic_AE} describes AE.
+To describe AE, let $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ be an input, $\vec{e} = \{e_1, ..., e_m\} \in \mathbb{R}^m$ be an output from an encoder layer, and $\vec{d} = \{d_1, ..., d_n\} \in \mathbb{R}^n$ be an output from a decoder layer. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for an encode layer, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be a transform matrix for a decode layer. Usually AE uses a sigmoid as an activation function. Figure \ref{fig:basic_AE} describes AE.
 
 \begin{figure}[t!]
     \centering
@@ -460,25 +460,25 @@ To describe AE, let $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ be input, $\v
 
 The output of encoder is
 $$\vec{e} = \bold{f}(\vec{X}\bold{U})$$
-where $\bold{f}$ is the activation function for encoder layer. It is usually sigmoid function.
+where $\bold{f}$ is the activation function for encoder layer. It is usually a sigmoid function.
 
 The output of decoder is
 $$\vec{d} = \bold{g}(\vec{E}\bold{V})$$
-where $\bold{g}$ is the activation function for decoder layer. It is usually sigmoid or linear function.
+where $\bold{g}$ is the activation function for decoder layer. It is usually a sigmoid or a linear function.
 
-The purpose of AE copies input as output. Therefore, the error function is calculated by
+The purpose of AE copies the input as the output. Therefore, the error function is calculated by
 $$E(\vec{x}, \vec{d}) = E(\vec{x}, \bold{g}(\vec{E}\bold{V})) = E(\vec{x}, \bold{g}(\bold{f}(\vec{x}\bold{u}+\vec{b_e})\bold{v}+\vec{b_d}))$$
-Where $\vec{b_e} = \{b_{e1}, ..., b_{em}\} \in \mathbb{R}^m$ is bias for encoder layer and $\vec{b_d} = \{b_{d1}, ..., b_{dm}\} \in \mathbb{R}^n$ is bias for decoder layer.
+Where $\vec{b_e} = \{b_{e1}, ..., b_{em}\} \in \mathbb{R}^m$ is the bias for the encoder layer and $\vec{b_d} = \{b_{d1}, ..., b_{dm}\} \in \mathbb{R}^n$ is the bias for the decoder layer.
 
-AE seems not useful because it only tries to copy input. However, AE is usually used with other neural network and other neural network uses data from encoder layer of AE not from decoder layer. Making similar values of input and decoder output guarantees that result from encode layer contains all information of input. It means that AE can represent same information of input data in different dimension. When dimension of encoder is higher than dimension of input, it is called overcomplete Auto-encoder. When dimension of encoder is lower than dimension of input, it is called undercomplete Auto-encoder.
+AE seems not useful because it only tries to copy inputs. However, AE is usually used with other neural network that uses data from an encoder layer of AE, not from a decoder layer. Making values of an input and a decoder output similar guarantees that a result from an encode layer contains all information of an input. It means that AE can represent the same information of an input data in different dimension. When the dimension of an encoder is higher than the dimension of an input, it is called an overcomplete Auto-encoder. When the dimension of an encoder is lower than the dimension of an input, it is called an undercomplete Auto-encoder.
 
-On this paper and experiment, undercomplete AE is used for reducing input dimension. Undercomplete AE is often compared with principal components analysis (PCA) because both methods reduce dimension. The paper \cite{hinton2006reducing} compares undercomplete AE and PCA. The result on the paper is that undercomplete AE could keep more information than PCA. It means that reducing data to low dimension by undercomplete AE gives better performance. However, training AE takes long time than computing information gain for PCA.
+On this paper and experiment, an undercomplete AE is used for reducing an input dimension. An undercomplete AE is often compared with principal components analysis (PCA) because both methods reduce dimensions. The paper \cite{hinton2006reducing} compares undercomplete AE and PCA. The result on the paper is that an undercomplete AE could keep more information than PCA. It means that reducing data to low dimension by an undercomplete AE gives better performance. However, training AE takes long time than computing information gained from PCA.
 
-% When auto-encoder is traind, it has two layers: encode and decode. The encode layer receives input and passes output in lower dimension data to decode layer. The decode layer recovers dimension to input data dimention from output of encode layer. The error of auto-encoder is measured by difference between input data and output from decode layer. In other words, encoder layer compresses input data and decoder layer decompresses data from encoder layer that should be similar as original input data. That methods guarantees that the data from encoder layer keeps almost all properties of input data in lower dimension. That is the reason why output data from decode layer is similar as original input data. In math, relationship between encoder and decoder layer is similar as inverse matrix of each other.
+% When an auto-encoder is trained, it has two layers: an encode and a decode. The encode layer receives inputs and passes outputs in lower dimension data to a decode layer. The decode layer recovers the dimension to the input data dimension from the output of the encode layer. The error of an auto-encoder is measured by difference between the input data and the output from the decode layer. In other words, the encoder layer compresses the input data and the decoder layer decompresses data from the encoder layer that should be similar as the original input data. That methods guarantees that the data from the encoder layer keeps almost all properties of the input data in lower dimension. That is the reason why the output data from the decode layer is similar as the original input data. In mathematics, the relationship between an encoder and a decoder layer is similar as an inverse matrix of each other.
 
 
 \subsubsection{Multilayer Auto-encoder}\label{subsubsec:MAE}
-	Sometimes AE is designed with multiple encoder and decoder layers to reduce dimension. Figure \ref{fig:MAE} shows multilayer auto-encoder (MAE). However, it is difficult to find the all weights of encoder and decoder in MAE because all weights are initialized with random numbers and it makes difficult to find optimize weights \cite{zaremba2014recurrent}. So if the initial weights are close to optimize weights, training algorithm gradient descent can find optimize weights. The paper \cite{zaremba2014recurrent} shows "pretraining" method to initialize good weights.
+	Sometimes AE is designed with multiple encoder and decoder layers to reduce dimension. Figure \ref{fig:MAE} shows multilayer auto-encoder (MAE). However, it is difficult to find all the weights of encoders and decoders in MAE because all weights are initialized with random numbers and it makes difficult to find optimized weights \cite{zaremba2014recurrent}. So if the initial weights are close to optimized weights, training algorithm gradient descent can find optimized weights. The paper \cite{zaremba2014recurrent} shows "pretraining" method to initialize good weights.
 
 \begin{figure}[t!]
     \centering
@@ -494,7 +494,7 @@ On this paper and experiment, undercomplete AE is used for reducing input dimens
     \label{fig:example_MAE}
 \end{figure}
 
-	Pretraining is to train each layer separately before train whole layers. For example, Figure \ref{fig:example_MAE} has three encoder and decoder layers. Let $\vec{x} \in \mathbb{R}^n$ be input vector, $\bold{e_1}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be transform matrix for first encoder layer, $\bold{e_2}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be transform matrix for second encoder layer, $\bold{e_3}: \mathbb{R}^l \rightarrow \mathbb{R}^k$ be transform matrix for third encoder layer, $\bold{d_1}: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be transform matrix for first decoder layer, $\bold{d_2}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be transform matrix for second decoder layer, $\bold{d_3}: \mathbb{R}^k \rightarrow \mathbb{R}^l$ be transform matrix for third decoder layer, and $\vec{o} \in \mathbb{R}^n$ be output vector.
+	Pretraining is to train each layer separately before training the whole layers. For example, Figure \ref{fig:example_MAE} has three encoder and decoder layers. Let $\vec{x} \in \mathbb{R}^n$ be an input vector, $\bold{e_1}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for the first encoder layer, $\bold{e_2}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for the second encoder layer, $\bold{e_3}: \mathbb{R}^l \rightarrow \mathbb{R}^k$ be a transform matrix for the third encoder layer, $\bold{d_1}: \mathbb{R}^m \rightarrow \mathbb{R}^n$ be a transform matrix for the first decoder layer, $\bold{d_2}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be a transform matrix for the second decoder layer, $\bold{d_3}: \mathbb{R}^k \rightarrow \mathbb{R}^l$ be a transform matrix for the third decoder layer, and $\vec{o} \in \mathbb{R}^n$ be an output vector.
 
 \begin{figure}[t!]
     \centering
@@ -517,30 +517,30 @@ On this paper and experiment, undercomplete AE is used for reducing input dimens
     \label{fig:train_MAE3}
 \end{figure}
 
-	In this case, pretraining has three steps because it has three encoder and decoder layers. Figure \ref{fig:train_MAE1} shows train of first encoder and decoder layer. While first encoder and decoder layer are trained, rest encoder and decoder are ignored. So error function is
+	In this case, pretraining has three steps because it has three encoder and decoder layers. Figure \ref{fig:train_MAE1} shows train of first encoder and decoder layer. While the first encoder and decoder layer are trained, the rest of encoders and decoders are ignored. So an error function is
 $$E(\vec{x}, \bold{g_1}(\bold{f_1}(\vec{X}\bold{E_1})\bold{D_1}))$$
-Figure \ref{fig:train_MAE2} shows train of second encoder and decoder layer. While second encoder and decoder layer are trained, transform matrix $\bold{e_1}$ and $\bold{d_1}$ are fixed because two transform matrix are already trained previous step. So error function is
+Figure \ref{fig:train_MAE2} shows the training of the second encoder and decoder layer. While the second encoder and decoder layer are trained, the transform matrix $\bold{e_1}$ and $\bold{d_1}$ are fixed because the two transform matrix are already trained in the previous step. So an error function is
 $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2})\bold{D_2})\bold{D_1^{fixed}}))$$
-The last step is Figure \ref{fig:train_MAE3} and it trains third encoder and decoder. During this, first and second encoder and decoder weights are fixed. So error function is
+The last step is Figure \ref{fig:train_MAE3} and it trains the third encoder and decoder. During the training, the first and the second encoder and decoder weights are fixed. So an error function is
 $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2^{fixed}})\bold{E_3})\bold{D_3})\bold{D_2^{fixed}})\bold{D_1^{fixed}}))$$
 
-	After finishing pretraining step, all weights are close enough to optimal weights for train algorithm to find optimize answer when it train whole neural network. So error function training whole network is
+	After finishing pretraining step, all weights are close enough to optimal weights for training algorithm to find the optimized answer when it trains the whole neural network. So an error function training the whole network is
 $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{E_3})\bold{D_3})\bold{D_2})\bold{D_1}))$$
 
 
 \section{Deep Learning Libraries}\label{sec:DLL}
-This section introduces to three popular libraries for deep learning.
+This section introduces three popular libraries for deep learning.
 
 \subsection{Tensorflow}
-Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operator as a node. For example, multiplication, addition, or sigmoid function are treated as a node.  This helps developers intuitively build neural network. Another strong points is TensorBoard. TensorBoard is a tool for Tensorflow to visualize neural networks built in Tensorflow. Also developers can review how neural networks are trained from TensorBoard because TensorBoard visualizes logs to track all parameters while neural networks are trained.
+Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operator as a node. For example, multiplication, addition, or sigmoid function are treated as a node.  This helps developers to intuitively build neural network. Another strength is a TensorBoard. A TensorBoard is a tool for Tensorflow to visualize neural networks built in Tensorflow. Developers can also review how neural networks are trained from TensorBoard because TensorBoard visualizes logs to track all parameters while neural networks are trained.
 
-The most famous example of Tensorflow is AlphaGo \footnote{\url{https://cloudplatform.googleblog.com/2016/05/Google-supercharges-machine-learning-tasks-with-custom-chip.html}}. Google engineer teams build AlphaGo with Tensorflow and the AlphaGo runs on Tensor Processing Unit (TPU).
+The most famous example of Tensorflow is AlphaGo \footnote{\url{https://cloudplatform.googleblog.com/2016/05/Google-supercharges-machine-learning-tasks-with-custom-chip.html}}. Google engineer teams built AlphaGo with Tensorflow and the AlphaGo runs on Tensor Processing Unit (TPU).
 
 
 \subsection{Theano}
 Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a Python library for machine learning. It integrates with Numpy and dynamically generates C code. Theano has many defined computations (called Op) and Theano allows to extend custom Ops written in C code.
 
-Theano has more example codes and more stable than Tensorflow. This is because Tensorflow is newer than Theano and APIs of Tensorlfow keep changing. For example, many APIs in Tensorflow 1.x have different interfaces from APIs in Tensorflow 0.x.
+Theano has more example codes and more stable than Tensorflow. This is because Tensorflow is newer than Theano and APIs of Tensorlfow keep changing. For example, many APIs in Tensorflow 1.x have different interfaces compared to APIs in Tensorflow 0.x.
 
 
 \subsection{DL4J}
@@ -555,7 +555,7 @@ DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed de
 
 Data was collected in the high-fidelity simulator \cite{lee2017learning} of the Center for Injury Research Prevention Studies at the \textit{Children's Hospital of Philadelphia} (CHOP). The driving simulator provides an environment similar to real driving to test users. It has a 160 degree front view, rear-view, left side, and right side mirror images. It also features a full car chassis with active pedals, steering wheel, and a full dashboard with even audio equipment.
 
-The experiments on this paper use 16 traces from 4 drivers: 2 people are expert drivers and 2 people are inexpert drivers. Each person drove four different tracks and each track represent different traffic situations and interactions with other vehicles. Each track has multiple instances of three scenarios that have been found to result in a high likelihood of crashing for 16-18 year- old teen drivers driving alone or with a peer passenger according to the NMVCCS (National Motor Vehicle Crash Causation Survey): 1) turning into opposite directions (turning left), 2) right roadside departure, and 3) rear-end events \cite{mcdonald2012using}. Thus, this results on a dataset that contains 8 traces of expert drivers, and 8 traces of inexpert drivers.
+The experiments on this paper use 16 traces from 4 drivers: 2 people were expert drivers and 2 people were inexpert drivers. Each person drove four different tracks and each track represents different traffic situations and interactions with other vehicles. Each track has multiple instances of three scenarios that have been found to result in a high likelihood of crashing for 16-18 year- old teen drivers driving alone or with a peer passenger according to the NMVCCS (National Motor Vehicle Crash Causation Survey): 1) turning into opposite directions (turning left), 2) right roadside departure, and 3) rear-end events \cite{mcdonald2012using}. Thus, this results on a dataset that contains 8 traces of expert drivers, and 8 traces of inexpert drivers.
 
 The simulator records 100 features which include car status: velocity, steer, Brake, throttle and etc. and include environment status features such as the current speed limit, whether the driver is instructed to make the next left or right turn, etc. These data is collected at 60Hz. The traces vary in length from 26298 to 51295, with an average of 33224.6875 instances. The specific lengths of each trace are shown on Table \ref{tbl:traces}
 
@@ -592,7 +592,7 @@ Trace15 & Inexpert1 & Track3 & 27255  \\ \hline
 \chapter{Technical Approach}
 % ####################################################################################################################################
 
-This chapter covers technical methods for experiments on the paper also introduces to three different neural network used for the experiments.
+This chapter covers technical methods for experiments on the paper and also introduces three different neural network used for the experiments.
 
 
 \section{Cross Validation}
@@ -607,9 +607,9 @@ Cross validation (CV) is used to validate model when data is not enough \cite{Go
 
 
 \section{LSTM}
-The LSTM neural network is used on three different neural network models to classify expert or inexpert driver because the data has time domain and LSTM gives good performance for serial data. On the paper, LSTM neural network is built with 16, 32, 64, 128, and 256 number of hidden neurons. The output from LSTM is sent to output layer which has two neurons. By using softmax, output from two neurons is classified. If it has [0, 1], it is classified to expert. Otherwise, it is classified to inexpert.
+The LSTM neural network is used on three different neural network models to classify expert or inexpert drivers because the data has time domain and LSTM gives good performance for serial data. On the paper, LSTM neural network is built with 16, 32, 64, 128, and 256 hidden neurons. The output from LSTM is sent to the output layer which has two neurons. By using a softmax, the output from two neurons is classified. If it has [0, 1], it is classified to experts. Otherwise, it is classified to inexperts.
 
-Figure \ref{fig:exp_NN1} shows first neural network model ({\em first model}) on the paper. Its input is {\em filtered dataset} which has 23 chosen features. The {\em filtered dataset} is feed directly to LSTM then the result is passed to output layer.
+Figure \ref{fig:exp_NN1} shows first neural network model ({\em first model}) on the paper. Its input is {\em filtered dataset} which has 23 chosen features. The {\em filtered dataset} is feed directly to LSTM then the result is passed to the output layer.
 
 \begin{figure}[t!]
     \centering
@@ -623,7 +623,7 @@ Figure \ref{fig:exp_NN1} shows first neural network model ({\em first model}) on
 The {\em raw dataset} has 98 features and it takes too much time to train nerual network if all 98 features are used. AE can solve the problem by reducing dimensions.
 
 \subsection{Single layer Auto-encoder}
-Figure \ref{fig:exp_NN2} shows second neural network model ({\em second model}) on the paper. The {\em second model} is added by one AE layer from {\em first model}. The purpose of the AE layer is to reduce 98 features to 25 features on {\em raw dataset}. Notice that the figure only has encoder because after training AE, only encoder is used to reduce dimensions. The output from encoder is passed to LSTM.
+Figure \ref{fig:exp_NN2} shows the second neural network model ({\em second model}) on the paper. The {\em second model} is added by one AE layer from {\em first model}. The purpose of the AE layer is to reduce 98 features to 25 features on {\em raw dataset}. Notice that the figure has an encoder only because after training AE, only an encoder is used to reduce dimensions. The output from the encoder is passed to LSTM.
 
 \begin{figure}[t!]
     \centering
@@ -634,7 +634,7 @@ Figure \ref{fig:exp_NN2} shows second neural network model ({\em second model}) 
 
 
 \subsection{Multiple layer Auto-encoder}
-Figure \ref{fig:exp_NN3} shows third neural network model ({\em third model}) on the paper. To compare performance between single layer AE and multiple layer AE, the {\em third model} has three layers of AE.  First AE reduces 98 dimensions to 75 dimensions, second AE reduces 75 dimensions to 50 dimensions and the last AE reduces 50 dimensions to 25 dimensions. The figure describes it with three encoder layers.
+Figure \ref{fig:exp_NN3} shows third neural network model ({\em third model}) on the paper. To compare the performance between a single layer AE and multiple layer AE, the {\em third model} has three layers of AE.  THe first AE reduces 98 dimensions to 75 dimensions, the second AE reduces 75 dimensions to 50 dimensions and the last AE reduces 50 dimensions to 25 dimensions. The figure describes it with three encoder layers.
 
 \begin{figure}[t!]
     \centering
@@ -645,7 +645,7 @@ Figure \ref{fig:exp_NN3} shows third neural network model ({\em third model}) on
 
 
 \section{Sampling}
-The simulator records 60 samples per second. It is too often recorded. The dataset is re-sampled by three different periods: 1 over 10, 1 over 20, and 1 over 50. When it is re-sampled, three methods are used. First method {\em last} chooses last sample of period, second method {\em mean} computes mean of data in period, and third method {\em gaussian} applies Gaussian filter. For third method, window size is 11, 21, and 51 for each periods which are one more greater than periods. Below example explains how to re-sample data.
+The simulator records 60 samples per second. It is too often recorded. The dataset is re-sampled by three different periods: 1 over 10, 1 over 20, and 1 over 50. When it is re-sampled, three methods are used. The first method {\em last} chooses the last sample of period, the second method {\em mean} computes mean of data in period, and the third method {\em gaussian} applies Gaussian filter. For the third method, window size is 11, 21, and 51 for each periods which are one more greater than periods. Below example explains how to re-sample data.
 
 \begin{table}[!t]
 \centering
@@ -692,7 +692,7 @@ Example Data \\ \hline
 
 Table \ref{tbl:example_data} shows example data and Table \ref{tbl:result_resample} shows result of re-sampled data by 1 over 10 from each methods. To explain three re-sample methods, let {\em first period} be $(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)$ and {\em second period} be $(11, 12, 13, 14, 15, 16, 17, 18, 19, 20)$. The {\em last} method takes last sample from each periods. The result from {\em last} method is $(10, 20)$ because last sample from {\em first period} is $10$ and last sample from {\em second period} is $20$. The {\em mean} method computes mean of samples in a period. The result from {\em mean} is $(5.5, 15.5)$ because mean of {\em first period} is $5.5$ and mean of {\em second period} is $15.5$.
 
-Before explaining {\em gaussian} method, Gaussian filter should be defined. The filter size is one more greater than sampling size. In this case, Gaussian filter size is 11 because sampling size is 10. Below equation is Gaussian equation and used to make Gaussian filter.
+Before explaining {\em gaussian} method, Gaussian filter should be defined. The filter size is greater than sampling size by 1. In this case, Gaussian filter size is 11 because sampling size is 10. Below equation is Gaussian equation and used to make Gaussian filter.
 $$g(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{x^2}{2\sigma^2}}$$
 where $\sigma = \frac{filter\_size-1}{6.0}$ because the sum of filter closes to 1 with the $\sigma$. With filter size 11, $\sigma$ is $1.667$.
 
@@ -765,7 +765,7 @@ Table \ref{tbl:gaussian_filter} shows size 11 Gaussian filter with $\sigma=1.667
 
 
 \section{Standardization}
-After feeding re-sampled data to three neural network models, the data is standardized: mean is 0, standard deviation is 1. CV is used for all experiments. Therefore, standardization is done in training set without testing set in CV. This is because testing set should be hidden until final neural network models are applied on that. Testing set refers mean and standard deviation from training set to standardize.
+After feeding re-sampled data to three neural network models, the data is standardized: mean is 0, standard deviation is 1. CV is used for all experiments. Therefore, standardization is done in a training set without a testing set in CV. This is because the testing set should be hidden until final neural network models are applied on that. The testing set refers mean and standard deviation from the training set to standardize.
 
 
 % ####################################################################################################################################
