@@ -499,14 +499,14 @@ On this paper and experiment, an undercomplete AE is used for reducing an input 
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.75\textwidth]{pictures/figures/train_MAE1.png}
+    \includegraphics[width=0.3\textwidth]{pictures/figures/train_MAE1.png}
     \caption{Pretraining First Step}
     \label{fig:train_MAE1}
 \end{figure}
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.75\textwidth]{pictures/figures/train_MAE2.png}
+    \includegraphics[width=0.5\textwidth]{pictures/figures/train_MAE2.png}
     \caption{Pretraining Second Step}
     \label{fig:train_MAE2}
 \end{figure}
@@ -520,10 +520,10 @@ On this paper and experiment, an undercomplete AE is used for reducing an input 
 
 	In this case, pretraining has three steps because it has three encoder and decoder layers. Figure \ref{fig:train_MAE1} shows train of first encoder and decoder layer. While the first encoder and decoder layer are trained, the rest of encoders and decoders are ignored. So an error function is
 $$E(\vec{x}, \bold{g_1}(\bold{f_1}(\vec{X}\bold{E_1})\bold{D_1}))$$
-Figure \ref{fig:train_MAE2} shows the training of the second encoder and decoder layer. While the second encoder and decoder layer are trained, the transform matrix $\bold{e_1}$ and $\bold{d_1}$ are fixed because the two transform matrix are already trained in the previous step. So an error function is
-$$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2})\bold{D_2})\bold{D_1^{fixed}}))$$
-The last step is Figure \ref{fig:train_MAE3} and it trains the third encoder and decoder. During the training, the first and the second encoder and decoder weights are fixed. So an error function is
-$$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2^{fixed}})\bold{E_3})\bold{D_3})\bold{D_2^{fixed}})\bold{D_1^{fixed}}))$$
+Figure \ref{fig:train_MAE2} shows the training of the second encoder and decoder layer. While the second encoder and decoder layer are trained, the transform matrix $\bold{e_1}$ is fixed because the transform matrix $\bold{e_1}$ is to create input for second layer encoder. So an error function is
+$$E(\bold{f_1}(\vec{X}\bold{E_1^{fixed}}), \bold{g_2}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2})\bold{D_2}))$$
+The last step is Figure \ref{fig:train_MAE3} and it trains the third encoder and decoder. During the training, the first and the second encoder weights are fixed. So an error function is
+$$E(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2^{fixed}}), \bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2^{fixed}})\bold{E_3})\bold{D_3}))$$
 
 	After finishing pretraining step, all weights are close enough to optimal weights for training algorithm to find the optimized answer when it trains the whole neural network. So an error function training the whole network is
 $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{E_3})\bold{D_3})\bold{D_2})\bold{D_1}))$$
@@ -2043,7 +2043,54 @@ Such big error between original input and output from decode layer implies that 
 % ####################################################################################################################################
 \chapter{Conclusion and Future work}
 % ####################################################################################################################################
-Conclusion and Future work\\
+\section{Data Size}
+Two different data sizes should be considered on this paper. First data size is number of samples in each traces. Data with more samples in each traces gave better performance from first part of experiments with {\em first model}. The average accuracy with 1 over 10 sampled data show higher accuracy than the average accuracy with 1 over 20 sampled data and 1 over 50 sampled data. From the fact, experiments with more sample, data without re-sampling or data from long driving time, are expected with better performance. 
+
+Another data size is the number of traces. All experiments on the paper used 16 traces. The 12 traces were used for training and the 4 traces were used for testing. The 12 traces were not enough to train neural networks: {\em first model}, {\em second model}, and {\em third model}. Especially, {\em second model} and {\em third model} need more data than {\em first model} because two models are more complex than {\em first model}. To train complex neural network needs more data. Next experiments in the future should use data with enough sample in each traces and enough number of traces. 
+
+\section{Limitation of Auto-encoder}
+The result from experiments with with SAE in {\em second model} and MAE in {\em third model} show bad performance. The principle of AE is to find two matrices: first matrix is used for compression and second matrix is used for decompression. If two matrices are not exist, impossible to reduce original dimensions to target dimensions, either SAE or MAE do not work. For example, during training first layer of MAE in {\em third model} which reduced 98 features to 75 features, error from this was less than 0.009. This is much better performance than reducing 98 dimensions to 25 dimensions. Therefore, the bad performance of AE implies that it is not possible to reduce 98 features of original data to 25 features by AE.
+
+The second limitation of AE is that auto-encoder always tries to keep all information on encoded data. It means that auto-encoder cannot remove unimportant features as principal components analysis (PCA) does. PCA is another popular method to reduce dimensions. It first takes a feature which has more information than other features. With the {\em raw dataset}, PCA is better method than AE because {\em raw dataset} has many unnecessary features.
+
+For future work, it is necessary to research AE for reducing dimensions with ability to ignore unimportant features and keep information from important features.
+
+\section{Training Multiple Layer Auto-encoder}
+Chapter \ref{subsubsec:MAE} explains how to train MAE based on \cite{hinton2006reducing}. The paper introduces pretraining process, and it can help initialize good weights. However, processing of pretraining takes really long time. For example, average testing time for {\em third model} with 256 neurons took 10 hours and 27 minutes but testing time for {\em second model} with 256 neurons took 8 hours and 33 minutes. The process of pretraining took about 2 hours.
+
+Unlikely train each layer separately in pretraining, add more AE untill it gives big error or it reaches goal dimensions. Figure \ref{fig:train_NMAE1}, Figure \ref{fig:train_NMAE2}, and Figure \ref{fig:train_NMAE3} show how to train MAE.
+
+	Figure \ref{fig:train_NMAE1} shows SAE and its error function is
+$$E(\vec{x}, \bold{g_1}(\bold{f_1}(\vec{X}\bold{E_1})\bold{D_1}))$$
+Now if it gives small enough error, add one more layer as Figure \ref{fig:train_NMAE2}. In this case, the error function is
+$$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{D_2})\bold{D_1}))$$
+If it also gives small enough error, add one more layer as Figure \ref{fig:train_NMAE3}. In this case, the error function is
+$$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{E_3})\bold{D_3})\bold{D_2})\bold{D_1}))$$
+If it does not give small error, stop adding more layer.
+
+This way can give two benefits. First benefit is to save train time. To compare with method on \cite{hinton2006reducing}, it does not train whole network because this way always train whole network. Another benefit is to find dimensions how much AE can reduce. For the future work, it is worth to compare two different train methods for MAE and find minimize dimensions reduced by AE.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.3\textwidth]{pictures/figures/train_new_MAE1.png}
+    \caption{First Step of New Way to train MAE}
+    \label{fig:train_NMAE1}
+\end{figure}
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pictures/figures/train_new_MAE2.png}
+    \caption{Second Step of New Way to train MAE}
+    \label{fig:train_NMAE2}
+\end{figure}
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{pictures/figures/train_new_MAE3.png}
+    \caption{Thrid Step of New Way to train MAE}
+    \label{fig:train_NMAE3}
+\end{figure}
+
 
 
 
