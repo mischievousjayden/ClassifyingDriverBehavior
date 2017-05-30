@@ -548,6 +548,10 @@ DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed de
 
 
 \section{Machine Learning with Driving Data}\label{sec:MLDD}
+People are concerned about driving behavior for safety.  Human driving behavior has been researched for long time. For example, Macadam illustrates the manual creation of control models showing aspects of human driving behavior on \cite{markkula2012review}.
+
+Many research for human driving behavior use machine learning approach. For example, the paper \cite{ontanon2014case} introduces case-based and instance-based learning for driving behavior. Also the paper \cite{nechyba1998stochastic} applies Hidden Markov Models introduced on \cite{rabiner1986introduction} to develop a similarity measure of control models. The approach is able to measure similarity between driving data from different drivers.
+
 
 % ####################################################################################################################################
 \chapter{Data Set}\label{chap:dataset}
@@ -1367,6 +1371,7 @@ Average                                                                   & 2:03
 \section{Experiments with {\em raw dataset}}
 The second part of experiments used {\em raw dataset} which has 98 features. The dataset was re-sampled only by 1 over 10 with {\em last} method. This is because the experiment time with {\em second model} with SAE and {\em third model} with MAE took much more than the experiment time with {\em first model}, and from the result of the first part of experiments, the best overall performance was from 1 over 10 re-sampled data and the best performance was from {\em last} method. The {\em second model} and {\em third model} were also tested four times with different number of neurons in LSTM hidden layer: 16, 32, 64, 128, and 256 neurons. The purpose of the second part of experiments is performance comparison between three different ways to reduce dimensions: human({\em first model}), SAE({\em second model}), and MAE({\em third model}). 
 
+
 \subsection{Comparison of results from three models}
 Figure \ref{fig:compare_result_last_1_10} compares accuracy of three models with data reduced dimensions by human, SAE, and MAE respectively. Table \ref{tbl:compare_accuracy_last_1_10} shows accuracy of three models, Table \ref{tbl:compare_std_last_1_10} shows detail standard deviation of three models, and Table \ref{tbl:compare_time_last_1_10} shows test time of three models. 
 
@@ -1513,11 +1518,25 @@ Model           & 16      & 32      & 64      & 128     & 256      & Average \\ 
 
 
 \subsection{Analysis Training LSTM in {\em second model} and {\em third model}}
-The difference between {\em first model} and other models is that other models have AE. Therefore, AE layer from {\em second model} and {\em third model} caused worse performance. The evidence of this can be found during training LSTM in both models. Figure \ref{fig:sae_accuracy} and Figure \ref{fig:mae_accuracy} show the accuracy of the result from LSTM on each iterations during training. Figure \ref{fig:sae_loss} and Figure \ref{fig:mae_loss} show the loss (error) on each iterations during training.
+The difference between {\em first model} and other models is that other models have AE. Therefore, AE layer from {\em second model} and {\em third model} caused worse performance. The evidence of this can be found during training LSTM in both models. Following six figures help to visualize it. Figure \ref{fig:human_accuracy} and Figure \ref{fig:human_loss} respectively show the accuracy and loss from LSTM of {\em first model} on each iterations during training. Figure \ref{fig:sae_accuracy} and Figure \ref{fig:sae_loss} respectively show the accuracy and loss from LSTM of {\em second model} on each iterations during training. Figure \ref{fig:mae_accuracy} and Figure \ref{fig:mae_loss} respectively show the accuracy and loss from LSTM of {\em third model} on each iterations during training.
 
 %Table \ref{tbl:sae_16_accuracy}, Table \ref{tbl:sae_32_accuracy}, Table \ref{tbl:sae_64_accuracy}, Table \ref{tbl:sae_128_accuracy}, and Table \ref{tbl:sae_256_accuracy} show the details of the train accuracy from {\em second model} with 16 neurons, 32 neurons, 64 neurons, 128 neurons, and 256 neurons. Table \ref{tbl:sae_16_loss}, Table \ref{tbl:sae_32_loss}, Table \ref{tbl:sae_64_loss}, Table \ref{tbl:sae_128_loss}, and Table \ref{tbl:sae_256_loss} show the details of the train loss from {\em second model} with 16 neurons, 32 neurons, 64 neurons, 128 neurons, and 256 neurons. Table \ref{tbl:mae_16_accuracy}, Table \ref{tbl:mae_32_accuracy}, Table \ref{tbl:mae_64_accuracy}, Table \ref{tbl:mae_128_accuracy}, and Table \ref{tbl:mae_256_accuracy} show the details of the train accuracy from {\em third model} with 16 neurons, 32 neurons, 64 neurons, 128 neurons, and 256 neurons. Table \ref{tbl:mae_16_loss}, Table \ref{tbl:mae_32_loss}, Table \ref{tbl:mae_64_loss}, Table \ref{tbl:mae_128_loss}, and Table \ref{tbl:mae_256_loss} show the details of the train loss from {\em third model} with 16 neurons, 32 neurons, 64 neurons, 128 neurons, and 256 neurons.
 
-Training LSTM in {\em second model} and {\em third model} were slow and most cases did not reach accuracy 1 (100\%) while the training LSTM in {\em first model} easily reached accuracy 1 (100\%). It implies that the data fed to LSTM had noise or problems. It also means that AE in {\em second model} and {\em third model} did not work correctly. The next subsection covers more detailed explanation about the error from AE in {\em second model} and {\em third model}.
+Training LSTM in {\em second model} and {\em third model} were slow and most cases did not reach accuracy 1 (100\%) while the training LSTM in {\em first model} easily reached accuracy 1 (100\%). Also loss of {\em second model} and {\em third model} did not close to 0. The {\em third model} gave increasing loss when it was trained more. It implies that the data fed to LSTM had noise or problems. It also means that AE in {\em second model} and {\em third model} did not work correctly. The next subsection covers more detailed explanation about the error from AE in {\em second model} and {\em third model}.
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=\textwidth]{pictures/result_pictures/Human_Accuracy.png}
+    \caption{Human Training Accuracy}
+    \label{fig:human_accuracy}
+\end{figure}
+
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=\textwidth]{pictures/result_pictures/Human_Loss.png}
+    \caption{Human Training Loss}
+    \label{fig:human_loss}
+\end{figure}
 
 \begin{figure}[t!]
     \centering
