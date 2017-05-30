@@ -777,447 +777,591 @@ This chapter summarizes results from all experiments. Experiments are divided to
 The first part of experiments used {\em filtered dataset} which has chosen 23 features. The dataset was re-sampled by 1 over 10, 1 over 20, and 1 over 50 with three different methods: {\em last}, {\em mean}, and {\em gaussian} so it was 9 different re-sampled datasets.
 
 \subsection{Resample 1 over 50}
-This subsection compares results from experiments with re-sampled {\em filtered dataset} by 1 over 50. Figure \ref{fig:filter_1_50} shows average accuracy of four tests on different number of neurons in LSTM hidden layer. Table \ref{tbl:last_1_50}, Table \ref{tbl:mean_1_50}, and Table \ref{tbl:gaussian_1_50} show detail result from {\em last} method, {\em mean} method, and {\em gaussian} method respectively. Table \ref{tbl:last_1_50_time}, Table \ref{tbl:mean_1_50_time}, and Table \ref{tbl:gaussian_1_50_time} show how much time experiments took from {\em last} method, {\em mean}method, and {\em gaussian} method respectively.
+This subsection compares results from experiments with 1 over 50 re-sampled {\em filtered dataset} by {\em last}, {\em mean}, and {\em gaussian} methods. Each dataset were tested four times with different number of neurons in LSTM hidden layer: 16, 32, 64, 128, and 256 neurons. Figure \ref{fig:filter_1_50} shows average accuracy from four tests on different number of neurons. Table \ref{tbl:filtered_avg_1_50} shows average accuracy of four tests on different number of neurons, Table \ref{tbl:filtered_std_1_50} shows standard deviation of four tests on different number of neurons, and Table \ref{tbl:filtered_time_1_50} shows test time of four tests on different number of neurons.
 
-The best performance was from {\em last} method with 16 number of neurons. The accuracy of this was 0.59375 (59.375\%). The worst performance was from {\em gaussian} method with 64 number of neurons. It was 0.40625 (40.625\%). Many accuracy were below 0.5 (50\%) and total average accuracy is 0.492708 (49.2708\%). The experiments with 1 over 50 re-sampled data took short time than experiments with 1 over 20 and 1 over 10 re-sampled data on later of this chapter.
+The best performance was from {\em last} method with 16 number of neurons. The accuracy of this was 0.59375 (59.375\%). The worst performance was from {\em gaussian} method with 64 number of neurons. It was 0.40625 (40.625\%). Test with 64 neurons gave most stable result because standard deviation of this was the smallest. Many accuracy were below 0.5 (50\%) and total average accuracy is 0.492708 (49.2708\%). The experiments with 1 over 50 re-sampled data took short time than experiments with 1 over 20 and 1 over 10 re-sampled data on later of this chapter.
 
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.75\textwidth]{pictures/result_pictures/filtered_1_50_result.png}
-    \caption{Result of 1 over 50 from {\em filtered dataset}}
+    \caption{Result of 1 over 50 Re-sampled {\em filtered dataset}}
     \label{fig:filter_1_50}
 \end{figure}
 
 \begin{table}[!t]
 \centering
-\caption{{\em last} method on 1 over 50 Re-sampled {\em filtered dataset}}
-\label{tbl:last_1_50}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                              \\ \cline{3-7}
-                      &                     & 16           & 32           & 64           & 128         & 256          \\ \hline
-\multirow{4}{*}{1}    & 1                   & 1            & 0.5          & 0.5          & 0.75        & 0.25         \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.25         & 0.5          & 0.25        & 0.75         \\ \cline{2-7}
-                      & 3                   & 0.75         & 0.25         & 0.25         & 0.75        & 0.75         \\ \cline{2-7}
-                      & 4                   & 0.75         & 0.75         & 0.5          & 0.75        & 0.75         \\ \hline
-\multirow{4}{*}{2}    & 1                   & 0.5          & 0            & 0.75         & 0.75        & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.25         & 0.5          & 0.5         & 0.25         \\ \cline{2-7}
-                      & 3                   & 0.75         & 0.25         & 0.25         & 0.5         & 1            \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.5          & 0.75         & 0.5         & 0.5          \\ \hline
-\multirow{4}{*}{3}    & 1                   & 0.5          & 0.75         & 0.5          & 0.75        & 0            \\ \cline{2-7}
-                      & 2                   & 0.5          & 0.5          & 0.75         & 0.75        & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.5          & 0.25         & 0.25        & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.75         & 0.75         & 0.75         & 0.25        & 0.5          \\ \hline
-\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 0.75         & 0.75        & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.5          & 0.5          & 0.25        & 0.75         \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.75         & 0.75         & 0.75        & 0.25         \\ \cline{2-7}
-                      & 4                   & 1            & 0.75         & 0.5          & 0.5         & 0.5          \\ \hline
-\multicolumn{2}{|c|}{Mean}                  & 0.59375      & 0.484375     & 0.546875     & 0.5625      & 0.515625     \\ \hline
-\multicolumn{2}{|c|}{Std}                   & 0.1983000672 & 0.2536196299 & 0.1547847968 & 0.249478623 & 0.2452677109 \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!t]
-\centering
-\caption{{\em mean} method on 1 over 50 Re-sampled {\em filtered dataset}}
-\label{tbl:mean_1_50}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                             \\ \cline{3-7}
-                      &                     & 16          & 32           & 64          & 128          & 256          \\ \hline
-\multirow{4}{*}{1}    & 1                   & 0.5         & 0.5          & 0           & 0.25         & 0.25         \\ \cline{2-7}
-                      & 2                   & 0.5         & 0.5          & 0.25        & 0.5          & 0.5          \\ \cline{2-7}
-                      & 3                   & 0           & 0.75         & 0.5         & 0.25         & 0.75         \\ \cline{2-7}
-                      & 4                   & 0           & 0.5          & 0.25        & 0.25         & 0.25         \\ \hline
-\multirow{4}{*}{2}    & 1                   & 0.5         & 0.5          & 0.5         & 0.5          & 0            \\ \cline{2-7}
-                      & 2                   & 0.25        & 0.25         & 0.5         & 0.75         & 0.75         \\ \cline{2-7}
-                      & 3                   & 0.5         & 0.5          & 0.75        & 0.5          & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.25        & 0.25         & 0.5         & 0.75         & 0.25         \\ \hline
-\multirow{4}{*}{3}    & 1                   & 0.5         & 0.25         & 0.5         & 0.5          & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.25        & 0.5          & 0.75        & 0.5          & 0.25         \\ \cline{2-7}
-                      & 3                   & 0.5         & 0.75         & 0.5         & 0.25         & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.75        & 0.5          & 0.5         & 0.75         & 0.5          \\ \hline
-\multirow{4}{*}{4}    & 1                   & 0.5         & 0.5          & 0.75        & 0.25         & 1            \\ \cline{2-7}
-                      & 2                   & 0.75        & 0.75         & 0.5         & 0.25         & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.5         & 0.25         & 0.25        & 0.25         & 0.75         \\ \cline{2-7}
-                      & 4                   & 0.5         & 0.75         & 0.75        & 0.25         & 0.75         \\ \hline
-\multicolumn{2}{|c|}{Mean}                  & 0.421875    & 0.5          & 0.484375    & 0.421875     & 0.484375     \\ \hline
-\multicolumn{2}{|c|}{Std}                   & 0.218303115 & 0.1825741858 & 0.213478141 & 0.1983000672 & 0.2656556355 \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!t]
-\centering
-\caption{{\em gaussian} method on 1 over 50 Re-sampled {\em filtered dataset}}
-\label{tbl:gaussian_1_50}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                              \\ \cline{3-7}
-                      &                     & 16           & 32           & 64           & 128         & 256          \\ \hline
-\multirow{4}{*}{1}    & 1                   & 0.25         & 0.5          & 0.5          & 0.25        & 0.25         \\ \cline{2-7}
-                      & 2                   & 0.75         & 0.75         & 0.25         & 0.75        & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.25         & 1            & 0.25         & 0.5         & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.25         & 0.25         & 0.5         & 0.75         \\ \hline
-\multirow{4}{*}{2}    & 1                   & 0.75         & 0.25         & 0.5          & 0.5         & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.5          & 0.75         & 0.25         & 0.5         & 0.25         \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.5          & 0.5          & 0           & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.75         & 0            & 0.75         & 0.75        & 1            \\ \hline
-\multirow{4}{*}{3}    & 1                   & 0.75         & 0.5          & 0.5          & 0.5         & 0.25         \\ \cline{2-7}
-                      & 2                   & 0.75         & 0.25         & 0.5          & 0           & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.75         & 0.25         & 0.5          & 0.75        & 0.75         \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.25         & 0.25         & 0.75        & 0.75         \\ \hline
-\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 0.5          & 0.75        & 0.25         \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.5          & 0.25         & 0.5         & 0.25         \\ \cline{2-7}
-                      & 3                   & 0.75         & 0.25         & 0.5          & 0.75        & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.25         & 0.25         & 0.5         & 0.25         \\ \hline
-\multicolumn{2}{|c|}{Mean}                  & 0.578125     & 0.421875     & 0.40625      & 0.515625    & 0.453125     \\ \hline
-\multicolumn{2}{|c|}{Std}                   & 0.1983000672 & 0.2536196299 & 0.1547847968 & 0.249478623 & 0.2452677109 \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!t]
-\centering
-\caption{{\em last} Test Time with 1 over 50 Re-sampled {\em filtered dataset}}
-\label{tbl:last_1_50_time}
+\caption{Average Accuracy of Result from 1 over 50 Re-sampled {\em filtered dataset}}
+\label{tbl:filtered_avg_1_50}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
-                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
-1                          & 0:18:41                      & 0:20:07                      & 0:23:00                      & 0:39:32                      & 0:54:27                      \\ \hline
-2                          & 0:16:28                      & 0:18:18                      & 0:22:19                      & 0:34:39                      & 0:47:47                      \\ \hline
-3                          & 0:16:25                      & 0:18:17                      & 0:22:15                      & 0:34:38                      & 0:49:43                      \\ \hline
-4                          & 0:16:36                      & 0:18:28                      & 0:23:19                      & 0:34:01                      & 0:53:42                      \\ \hline
-\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:17:03} & \multicolumn{1}{l|}{0:18:48} & \multicolumn{1}{l|}{0:22:43} & \multicolumn{1}{l|}{0:35:43} & \multicolumn{1}{l|}{0:51:25} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 50\\ Average\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}               \\ \cline{2-6} 
+                                                                             & 16       & 32       & 64           & 128      & 256      \\ \hline
+\textit{last}                                                                & 0.59375  & 0.484375 & 0.546875     & 0.5625   & 0.515625 \\ \hline
+\textit{mean}                                                                & 0.421875 & 0.5      & 0.484375     & 0.421875 & 0.484375 \\ \hline
+\textit{gaussian}                                                            & 0.578125 & 0.421875 & 0.40625      & 0.515625 & 0.453125 \\ \hline
+Average                                                                      & 0.53125  & 0.46875  & 0.4791666667 & 0.5      & 0.484375 \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[!t]
 \centering
-\caption{{\em mean} Test Time with 1 over 50 Re-sampled {\em filtered dataset}}
-\label{tbl:mean_1_50_time}
+\caption{Standard Deviation of Result from 1 over 50 Re-sampled {\em filtered dataset}}
+\label{tbl:filtered_std_1_50}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
-                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
-1                          & 0:18:33                      & 0:19:09                      & 0:23:59                      & 0:34:57                      & 0:51:25                      \\ \hline
-2                          & 0:16:25                      & 0:17:16                      & 0:22:33                      & 0:35:32                      & 0:47:26                      \\ \hline
-3                          & 0:16:48                      & 0:18:07                      & 0:22:46                      & 0:34:57                      & 0:52:14                      \\ \hline
-4                          & 0:16:39                      & 0:18:36                      & 0:23:23                      & 0:36:05                      & 0:51:44                      \\ \hline
-\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:17:03} & \multicolumn{1}{l|}{0:18:48} & \multicolumn{1}{l|}{0:22:43} & \multicolumn{1}{l|}{0:35:43} & \multicolumn{1}{l|}{0:51:25} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 50\\ Std.\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{2-6} 
+                                                                          & 16           & 32           & 64           & 128          & 256          \\ \hline
+\textit{last}                                                             & 0.1983000672 & 0.2536196299 & 0.1547847968 & 0.249478623  & 0.2452677109 \\ \hline
+\textit{mean}                                                             & 0.218303115  & 0.1825741858 & 0.213478141  & 0.1983000672 & 0.2656556355 \\ \hline
+\textit{gaussian}                                                         & 0.1983000672 & 0.2536196299 & 0.1547847968 & 0.249478623  & 0.2452677109 \\ \hline
+Average                                                                   & 0.2049677498 & 0.2299378152 & 0.1743492449 & 0.2324191044 & 0.2520636858 \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[!t]
 \centering
-\caption{{\em gaussian} Test Time with 1 over 50 Re-sampled {\em filtered dataset}}
-\label{tbl:gaussian_1_50_time}
+\caption{Test Time from 1 over 50 Re-sampled {\em filtered dataset}}
+\label{tbl:filtered_time_1_50}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
-                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
-1                          & 0:18:05                      & 0:18:33                      & 0:22:40                      & 0:37:31                      & 0:54:11                      \\ \hline
-2                          & 0:16:24                      & 0:18:08                      & 0:22:19                      & 0:35:22                      & 0:48:40                      \\ \hline
-3                          & 0:16:17                      & 0:18:00                      & 0:22:18                      & 0:35:12                      & 0:53:03                      \\ \hline
-4                          & 0:16:28                      & 0:18:39                      & 0:22:33                      & 0:34:25                      & 0:54:57                      \\ \hline
-\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:16:49} & \multicolumn{1}{l|}{0:18:20} & \multicolumn{1}{l|}{0:22:28} & \multicolumn{1}{l|}{0:35:38} & \multicolumn{1}{l|}{0:52:43} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 50\\ Time\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6} 
+                                                                          & 16      & 32      & 64      & 128     & 256     \\ \hline
+\textit{last}                                                             & 0:17:03 & 0:18:48 & 0:22:43 & 0:35:43 & 0:51:25 \\ \hline
+\textit{mean}                                                             & 0:17:06 & 0:18:17 & 0:23:10 & 0:35:23 & 0:50:42 \\ \hline
+\textit{gaussian}                                                         & 0:16:49 & 0:18:20 & 0:22:28 & 0:35:38 & 0:52:43 \\ \hline
+Average                                                                   & 0:16:59 & 0:18:28 & 0:22:47 & 0:35:35 & 0:51:37 \\ \hline
 \end{tabular}
 \end{table}
+
+
+%\begin{table}[!t]
+%\centering
+%\caption{{\em last} method on 1 over 50 Re-sampled {\em filtered dataset}}
+%\label{tbl:last_1_50}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                              \\ \cline{3-7}
+%                      &                     & 16           & 32           & 64           & 128         & 256          \\ \hline
+%\multirow{4}{*}{1}    & 1                   & 1            & 0.5          & 0.5          & 0.75        & 0.25         \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.25         & 0.5          & 0.25        & 0.75         \\ \cline{2-7}
+%                      & 3                   & 0.75         & 0.25         & 0.25         & 0.75        & 0.75         \\ \cline{2-7}
+%                      & 4                   & 0.75         & 0.75         & 0.5          & 0.75        & 0.75         \\ \hline
+%\multirow{4}{*}{2}    & 1                   & 0.5          & 0            & 0.75         & 0.75        & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.25         & 0.5          & 0.5         & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0.75         & 0.25         & 0.25         & 0.5         & 1            \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.5          & 0.75         & 0.5         & 0.5          \\ \hline
+%\multirow{4}{*}{3}    & 1                   & 0.5          & 0.75         & 0.5          & 0.75        & 0            \\ \cline{2-7}
+%                      & 2                   & 0.5          & 0.5          & 0.75         & 0.75        & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.5          & 0.25         & 0.25        & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.75         & 0.75         & 0.75         & 0.25        & 0.5          \\ \hline
+%\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 0.75         & 0.75        & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.5          & 0.5          & 0.25        & 0.75         \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.75         & 0.75         & 0.75        & 0.25         \\ \cline{2-7}
+%                      & 4                   & 1            & 0.75         & 0.5          & 0.5         & 0.5          \\ \hline
+%\multicolumn{2}{|c|}{Mean}                  & 0.59375      & 0.484375     & 0.546875     & 0.5625      & 0.515625     \\ \hline
+%\multicolumn{2}{|c|}{Std}                   & 0.1983000672 & 0.2536196299 & 0.1547847968 & 0.249478623 & 0.2452677109 \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em mean} method on 1 over 50 Re-sampled {\em filtered dataset}}
+%\label{tbl:mean_1_50}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                             \\ \cline{3-7}
+%                      &                     & 16          & 32           & 64          & 128          & 256          \\ \hline
+%\multirow{4}{*}{1}    & 1                   & 0.5         & 0.5          & 0           & 0.25         & 0.25         \\ \cline{2-7}
+%                      & 2                   & 0.5         & 0.5          & 0.25        & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0           & 0.75         & 0.5         & 0.25         & 0.75         \\ \cline{2-7}
+%                      & 4                   & 0           & 0.5          & 0.25        & 0.25         & 0.25         \\ \hline
+%\multirow{4}{*}{2}    & 1                   & 0.5         & 0.5          & 0.5         & 0.5          & 0            \\ \cline{2-7}
+%                      & 2                   & 0.25        & 0.25         & 0.5         & 0.75         & 0.75         \\ \cline{2-7}
+%                      & 3                   & 0.5         & 0.5          & 0.75        & 0.5          & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.25        & 0.25         & 0.5         & 0.75         & 0.25         \\ \hline
+%\multirow{4}{*}{3}    & 1                   & 0.5         & 0.25         & 0.5         & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.25        & 0.5          & 0.75        & 0.5          & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0.5         & 0.75         & 0.5         & 0.25         & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.75        & 0.5          & 0.5         & 0.75         & 0.5          \\ \hline
+%\multirow{4}{*}{4}    & 1                   & 0.5         & 0.5          & 0.75        & 0.25         & 1            \\ \cline{2-7}
+%                      & 2                   & 0.75        & 0.75         & 0.5         & 0.25         & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.5         & 0.25         & 0.25        & 0.25         & 0.75         \\ \cline{2-7}
+%                      & 4                   & 0.5         & 0.75         & 0.75        & 0.25         & 0.75         \\ \hline
+%\multicolumn{2}{|c|}{Mean}                  & 0.421875    & 0.5          & 0.484375    & 0.421875     & 0.484375     \\ \hline
+%\multicolumn{2}{|c|}{Std}                   & 0.218303115 & 0.1825741858 & 0.213478141 & 0.1983000672 & 0.2656556355 \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em gaussian} method on 1 over 50 Re-sampled {\em filtered dataset}}
+%\label{tbl:gaussian_1_50}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                              \\ \cline{3-7}
+%                      &                     & 16           & 32           & 64           & 128         & 256          \\ \hline
+%\multirow{4}{*}{1}    & 1                   & 0.25         & 0.5          & 0.5          & 0.25        & 0.25         \\ \cline{2-7}
+%                      & 2                   & 0.75         & 0.75         & 0.25         & 0.75        & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.25         & 1            & 0.25         & 0.5         & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.25         & 0.25         & 0.5         & 0.75         \\ \hline
+%\multirow{4}{*}{2}    & 1                   & 0.75         & 0.25         & 0.5          & 0.5         & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.5          & 0.75         & 0.25         & 0.5         & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.5          & 0.5          & 0           & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.75         & 0            & 0.75         & 0.75        & 1            \\ \hline
+%\multirow{4}{*}{3}    & 1                   & 0.75         & 0.5          & 0.5          & 0.5         & 0.25         \\ \cline{2-7}
+%                      & 2                   & 0.75         & 0.25         & 0.5          & 0           & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.75         & 0.25         & 0.5          & 0.75        & 0.75         \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.25         & 0.25         & 0.75        & 0.75         \\ \hline
+%\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 0.5          & 0.75        & 0.25         \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.5          & 0.25         & 0.5         & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0.75         & 0.25         & 0.5          & 0.75        & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.25         & 0.25         & 0.5         & 0.25         \\ \hline
+%\multicolumn{2}{|c|}{Mean}                  & 0.578125     & 0.421875     & 0.40625      & 0.515625    & 0.453125     \\ \hline
+%\multicolumn{2}{|c|}{Std}                   & 0.1983000672 & 0.2536196299 & 0.1547847968 & 0.249478623 & 0.2452677109 \\ \hline
+%\end{tabular}
+%\end{table}
+
+%%%%%
+
+%\begin{table}[!t]
+%\centering
+%\caption{{\em last} Test Time with 1 over 50 Re-sampled {\em filtered dataset}}
+%\label{tbl:last_1_50_time}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
+%                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
+%1                          & 0:18:41                      & 0:20:07                      & 0:23:00                      & 0:39:32                      & 0:54:27                      \\ \hline
+%2                          & 0:16:28                      & 0:18:18                      & 0:22:19                      & 0:34:39                      & 0:47:47                      \\ \hline
+%3                          & 0:16:25                      & 0:18:17                      & 0:22:15                      & 0:34:38                      & 0:49:43                      \\ \hline
+%4                          & 0:16:36                      & 0:18:28                      & 0:23:19                      & 0:34:01                      & 0:53:42                      \\ \hline
+%\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:17:03} & \multicolumn{1}{l|}{0:18:48} & \multicolumn{1}{l|}{0:22:43} & \multicolumn{1}{l|}{0:35:43} & \multicolumn{1}{l|}{0:51:25} \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em mean} Test Time with 1 over 50 Re-sampled {\em filtered dataset}}
+%\label{tbl:mean_1_50_time}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
+%                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
+%1                          & 0:18:33                      & 0:19:09                      & 0:23:59                      & 0:34:57                      & 0:51:25                      \\ \hline
+%2                          & 0:16:25                      & 0:17:16                      & 0:22:33                      & 0:35:32                      & 0:47:26                      \\ \hline
+%3                          & 0:16:48                      & 0:18:07                      & 0:22:46                      & 0:34:57                      & 0:52:14                      \\ \hline
+%4                          & 0:16:39                      & 0:18:36                      & 0:23:23                      & 0:36:05                      & 0:51:44                      \\ \hline
+%\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:17:03} & \multicolumn{1}{l|}{0:18:48} & \multicolumn{1}{l|}{0:22:43} & \multicolumn{1}{l|}{0:35:43} & \multicolumn{1}{l|}{0:51:25} \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em gaussian} Test Time with 1 over 50 Re-sampled {\em filtered dataset}}
+%\label{tbl:gaussian_1_50_time}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
+%                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
+%1                          & 0:18:05                      & 0:18:33                      & 0:22:40                      & 0:37:31                      & 0:54:11                      \\ \hline
+%2                          & 0:16:24                      & 0:18:08                      & 0:22:19                      & 0:35:22                      & 0:48:40                      \\ \hline
+%3                          & 0:16:17                      & 0:18:00                      & 0:22:18                      & 0:35:12                      & 0:53:03                      \\ \hline
+%4                          & 0:16:28                      & 0:18:39                      & 0:22:33                      & 0:34:25                      & 0:54:57                      \\ \hline
+%\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:16:49} & \multicolumn{1}{l|}{0:18:20} & \multicolumn{1}{l|}{0:22:28} & \multicolumn{1}{l|}{0:35:38} & \multicolumn{1}{l|}{0:52:43} \\ \hline
+%\end{tabular}
+%\end{table}
 
 
 \subsection{Resample 1 over 20}
-This subsection compares results from experiments with re-sampled {\em filtered dataset} by 1 over 20. Figure \ref{fig:filter_1_20} shows the average accuracy of four tests on different number of neurons in LSTM hidden layer. Table \ref{tbl:last_1_20}, Table \ref{tbl:mean_1_20}, and Table \ref{tbl:gaussian_1_20} show a detailed result from {\em last} method, {\em mean} method, and {\em gaussian} method respectively. Table \ref{tbl:last_1_20_time}, Table \ref{tbl:mean_1_20_time}, and Table \ref{tbl:gaussian_1_20_time} show how much time experiments took from {\em last} method, {\em mean}method, and {\em gaussian} method respectively.
+This subsection compares results from experiments with 1 over 20 re-sampled {\em filtered dataset} by {\em last}, {\em mean}, and {\em gaussian} methods. Each dataset were tested four times with different number of neurons in LSTM hidden layer: 16, 32, 64, 128, and 256 neurons. Figure \ref{fig:filter_1_20} shows average accuracy from four tests on different number of neurons. Table \ref{tbl:filtered_avg_1_20} shows average accuracy of four tests on different number of neurons, Table \ref{tbl:filtered_std_1_20} shows standard deviation of four tests on different number of neurons, and Table \ref{tbl:filtered_time_1_20} shows test time of four tests on different number of neurons.
 
-The best performance was from {\em mean} method with 32 and 256 number of neurons. The accuracy of this was 0.59375 (59.375\%) as same as best performance from experiments with 1 over 50 re-sampled data. The worst performance was also from {\em mean} method with 128 number of neurons. It was 0.375 (37.5\%), which was worse than the worst performance from experiments with 1 over 50 re-sampled data. However, the total average was 0.515625 (51.5625\%) which was slightly higher than the total average 0.492708 (49.2708\%) from experiments with 1 over 50 re-sampled data because size of 1 over 20 re-sampled data is 2.5 times more than size of 1 over 50 re-sampled data. More amount of data also affected the test time. Even size of the data is 2.5 times more, the test time took more than 2.5 times than the test time from experiments with 1 over 50 re-sampled data.
+The best performance was from {\em mean} method with 32 and 256 number of neurons. The accuracy of this was 0.59375 (59.375\%) as same as the best performance from experiments with 1 over 50 re-sampled data. The worst performance was also from {\em mean} method with 128 number of neurons. It was 0.375 (37.5\%), which was worse than the worst performance from experiments with 1 over 50 re-sampled data. Test with 16 neurons gave most stable result because standard deviation of this was the smallest. Test with 64 neurons was stable because its standard deviation was similar as standard deviation of test with 16 neurons. The total average was 0.515625 (51.5625\%) which was slightly higher than the total average 0.492708 (49.2708\%) from experiments with 1 over 50 re-sampled data because size of 1 over 20 re-sampled data was 2.5 times more than size of 1 over 50 re-sampled data. More amount of data also affected the test time. On the experiments, when size of the data was 2.5 times more, the test time took little bit more than 2.5 times than the test time from experiments with 1 over 50 re-sampled data.
 
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.75\textwidth]{pictures/result_pictures/filtered_1_20_result.png}
-    \caption{Result of 1 over 20 from {\em filtered dataset}}
+    \caption{Result of 1 over 20 Re-sampled {\em filtered dataset}}
     \label{fig:filter_1_20}
 \end{figure}
 
 \begin{table}[!t]
 \centering
-\caption{{\em last} method on 1 over 20 Re-sampled {\em filtered dataset}}
-\label{tbl:last_1_20}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                             \\ \cline{3-7}
-                      &                     & 16           & 32           & 64          & 128         & 256          \\ \hline
-\multirow{4}{*}{1}    & 1                   & 0.75         & 0.5          & 0.25        & 0.5         & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.5          & 0.25         & 0.75        & 0.5         & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.25         & 0.5         & 0.5         & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.25         & 0.75        & 0.25        & 0.5          \\ \hline
-\multirow{4}{*}{2}    & 1                   & 0.25         & 1            & 0.25        & 0.5         & 0            \\ \cline{2-7}
-                      & 2                   & 0.5          & 0.25         & 0.5         & 0.5         & 0.75         \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.25         & 0.5         & 0.5         & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.5          & 0.25        & 0.25        & 0.25         \\ \hline
-\multirow{4}{*}{3}    & 1                   & 0.25         & 0.75         & 0.5         & 0.5         & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.25         & 0            & 0.75        & 0.5         & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.5          & 0.5         & 0.75        & 0.75         \\ \cline{2-7}
-                      & 4                   & 0.25         & 0.5          & 0.5         & 0.25        & 0.75         \\ \hline
-\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 0.5         & 0.25        & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.75         & 1           & 0.75        & 0.25         \\ \cline{2-7}
-                      & 3                   & 0.75         & 0.75         & 0.25        & 0.75        & 1            \\ \cline{2-7}
-                      & 4                   & 0.75         & 0.25         & 0.5         & 1           & 0.5          \\ \hline
-\multicolumn{2}{|c|}{Mean}                  & 0.484375     & 0.453125     & 0.515625    & 0.515625    & 0.5          \\ \hline
-\multicolumn{2}{|c|}{Std}                   & 0.1929756029 & 0.2617051458 & 0.213478141 & 0.213478141 & 0.2415229458 \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!t]
-\centering
-\caption{{\em mean} method on 1 over 20 Re-sampled {\em filtered dataset}}
-\label{tbl:mean_1_20}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                           \\ \cline{3-7}
-                      &                     & 16       & 32           & 64           & 128          & 256          \\ \hline
-\multirow{4}{*}{1}    & 1                   & 0.5      & 0.5          & 0.5          & 0.25         & 0.75         \\ \cline{2-7}
-                      & 2                   & 0.25     & 0.5          & 0.25         & 0            & 1            \\ \cline{2-7}
-                      & 3                   & 0.75     & 0.25         & 0.75         & 0.25         & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.75     & 1            & 0.25         & 0.75         & 0.75         \\ \hline
-\multirow{4}{*}{2}    & 1                   & 0.75     & 0.75         & 0.5          & 0.5          & 0.75         \\ \cline{2-7}
-                      & 2                   & 0.75     & 0.25         & 0.5          & 0.25         & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.5      & 0.75         & 0.75         & 0.5          & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.5      & 0.5          & 0.75         & 0.5          & 0.75         \\ \hline
-\multirow{4}{*}{3}    & 1                   & 0.5      & 0.75         & 0.5          & 0            & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.75     & 1            & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.25     & 0.25         & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.5      & 0.5          & 0.5          & 0.75         & 0.75         \\ \hline
-\multirow{4}{*}{4}    & 1                   & 0.5      & 0.5          & 0.75         & 0.25         & 1            \\ \cline{2-7}
-                      & 2                   & 0.25     & 1            & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.5      & 0.5          & 0.5          & 0            & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.75     & 0.5          & 0.5          & 0.25         & 0.5          \\ \hline
-\multicolumn{2}{|c|}{Mean}                  & 0.546875 & 0.59375      & 0.53125      & 0.375        & 0.59375      \\ \hline
-\multicolumn{2}{|c|}{Std}                   & 0.1875   & 0.2561737691 & 0.1547847968 & 0.2581988897 & 0.2393567769 \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!t]
-\centering
-\caption{{\em gaussian} method on 1 over 20 Re-sampled {\em filtered dataset}}
-\label{tbl:gaussian_1_20}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
-                      &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
-\multirow{4}{*}{1}    & 1                   & 0.5          & 0.5          & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.25         & 0.25         & 0.5          & 0.75         \\ \cline{2-7}
-                      & 3                   & 0.75         & 1            & 0.75         & 0.25         & 0            \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.5          & 0.25         & 0.75         & 0.25         \\ \hline
-\multirow{4}{*}{2}    & 1                   & 0.75         & 0.75         & 0.5          & 0.25         & 1            \\ \cline{2-7}
-                      & 2                   & 1            & 0.75         & 0.75         & 0.75         & 0.25         \\ \cline{2-7}
-                      & 3                   & 0.75         & 0.75         & 0.75         & 0.25         & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.75         & 0.25         & 1            & 0.5          & 0.25         \\ \hline
-\multirow{4}{*}{3}    & 1                   & 0.75         & 0.75         & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
-                      & 2                   & 0            & 0.5          & 0.25         & 0.25         & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.75         & 0            & 0.5          & 0.75         & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.5          & 1            & 0.5          & 0.25         & 0.75         \\ \hline
-\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 1            & 0.75         & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.5          & 0.75         & 0.25         & 0.25         & 0.25         \\ \cline{2-7}
-                      & 3                   & 0.5          & 0            & 0.5          & 0.5          & 0.75         \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.25         & 0.75         & 0.5          & 0.5          \\ \hline
-\multicolumn{2}{|c|}{Mean}                  & 0.59375      & 0.53125      & 0.578125     & 0.46875      & 0.453125     \\ \hline
-\multicolumn{2}{|c|}{Std}                   & 0.2393567769 & 0.3145764348 & 0.2536196299 & 0.2015564437 & 0.2617051458 \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!t]
-\centering
-\caption{{\em last} Test Time with 1 over 20 Re-sampled {\em filtered dataset}}
-\label{tbl:last_1_20_time}
+\caption{Average Accuracy of Result from 1 over 20 Re-sampled {\em filtered dataset}}
+\label{tbl:filtered_avg_1_20}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
-                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
-1                          & 0:45:44                      & 1:00:53                      & 1:31:39                      & 2:12:21                      & 3:44:16                      \\ \hline
-2                          & 1:02:02                      & 1:03:06                      & 1:34:55                      & 2:13:50                      & 3:46:06                      \\ \hline
-3                          & 0:44:21                      & 0:54:35                      & 1:29:29                      & 2:19:05                      & 3:51:18                      \\ \hline
-4                          & 1:01:21                      & 0:56:54                      & 1:27:21                      & 2:16:57                      & 3:54:49                      \\ \hline
-\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:53:22} & \multicolumn{1}{l|}{0:58:52} & \multicolumn{1}{l|}{1:30:51} & \multicolumn{1}{l|}{2:15:33} & \multicolumn{1}{l|}{3:49:07} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 20\\ Average\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                       \\ \cline{2-6} 
+                                                                             & 16           & 32           & 64           & 128      & 256      \\ \hline
+\textit{last}                                                                & 0.484375     & 0.453125     & 0.515625     & 0.515625 & 0.5      \\ \hline
+\textit{mean}                                                                & 0.546875     & 0.59375      & 0.53125      & 0.375    & 0.59375  \\ \hline
+\textit{gaussian}                                                            & 0.59375      & 0.53125      & 0.578125     & 0.46875  & 0.453125 \\ \hline
+Average                                                                      & 0.5416666667 & 0.5260416667 & 0.5416666667 & 0.453125 & 0.515625 \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[!t]
 \centering
-\caption{{\em mean} Test Time with 1 over 20 Re-sampled {\em filtered dataset}}
-\label{tbl:mean_1_20_time}
+\caption{Standard Deviation of Result from 1 over 20 Re-sampled {\em filtered dataset}}
+\label{tbl:filtered_std_1_20}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
-                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
-1                          & 0:47:23                      & 0:59:46                      & 1:22:46                      & 2:10:24                      & 3:41:00                      \\ \hline
-2                          & 0:45:34                      & 1:01:17                      & 1:33:30                      & 2:21:38                      & 3:52:10                      \\ \hline
-3                          & 0:46:22                      & 0:53:08                      & 1:24:04                      & 2:11:51                      & 3:44:19                      \\ \hline
-4                          & 0:54:35                      & 1:04:00                      & 1:27:45                      & 2:12:49                      & 3:49:12                      \\ \hline
-\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:48:29} & \multicolumn{1}{l|}{0:59:33} & \multicolumn{1}{l|}{1:27:01} & \multicolumn{1}{l|}{2:14:11} & \multicolumn{1}{l|}{3:46:40} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 20\\ Std.\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{2-6} 
+                                                                          & 16           & 32           & 64           & 128          & 256          \\ \hline
+\textit{last}                                                             & 0.1929756029 & 0.2617051458 & 0.213478141  & 0.213478141  & 0.2415229458 \\ \hline
+\textit{mean}                                                             & 0.1875       & 0.2561737691 & 0.1547847968 & 0.2581988897 & 0.2393567769 \\ \hline
+\textit{gaussian}                                                         & 0.2393567769 & 0.3145764348 & 0.2536196299 & 0.2015564437 & 0.2617051458 \\ \hline
+Average                                                                   & 0.2066107933 & 0.2774851166 & 0.2072941892 & 0.2244111581 & 0.2475282895 \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[!t]
 \centering
-\caption{{\em gaussian} Test Time with 1 over 20 Re-sampled {\em filtered dataset}}
-\label{tbl:gaussian_1_20_time}
+\caption{Test Time from 1 over 20 Re-sampled {\em filtered dataset}}
+\label{tbl:filtered_time_1_20}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
-                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
-1                          & 0:47:04                      & 0:57:12                      & 1:24:38                      & 2:09:36                      & 3:46:59                      \\ \hline
-2                          & 0:56:09                      & 0:55:51                      & 1:32:44                      & 2:19:37                      & 4:00:33                      \\ \hline
-3                          & 0:46:57                      & 0:56:07                      & 1:29:21                      & 2:15:57                      & 3:47:52                      \\ \hline
-4                          & 0:45:48                      & 1:00:38                      & 1:27:35                      & 2:28:19                      & 3:35:48                      \\ \hline
-\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:49:00} & \multicolumn{1}{l|}{0:57:27} & \multicolumn{1}{l|}{1:28:35} & \multicolumn{1}{l|}{2:18:22} & \multicolumn{1}{l|}{3:47:48} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 20\\ Time\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6} 
+                                                                          & 16      & 32      & 64      & 128     & 256     \\ \hline
+\textit{last}                                                             & 0:53:22 & 0:58:52 & 1:30:51 & 2:15:33 & 3:49:07 \\ \hline
+\textit{mean}                                                             & 0:48:29 & 0:59:33 & 1:27:01 & 2:14:11 & 3:46:40 \\ \hline
+\textit{gaussian}                                                         & 0:49:00 & 0:57:27 & 1:28:35 & 2:18:22 & 3:47:48 \\ \hline
+Average                                                                   & 0:50:17 & 0:58:37 & 1:28:49 & 2:16:02 & 3:47:52 \\ \hline
 \end{tabular}
 \end{table}
+
+
+%\begin{table}[!t]
+%\centering
+%\caption{{\em last} method on 1 over 20 Re-sampled {\em filtered dataset}}
+%\label{tbl:last_1_20}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                             \\ \cline{3-7}
+%                      &                     & 16           & 32           & 64          & 128         & 256          \\ \hline
+%\multirow{4}{*}{1}    & 1                   & 0.75         & 0.5          & 0.25        & 0.5         & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.5          & 0.25         & 0.75        & 0.5         & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.25         & 0.5         & 0.5         & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.25         & 0.75        & 0.25        & 0.5          \\ \hline
+%\multirow{4}{*}{2}    & 1                   & 0.25         & 1            & 0.25        & 0.5         & 0            \\ \cline{2-7}
+%                      & 2                   & 0.5          & 0.25         & 0.5         & 0.5         & 0.75         \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.25         & 0.5         & 0.5         & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.5          & 0.25        & 0.25        & 0.25         \\ \hline
+%\multirow{4}{*}{3}    & 1                   & 0.25         & 0.75         & 0.5         & 0.5         & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0            & 0.75        & 0.5         & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.5          & 0.5         & 0.75        & 0.75         \\ \cline{2-7}
+%                      & 4                   & 0.25         & 0.5          & 0.5         & 0.25        & 0.75         \\ \hline
+%\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 0.5         & 0.25        & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.75         & 1           & 0.75        & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0.75         & 0.75         & 0.25        & 0.75        & 1            \\ \cline{2-7}
+%                      & 4                   & 0.75         & 0.25         & 0.5         & 1           & 0.5          \\ \hline
+%\multicolumn{2}{|c|}{Mean}                  & 0.484375     & 0.453125     & 0.515625    & 0.515625    & 0.5          \\ \hline
+%\multicolumn{2}{|c|}{Std}                   & 0.1929756029 & 0.2617051458 & 0.213478141 & 0.213478141 & 0.2415229458 \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em mean} method on 1 over 20 Re-sampled {\em filtered dataset}}
+%\label{tbl:mean_1_20}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                           \\ \cline{3-7}
+%                      &                     & 16       & 32           & 64           & 128          & 256          \\ \hline
+%\multirow{4}{*}{1}    & 1                   & 0.5      & 0.5          & 0.5          & 0.25         & 0.75         \\ \cline{2-7}
+%                      & 2                   & 0.25     & 0.5          & 0.25         & 0            & 1            \\ \cline{2-7}
+%                      & 3                   & 0.75     & 0.25         & 0.75         & 0.25         & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.75     & 1            & 0.25         & 0.75         & 0.75         \\ \hline
+%\multirow{4}{*}{2}    & 1                   & 0.75     & 0.75         & 0.5          & 0.5          & 0.75         \\ \cline{2-7}
+%                      & 2                   & 0.75     & 0.25         & 0.5          & 0.25         & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.5      & 0.75         & 0.75         & 0.5          & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.5      & 0.5          & 0.75         & 0.5          & 0.75         \\ \hline
+%\multirow{4}{*}{3}    & 1                   & 0.5      & 0.75         & 0.5          & 0            & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.75     & 1            & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.25     & 0.25         & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.5      & 0.5          & 0.5          & 0.75         & 0.75         \\ \hline
+%\multirow{4}{*}{4}    & 1                   & 0.5      & 0.5          & 0.75         & 0.25         & 1            \\ \cline{2-7}
+%                      & 2                   & 0.25     & 1            & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.5      & 0.5          & 0.5          & 0            & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.75     & 0.5          & 0.5          & 0.25         & 0.5          \\ \hline
+%\multicolumn{2}{|c|}{Mean}                  & 0.546875 & 0.59375      & 0.53125      & 0.375        & 0.59375      \\ \hline
+%\multicolumn{2}{|c|}{Std}                   & 0.1875   & 0.2561737691 & 0.1547847968 & 0.2581988897 & 0.2393567769 \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em gaussian} method on 1 over 20 Re-sampled {\em filtered dataset}}
+%\label{tbl:gaussian_1_20}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
+%                      &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
+%\multirow{4}{*}{1}    & 1                   & 0.5          & 0.5          & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.25         & 0.25         & 0.5          & 0.75         \\ \cline{2-7}
+%                      & 3                   & 0.75         & 1            & 0.75         & 0.25         & 0            \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.5          & 0.25         & 0.75         & 0.25         \\ \hline
+%\multirow{4}{*}{2}    & 1                   & 0.75         & 0.75         & 0.5          & 0.25         & 1            \\ \cline{2-7}
+%                      & 2                   & 1            & 0.75         & 0.75         & 0.75         & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0.75         & 0.75         & 0.75         & 0.25         & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.75         & 0.25         & 1            & 0.5          & 0.25         \\ \hline
+%\multirow{4}{*}{3}    & 1                   & 0.75         & 0.75         & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0            & 0.5          & 0.25         & 0.25         & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.75         & 0            & 0.5          & 0.75         & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.5          & 1            & 0.5          & 0.25         & 0.75         \\ \hline
+%\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 1            & 0.75         & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.5          & 0.75         & 0.25         & 0.25         & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0            & 0.5          & 0.5          & 0.75         \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.25         & 0.75         & 0.5          & 0.5          \\ \hline
+%\multicolumn{2}{|c|}{Mean}                  & 0.59375      & 0.53125      & 0.578125     & 0.46875      & 0.453125     \\ \hline
+%\multicolumn{2}{|c|}{Std}                   & 0.2393567769 & 0.3145764348 & 0.2536196299 & 0.2015564437 & 0.2617051458 \\ \hline
+%\end{tabular}
+%\end{table}
+
+%%%%%
+
+%\begin{table}[!t]
+%\centering
+%\caption{{\em last} Test Time with 1 over 20 Re-sampled {\em filtered dataset}}
+%\label{tbl:last_1_20_time}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
+%                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
+%1                          & 0:45:44                      & 1:00:53                      & 1:31:39                      & 2:12:21                      & 3:44:16                      \\ \hline
+%2                          & 1:02:02                      & 1:03:06                      & 1:34:55                      & 2:13:50                      & 3:46:06                      \\ \hline
+%3                          & 0:44:21                      & 0:54:35                      & 1:29:29                      & 2:19:05                      & 3:51:18                      \\ \hline
+%4                          & 1:01:21                      & 0:56:54                      & 1:27:21                      & 2:16:57                      & 3:54:49                      \\ \hline
+%\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:53:22} & \multicolumn{1}{l|}{0:58:52} & \multicolumn{1}{l|}{1:30:51} & \multicolumn{1}{l|}{2:15:33} & \multicolumn{1}{l|}{3:49:07} \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em mean} Test Time with 1 over 20 Re-sampled {\em filtered dataset}}
+%\label{tbl:mean_1_20_time}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
+%                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
+%1                          & 0:47:23                      & 0:59:46                      & 1:22:46                      & 2:10:24                      & 3:41:00                      \\ \hline
+%2                          & 0:45:34                      & 1:01:17                      & 1:33:30                      & 2:21:38                      & 3:52:10                      \\ \hline
+%3                          & 0:46:22                      & 0:53:08                      & 1:24:04                      & 2:11:51                      & 3:44:19                      \\ \hline
+%4                          & 0:54:35                      & 1:04:00                      & 1:27:45                      & 2:12:49                      & 3:49:12                      \\ \hline
+%\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:48:29} & \multicolumn{1}{l|}{0:59:33} & \multicolumn{1}{l|}{1:27:01} & \multicolumn{1}{l|}{2:14:11} & \multicolumn{1}{l|}{3:46:40} \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em gaussian} Test Time with 1 over 20 Re-sampled {\em filtered dataset}}
+%\label{tbl:gaussian_1_20_time}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
+%                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
+%1                          & 0:47:04                      & 0:57:12                      & 1:24:38                      & 2:09:36                      & 3:46:59                      \\ \hline
+%2                          & 0:56:09                      & 0:55:51                      & 1:32:44                      & 2:19:37                      & 4:00:33                      \\ \hline
+%3                          & 0:46:57                      & 0:56:07                      & 1:29:21                      & 2:15:57                      & 3:47:52                      \\ \hline
+%4                          & 0:45:48                      & 1:00:38                      & 1:27:35                      & 2:28:19                      & 3:35:48                      \\ \hline
+%\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{0:49:00} & \multicolumn{1}{l|}{0:57:27} & \multicolumn{1}{l|}{1:28:35} & \multicolumn{1}{l|}{2:18:22} & \multicolumn{1}{l|}{3:47:48} \\ \hline
+%\end{tabular}
+%\end{table}
 
 
 \subsection{Resample 1 over 10}
-This subsection compares results from experiments with re-sampled {\em filtered dataset} by 1 over 10. Figure \ref{fig:filter_1_10} shows average accuracy of four tests on different number of neurons in LSTM hidden layer. Table \ref{tbl:last_1_10}, Table \ref{tbl:mean_1_10}, and Table \ref{tbl:gaussian_1_10} show detail result from {\em last} method, {\em mean} method, and {\em gaussian} method respectively. Table \ref{tbl:last_1_10_time}, Table \ref{tbl:mean_1_10_time}, and Table \ref{tbl:gaussian_1_10_time} show how much time experiments took from {\em last} method, {\em mean}method, and {\em gaussian} method respectively.
+This subsection compares results from experiments with 1 over 10 re-sampled {\em filtered dataset} by {\em last}, {\em mean}, and {\em gaussian} methods. Each dataset were tested four times with different number of neurons in LSTM hidden layer: 16, 32, 64, 128, and 256 neurons. Figure \ref{fig:filter_1_10} shows average accuracy from four tests on different number of neurons. Table \ref{tbl:filtered_avg_1_10} shows average accuracy of four tests on different number of neurons, Table \ref{tbl:filtered_std_1_10} shows standard deviation of four tests on different number of neurons, and Table \ref{tbl:filtered_time_1_10} shows test time of four tests on different number of neurons.
 
-The best performance was from {\em last} method with 64 number of neurons. The accuracy of this was 0.6875 (68.75\%) and it was also the best accuracy from all experiments. The worst performance was also from {\em gaussian} method with 32 number of neurons. It was 0.40625 (40.625\%). The total average was 0.540625 (54.0625\%). Therefore, overall performance from experiments with 1 over 10 gave better result than from experiments with 1 over 20 and 1 over 50 re-sampled data. This is because 1 over 10 re-sampled data had largest amount of data and it caused better performance. However, test time increased as size of data increased. Especially, experiments with 256 neurons in LSTM hidden layer took average 6 hours 48 miniatures and total time from 12 experiments with 256 neurons took more than 3 days.
+The best performance was from {\em last} method with 64 number of neurons. The accuracy of this was 0.6875 (68.75\%) and it was also the best accuracy from all experiments. The worst performance was also from {\em gaussian} method with 32 number of neurons. It was 0.40625 (40.625\%). The total average was 0.540625 (54.0625\%). Test with 32 neurons gave the smallest standard deviation.
+
+Overall performance from experiments with 1 over 10 gave better result than from experiments with 1 over 20 and 1 over 50 re-sampled data. This is because 1 over 10 re-sampled data had largest amount of data and it caused better performance. However, test time increased as size of data increased. Especially, experiments with 256 neurons in LSTM hidden layer took average 6 hours 48 miniatures and total time from 12 experiments with 256 neurons took more than 3 days.
 
 \begin{figure}[t!]
     \centering
     \includegraphics[width=0.75\textwidth]{pictures/result_pictures/filtered_1_10_result.png}
-    \caption{Result of 1 over 10 from {\em filtered dataset}}
+    \caption{Result of 1 over 10 Re-sampled {\em filtered dataset}}
     \label{fig:filter_1_10}
 \end{figure}
 
 \begin{table}[!t]
 \centering
-\caption{{\em last} method on 1 over 10 Re-sampled {\em filtered dataset}}
-\label{tbl:last_1_10}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
-                      &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
-\multirow{4}{*}{1}    & 1                   & 0.5          & 0.25         & 1            & 0.5          & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.75         & 0.75         & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
-                      & 3                   & 1            & 0.5          & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.5          & 0.75         & 0.5          & 0.5          \\ \hline
-\multirow{4}{*}{2}    & 1                   & 0.5          & 0.75         & 0.75         & 0.75         & 0.75         \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.25         & 0.75         & 0.5          & 0.25         \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.5          & 0.25         & 0.75         & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.25         & 0.25         & 0.5          & 0.25         & 0.75         \\ \hline
-\multirow{4}{*}{3}    & 1                   & 0.75         & 0.25         & 1            & 0.75         & 0.25         \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.5          & 0.75         & 0.5          & 1            \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.75         & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.25         & 0.75         & 0.75         & 0.5          \\ \hline
-\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.5          & 0.5          & 1            & 0.25         \\ \cline{2-7}
-                      & 3                   & 0            & 0.75         & 1            & 0.75         & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.75         & 0.75         & 0.75         & 0.25         & 0.75         \\ \hline
-\multicolumn{2}{|c|}{Mean}                  & 0.5          & 0.5          & 0.6875       & 0.59375      & 0.5          \\ \hline
-\multicolumn{2}{|c|}{Std}                   & 0.2581988897 & 0.2041241452 & 0.2140872096 & 0.2015564437 & 0.2236067977 \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!t]
-\centering
-\caption{{\em mean} method on 1 over 10 Re-sampled {\em filtered dataset}}
-\label{tbl:mean_1_10}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
-                      &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
-\multirow{4}{*}{1}    & 1                   & 0.75         & 0.75         & 0.75         & 0.25         & 0.75         \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.5          & 0.75         & 0.25         & 0.25         \\ \cline{2-7}
-                      & 3                   & 0.75         & 0.75         & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.75         & 0.75         & 0.75         & 0            & 0.25         \\ \hline
-\multirow{4}{*}{2}    & 1                   & 0.5          & 0.5          & 0.75         & 0.25         & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.5          & 0.25         & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.25         & 0.25         & 0.5          & 0.75         & 0.75         \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.75         & 0.25         & 0.5          & 0.5          \\ \hline
-\multirow{4}{*}{3}    & 1                   & 0.5          & 0.5          & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.75         & 0.75         & 0.25         & 0.5          & 0.75         \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.5          & 1            & 0.5          & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.75         & 0.75         & 0.5          & 0.25         & 0.5          \\ \hline
-\multirow{4}{*}{4}    & 1                   & 0.5          & 0.5          & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.25         & 0.5          & 0.5          & 0.25         & 0.75         \\ \cline{2-7}
-                      & 3                   & 0.5          & 1            & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.25         & 0.5          & 1            & 0.75         & 0.5          \\ \hline
-\multicolumn{2}{|c|}{Mean}                  & 0.515625     & 0.59375      & 0.640625     & 0.4375       & 0.53125      \\ \hline
-\multicolumn{2}{|c|}{Std}                   & 0.1929756029 & 0.2015564437 & 0.2230237282 & 0.2140872096 & 0.1547847968 \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!t]
-\centering
-\caption{{\em gaussian} method on 1 over 10 Re-sampled {\em filtered dataset}}
-\label{tbl:gaussian_1_10}
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
-                      &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
-\multirow{4}{*}{1}    & 1                   & 0.5          & 0.5          & 0.75         & 0.5          & 0.75         \\ \cline{2-7}
-                      & 2                   & 0.5          & 0.75         & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.25         & 0.5          & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.5          & 0.5          & 0.5          & 0.75         \\ \hline
-\multirow{4}{*}{2}    & 1                   & 1            & 0.5          & 0.25         & 0.5          & 0            \\ \cline{2-7}
-                      & 2                   & 0.75         & 0.25         & 0.75         & 0.25         & 1            \\ \cline{2-7}
-                      & 3                   & 0.5          & 0            & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
-                      & 4                   & 0.25         & 0.25         & 0.25         & 0.75         & 0.75         \\ \hline
-\multirow{4}{*}{3}    & 1                   & 0.75         & 0.25         & 0.5          & 1            & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.5          & 0.5          & 0            & 1            & 0.5          \\ \cline{2-7}
-                      & 3                   & 0.75         & 0.5          & 0.5          & 0.5          & 0.75         \\ \cline{2-7}
-                      & 4                   & 0.25         & 0.5          & 0.5          & 0.75         & 0.5          \\ \hline
-\multirow{4}{*}{4}    & 1                   & 0.5          & 0.25         & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
-                      & 2                   & 0.75         & 0.5          & 0.75         & 0.75         & 0.75         \\ \cline{2-7}
-                      & 3                   & 0.5          & 0.5          & 0.5          & 0            & 0.25         \\ \cline{2-7}
-                      & 4                   & 0.5          & 0.25         & 0            & 0.75         & 0.75         \\ \hline
-\multicolumn{2}{|c|}{Mean}                  & 0.546875     & 0.40625      & 0.46875      & 0.609375     & 0.578125     \\ \hline
-\multicolumn{2}{|c|}{Std}                   & 0.2085415626 & 0.1796988221 & 0.2393567769 & 0.2576941016 & 0.2366211811 \\ \hline
-\end{tabular}
-\end{table}
-
-\begin{table}[!t]
-\centering
-\caption{{\em last} Test Time with 1 over 10 Re-sampled {\em filtered dataset}}
-\label{tbl:last_1_10_time}
+\caption{Average Accuracy of Result from 1 over 10 Re-sampled {\em filtered dataset}}
+\label{tbl:filtered_avg_1_10}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
-                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
-1                          & 2:13:13                      & 2:21:07                      & 3:02:52                      & 4:25:58                      & 6:42:39                      \\ \hline
-2                          & 2:12:00                      & 2:19:41                      & 3:09:02                      & 4:35:59                      & 6:55:31                      \\ \hline
-3                          & 2:14:25                      & 2:22:30                      & 3:03:53                      & 4:27:02                      & 6:50:01                      \\ \hline
-4                          & 2:08:12                      & 2:21:27                      & 3:02:30                      & 4:24:37                      & 5:55:15                      \\ \hline
-\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{2:11:58} & \multicolumn{1}{l|}{2:21:11} & \multicolumn{1}{l|}{3:04:34} & \multicolumn{1}{l|}{4:28:24} & \multicolumn{1}{l|}{6:35:52} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 10\\ Average\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                      \\ \cline{2-6} 
+                                                                             & 16           & 32      & 64           & 128      & 256          \\ \hline
+\textit{last}                                                                & 0.5          & 0.5     & 0.6875       & 0.59375  & 0.5          \\ \hline
+\textit{mean}                                                                & 0.515625     & 0.59375 & 0.640625     & 0.4375   & 0.53125      \\ \hline
+\textit{gaussian}                                                            & 0.546875     & 0.40625 & 0.46875      & 0.609375 & 0.578125     \\ \hline
+Average                                                                      & 0.5208333333 & 0.5     & 0.5989583333 & 0.546875 & 0.5364583333 \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[!t]
 \centering
-\caption{{\em mean} Test Time with 1 over 10 Re-sampled {\em filtered dataset}}
-\label{tbl:mean_1_10_time}
+\caption{Standard Deviation of Result from 1 over 10 Re-sampled {\em filtered dataset}}
+\label{tbl:filtered_std_1_10}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
-                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
-1                          & 1:50:32                      & 2:26:14                      & 2:42:42                      & 4:23:05                      & 6:50:48                      \\ \hline
-2                          & 1:59:38                      & 3:02:34                      & 3:20:51                      & 4:28:45                      & 7:10:39                      \\ \hline
-3                          & 1:57:17                      & 1:52:17                      & 2:49:14                      & 4:16:30                      & 6:48:25                      \\ \hline
-4                          & 2:09:51                      & 2:16:48                      & 3:28:13                      & 4:36:27                      & 7:02:04                      \\ \hline
-\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{1:59:20} & \multicolumn{1}{l|}{2:24:28} & \multicolumn{1}{l|}{3:05:15} & \multicolumn{1}{l|}{4:26:12} & \multicolumn{1}{l|}{6:57:59} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 10\\ Std.\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{2-6} 
+                                                                          & 16           & 32           & 64           & 128          & 256          \\ \hline
+\textit{last}                                                             & 0.2581988897 & 0.2041241452 & 0.2140872096 & 0.2015564437 & 0.2236067977 \\ \hline
+\textit{mean}                                                             & 0.1929756029 & 0.2015564437 & 0.2230237282 & 0.2140872096 & 0.1547847968 \\ \hline
+\textit{gaussian}                                                         & 0.2085415626 & 0.1796988221 & 0.2393567769 & 0.2576941016 & 0.2366211811 \\ \hline
+Average                                                                   & 0.2199053517 & 0.1951264703 & 0.2254892382 & 0.2244459183 & 0.2050042585 \\ \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[!t]
 \centering
-\caption{{\em gaussian} Test Time with 1 over 10 Re-sampled {\em filtered dataset}}
-\label{tbl:gaussian_1_10_time}
+\caption{Test Time from 1 over 10 Re-sampled {\em filtered dataset}}
+\label{tbl:filtered_time_1_10}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
-                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
-1                          & 2:03:47                      & 2:36:34                      & 2:52:38                      & 4:18:07                      & 6:50:52                      \\ \hline
-2                          & 1:50:33                      & 2:27:43                      & 3:26:58                      & 4:39:46                      & 7:07:22                      \\ \hline
-3                          & 2:10:52                      & 2:03:13                      & 2:39:12                      & 4:34:03                      & 6:42:58                      \\ \hline
-4                          & 1:56:08                      & 2:21:53                      & 3:25:02                      & 4:24:05                      & 6:47:56                      \\ \hline
-\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{2:00:20} & \multicolumn{1}{l|}{2:22:21} & \multicolumn{1}{l|}{3:05:58} & \multicolumn{1}{l|}{4:29:00} & \multicolumn{1}{l|}{6:52:17} \\ \hline
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 10\\ Time\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6} 
+                                                                          & 16      & 32      & 64      & 128     & 256     \\ \hline
+\textit{last}                                                             & 2:11:58 & 2:21:11 & 3:04:34 & 4:28:24 & 6:35:52 \\ \hline
+\textit{mean}                                                             & 1:59:20 & 2:24:28 & 3:05:15 & 4:26:12 & 6:57:59 \\ \hline
+\textit{gaussian}                                                         & 2:00:20 & 2:22:21 & 3:05:58 & 4:29:00 & 6:52:17 \\ \hline
+Average                                                                   & 2:03:53 & 2:22:40 & 3:05:16 & 4:27:52 & 6:48:43 \\ \hline
 \end{tabular}
 \end{table}
+
+
+%\begin{table}[!t]
+%\centering
+%\caption{{\em last} method on 1 over 10 Re-sampled {\em filtered dataset}}
+%\label{tbl:last_1_10}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
+%                      &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
+%\multirow{4}{*}{1}    & 1                   & 0.5          & 0.25         & 1            & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.75         & 0.75         & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 3                   & 1            & 0.5          & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.5          & 0.75         & 0.5          & 0.5          \\ \hline
+%\multirow{4}{*}{2}    & 1                   & 0.5          & 0.75         & 0.75         & 0.75         & 0.75         \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.25         & 0.75         & 0.5          & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.5          & 0.25         & 0.75         & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.25         & 0.25         & 0.5          & 0.25         & 0.75         \\ \hline
+%\multirow{4}{*}{3}    & 1                   & 0.75         & 0.25         & 1            & 0.75         & 0.25         \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.5          & 0.75         & 0.5          & 1            \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.75         & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.25         & 0.75         & 0.75         & 0.5          \\ \hline
+%\multirow{4}{*}{4}    & 1                   & 0.75         & 0.5          & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.5          & 0.5          & 1            & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0            & 0.75         & 1            & 0.75         & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.75         & 0.75         & 0.75         & 0.25         & 0.75         \\ \hline
+%\multicolumn{2}{|c|}{Mean}                  & 0.5          & 0.5          & 0.6875       & 0.59375      & 0.5          \\ \hline
+%\multicolumn{2}{|c|}{Std}                   & 0.2581988897 & 0.2041241452 & 0.2140872096 & 0.2015564437 & 0.2236067977 \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em mean} method on 1 over 10 Re-sampled {\em filtered dataset}}
+%\label{tbl:mean_1_10}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
+%                      &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
+%\multirow{4}{*}{1}    & 1                   & 0.75         & 0.75         & 0.75         & 0.25         & 0.75         \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.5          & 0.75         & 0.25         & 0.25         \\ \cline{2-7}
+%                      & 3                   & 0.75         & 0.75         & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.75         & 0.75         & 0.75         & 0            & 0.25         \\ \hline
+%\multirow{4}{*}{2}    & 1                   & 0.5          & 0.5          & 0.75         & 0.25         & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.5          & 0.25         & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.25         & 0.25         & 0.5          & 0.75         & 0.75         \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.75         & 0.25         & 0.5          & 0.5          \\ \hline
+%\multirow{4}{*}{3}    & 1                   & 0.5          & 0.5          & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.75         & 0.75         & 0.25         & 0.5          & 0.75         \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.5          & 1            & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.75         & 0.75         & 0.5          & 0.25         & 0.5          \\ \hline
+%\multirow{4}{*}{4}    & 1                   & 0.5          & 0.5          & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.25         & 0.5          & 0.5          & 0.25         & 0.75         \\ \cline{2-7}
+%                      & 3                   & 0.5          & 1            & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.25         & 0.5          & 1            & 0.75         & 0.5          \\ \hline
+%\multicolumn{2}{|c|}{Mean}                  & 0.515625     & 0.59375      & 0.640625     & 0.4375       & 0.53125      \\ \hline
+%\multicolumn{2}{|c|}{Std}                   & 0.1929756029 & 0.2015564437 & 0.2230237282 & 0.2140872096 & 0.1547847968 \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em gaussian} method on 1 over 10 Re-sampled {\em filtered dataset}}
+%\label{tbl:gaussian_1_10}
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
+%                      &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
+%\multirow{4}{*}{1}    & 1                   & 0.5          & 0.5          & 0.75         & 0.5          & 0.75         \\ \cline{2-7}
+%                      & 2                   & 0.5          & 0.75         & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.25         & 0.5          & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.5          & 0.5          & 0.5          & 0.75         \\ \hline
+%\multirow{4}{*}{2}    & 1                   & 1            & 0.5          & 0.25         & 0.5          & 0            \\ \cline{2-7}
+%                      & 2                   & 0.75         & 0.25         & 0.75         & 0.25         & 1            \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0            & 0.75         & 0.5          & 0.5          \\ \cline{2-7}
+%                      & 4                   & 0.25         & 0.25         & 0.25         & 0.75         & 0.75         \\ \hline
+%\multirow{4}{*}{3}    & 1                   & 0.75         & 0.25         & 0.5          & 1            & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.5          & 0.5          & 0            & 1            & 0.5          \\ \cline{2-7}
+%                      & 3                   & 0.75         & 0.5          & 0.5          & 0.5          & 0.75         \\ \cline{2-7}
+%                      & 4                   & 0.25         & 0.5          & 0.5          & 0.75         & 0.5          \\ \hline
+%\multirow{4}{*}{4}    & 1                   & 0.5          & 0.25         & 0.5          & 0.75         & 0.5          \\ \cline{2-7}
+%                      & 2                   & 0.75         & 0.5          & 0.75         & 0.75         & 0.75         \\ \cline{2-7}
+%                      & 3                   & 0.5          & 0.5          & 0.5          & 0            & 0.25         \\ \cline{2-7}
+%                      & 4                   & 0.5          & 0.25         & 0            & 0.75         & 0.75         \\ \hline
+%\multicolumn{2}{|c|}{Mean}                  & 0.546875     & 0.40625      & 0.46875      & 0.609375     & 0.578125     \\ \hline
+%\multicolumn{2}{|c|}{Std}                   & 0.2085415626 & 0.1796988221 & 0.2393567769 & 0.2576941016 & 0.2366211811 \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em last} Test Time with 1 over 10 Re-sampled {\em filtered dataset}}
+%\label{tbl:last_1_10_time}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
+%                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
+%1                          & 2:13:13                      & 2:21:07                      & 3:02:52                      & 4:25:58                      & 6:42:39                      \\ \hline
+%2                          & 2:12:00                      & 2:19:41                      & 3:09:02                      & 4:35:59                      & 6:55:31                      \\ \hline
+%3                          & 2:14:25                      & 2:22:30                      & 3:03:53                      & 4:27:02                      & 6:50:01                      \\ \hline
+%4                          & 2:08:12                      & 2:21:27                      & 3:02:30                      & 4:24:37                      & 5:55:15                      \\ \hline
+%\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{2:11:58} & \multicolumn{1}{l|}{2:21:11} & \multicolumn{1}{l|}{3:04:34} & \multicolumn{1}{l|}{4:28:24} & \multicolumn{1}{l|}{6:35:52} \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em mean} Test Time with 1 over 10 Re-sampled {\em filtered dataset}}
+%\label{tbl:mean_1_10_time}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
+%                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
+%1                          & 1:50:32                      & 2:26:14                      & 2:42:42                      & 4:23:05                      & 6:50:48                      \\ \hline
+%2                          & 1:59:38                      & 3:02:34                      & 3:20:51                      & 4:28:45                      & 7:10:39                      \\ \hline
+%3                          & 1:57:17                      & 1:52:17                      & 2:49:14                      & 4:16:30                      & 6:48:25                      \\ \hline
+%4                          & 2:09:51                      & 2:16:48                      & 3:28:13                      & 4:36:27                      & 7:02:04                      \\ \hline
+%\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{1:59:20} & \multicolumn{1}{l|}{2:24:28} & \multicolumn{1}{l|}{3:05:15} & \multicolumn{1}{l|}{4:26:12} & \multicolumn{1}{l|}{6:57:59} \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%\begin{table}[!t]
+%\centering
+%\caption{{\em gaussian} Test Time with 1 over 10 Re-sampled {\em filtered dataset}}
+%\label{tbl:gaussian_1_10_time}
+%\begin{tabular}{|c|c|c|c|c|c|}
+%\hline
+%\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
+%                           & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
+%1                          & 2:03:47                      & 2:36:34                      & 2:52:38                      & 4:18:07                      & 6:50:52                      \\ \hline
+%2                          & 1:50:33                      & 2:27:43                      & 3:26:58                      & 4:39:46                      & 7:07:22                      \\ \hline
+%3                          & 2:10:52                      & 2:03:13                      & 2:39:12                      & 4:34:03                      & 6:42:58                      \\ \hline
+%4                          & 1:56:08                      & 2:21:53                      & 3:25:02                      & 4:24:05                      & 6:47:56                      \\ \hline
+%\multicolumn{1}{|l|}{Mean} & \multicolumn{1}{l|}{2:00:20} & \multicolumn{1}{l|}{2:22:21} & \multicolumn{1}{l|}{3:05:58} & \multicolumn{1}{l|}{4:29:00} & \multicolumn{1}{l|}{6:52:17} \\ \hline
+%\end{tabular}
+%\end{table}
 
 
 \section{Experiments with {\em raw dataset}}
