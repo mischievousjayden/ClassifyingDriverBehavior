@@ -95,11 +95,11 @@ Our results show that using an intermediate number of neurons in the LSTM networ
 % ####################################################################################################################################
 \chapter{Introduction}\label{chap:intro}
 % ####################################################################################################################################
-Most people spend several hours per day for driving vehicle when they go to work, school or shopping. Modern car systems collect real-time data of car status and driving behavior. Those recorded data is good source for healthcare and research but it has rarely been used. This paper is done in the context of the {\em Diagnostic Driving} project, an NSF funded collaborative project between Drexel, Children Hospital of Philadelphia and the University of Central Florida that aims at studying the possibility of using driving behavior data to diagnose medical conditions.
+Most people spend several hours per day for driving vehicle when they go to work, school or shopping. Modern car systems collect real-time data of the car status and driving behavior of the driver. Moreover, such recorded data is a very promising data source for healthcare and research, which has currently been rarely been used. This paper is done in the context of the {\em Diagnostic Driving} project, an NSF funded collaborative project between Drexel, Children Hospital of Philadelphia, George Mason University and the University of Central Florida that aims at studying the possibility of using driving behavior data to diagnose medical conditions.
 
-The paper focuses on the classification of driving simulation data from novice and expert drivers by three different neural network models. Two datasets are used on the paper. First dataset has 16 traces from four drivers: two are inexpert drivers and two are expert drivers. Each drivers drove four different tracks. Second dataset is from first dataset but only 23 features are selected from original dataset. Three models consist of Long-Short Term Memory (LSTM) network. First model uses second dataset to classify data. Second model uses single layer auto-encoder to reduce dimensions of first dataset then classifies it by LSTM. The last model uses multiple layer auto-encoder to reduce dimensions of first dataset then classifies it by LSTM.
+The paper focuses on the classification of driving simulation data from novice and expert drivers using several different neural network models. The task is thus, to predict, whether a new unseen before driver is an expert or a novice driving just by the data recorded from a driving simulator. Two datasets are used on the paper. The first dataset contains 16 traces from four drivers: two are inexpert drivers and two are expert drivers. Each drivers drove four different tracks. The second dataset is a modification of the first dataset but after having done feature selection manually to leave only the 23 features we considered most relevant. The three models used in this work are based on Long-Short Term Memory (LSTM) networks. The first model directly uses the second dataset to classify drivers using LSTMs. The second model uses a single layer auto-encoder to automatically reduce the dimensionality of first dataset and then classifies it via an LSTM. The last model uses a multiple layer auto-encoder to reduce the dimensionality of first dataset and then classifies it via an LSTM. 
 
-Chapter \ref{chap:bg} introduces background knowledge for deep neural network including LSTM and Auto-encoder and compares three most popular deep learning libraries. Chapter \ref{chap:dataset} explains detail about dataset. Technical approach and three different neural networks used for experiments on the paper are described in Chapter \ref{chap:tech_approach}. On Chapter \ref{chap:result}, result from three different neural network models are compared and analyzed. The last chapter, Chapter \ref{chap:conclusion}, forms a conclusion. The chapter mentions limitation of auto-encoder and new way to train multiple layer auto-encoder.
+The remaining of this document is organized as follows. Chapter \ref{chap:bg} introduces background knowledge for deep neural network including LSTM and Auto-encoder and compares three most popular deep learning libraries. Chapter \ref{chap:dataset} explains detail about dataset. Technical approach and three different neural networks used for experiments on the paper are described in Chapter \ref{chap:tech_approach}. On Chapter \ref{chap:result}, result from three different neural network models are compared and analyzed. The last chapter, Chapter \ref{chap:conclusion}, forms a conclusion. The chapter mentions limitation of auto-encoder and new way to train multiple layer auto-encoder.
 
 
 % ====================================================================================================================================
@@ -794,7 +794,7 @@ The best performance was from {\em last} method with 16 number of neurons. The a
 \label{tbl:last_1_50}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                              \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                              \\ \cline{3-7}
                       &                     & 16           & 32           & 64           & 128         & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 1            & 0.5          & 0.5          & 0.75        & 0.25         \\ \cline{2-7}
                       & 2                   & 0.25         & 0.25         & 0.5          & 0.25        & 0.75         \\ \cline{2-7}
@@ -823,7 +823,7 @@ The best performance was from {\em last} method with 16 number of neurons. The a
 \label{tbl:mean_1_50}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                             \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                             \\ \cline{3-7}
                       &                     & 16          & 32           & 64          & 128          & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.5         & 0.5          & 0           & 0.25         & 0.25         \\ \cline{2-7}
                       & 2                   & 0.5         & 0.5          & 0.25        & 0.5          & 0.5          \\ \cline{2-7}
@@ -852,7 +852,7 @@ The best performance was from {\em last} method with 16 number of neurons. The a
 \label{tbl:gaussian_1_50}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                              \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                              \\ \cline{3-7}
                       &                     & 16           & 32           & 64           & 128         & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.25         & 0.5          & 0.5          & 0.25        & 0.25         \\ \cline{2-7}
                       & 2                   & 0.75         & 0.75         & 0.25         & 0.75        & 0.5          \\ \cline{2-7}
@@ -881,7 +881,7 @@ The best performance was from {\em last} method with 16 number of neurons. The a
 \label{tbl:last_1_50_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurans}                                                                                                               \\ \cline{2-6}
+\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
                            & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
 1                          & 0:18:41                      & 0:20:07                      & 0:23:00                      & 0:39:32                      & 0:54:27                      \\ \hline
 2                          & 0:16:28                      & 0:18:18                      & 0:22:19                      & 0:34:39                      & 0:47:47                      \\ \hline
@@ -897,7 +897,7 @@ The best performance was from {\em last} method with 16 number of neurons. The a
 \label{tbl:mean_1_50_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurans}                                                                                                               \\ \cline{2-6}
+\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
                            & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
 1                          & 0:18:33                      & 0:19:09                      & 0:23:59                      & 0:34:57                      & 0:51:25                      \\ \hline
 2                          & 0:16:25                      & 0:17:16                      & 0:22:33                      & 0:35:32                      & 0:47:26                      \\ \hline
@@ -913,7 +913,7 @@ The best performance was from {\em last} method with 16 number of neurons. The a
 \label{tbl:gaussian_1_50_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurans}                                                                                                               \\ \cline{2-6}
+\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
                            & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
 1                          & 0:18:05                      & 0:18:33                      & 0:22:40                      & 0:37:31                      & 0:54:11                      \\ \hline
 2                          & 0:16:24                      & 0:18:08                      & 0:22:19                      & 0:35:22                      & 0:48:40                      \\ \hline
@@ -942,7 +942,7 @@ The best performance was from {\em mean} method with 32 and 256 number of neuron
 \label{tbl:last_1_20}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                             \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                             \\ \cline{3-7}
                       &                     & 16           & 32           & 64          & 128         & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.75         & 0.5          & 0.25        & 0.5         & 0.5          \\ \cline{2-7}
                       & 2                   & 0.5          & 0.25         & 0.75        & 0.5         & 0.5          \\ \cline{2-7}
@@ -971,7 +971,7 @@ The best performance was from {\em mean} method with 32 and 256 number of neuron
 \label{tbl:mean_1_20}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                           \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                           \\ \cline{3-7}
                       &                     & 16       & 32           & 64           & 128          & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.5      & 0.5          & 0.5          & 0.25         & 0.75         \\ \cline{2-7}
                       & 2                   & 0.25     & 0.5          & 0.25         & 0            & 1            \\ \cline{2-7}
@@ -1000,7 +1000,7 @@ The best performance was from {\em mean} method with 32 and 256 number of neuron
 \label{tbl:gaussian_1_20}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                               \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
                       &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.5          & 0.5          & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
                       & 2                   & 0.25         & 0.25         & 0.25         & 0.5          & 0.75         \\ \cline{2-7}
@@ -1029,7 +1029,7 @@ The best performance was from {\em mean} method with 32 and 256 number of neuron
 \label{tbl:last_1_20_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurans}                                                                                                               \\ \cline{2-6}
+\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
                            & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
 1                          & 0:45:44                      & 1:00:53                      & 1:31:39                      & 2:12:21                      & 3:44:16                      \\ \hline
 2                          & 1:02:02                      & 1:03:06                      & 1:34:55                      & 2:13:50                      & 3:46:06                      \\ \hline
@@ -1045,7 +1045,7 @@ The best performance was from {\em mean} method with 32 and 256 number of neuron
 \label{tbl:mean_1_20_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurans}                                                                                                               \\ \cline{2-6}
+\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
                            & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
 1                          & 0:47:23                      & 0:59:46                      & 1:22:46                      & 2:10:24                      & 3:41:00                      \\ \hline
 2                          & 0:45:34                      & 1:01:17                      & 1:33:30                      & 2:21:38                      & 3:52:10                      \\ \hline
@@ -1061,7 +1061,7 @@ The best performance was from {\em mean} method with 32 and 256 number of neuron
 \label{tbl:gaussian_1_20_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurans}                                                                                                               \\ \cline{2-6}
+\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
                            & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
 1                          & 0:47:04                      & 0:57:12                      & 1:24:38                      & 2:09:36                      & 3:46:59                      \\ \hline
 2                          & 0:56:09                      & 0:55:51                      & 1:32:44                      & 2:19:37                      & 4:00:33                      \\ \hline
@@ -1090,7 +1090,7 @@ The best performance was from {\em last} method with 64 number of neurons. The a
 \label{tbl:last_1_10}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                               \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
                       &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.5          & 0.25         & 1            & 0.5          & 0.5          \\ \cline{2-7}
                       & 2                   & 0.75         & 0.75         & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
@@ -1119,7 +1119,7 @@ The best performance was from {\em last} method with 64 number of neurons. The a
 \label{tbl:mean_1_10}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                               \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
                       &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.75         & 0.75         & 0.75         & 0.25         & 0.75         \\ \cline{2-7}
                       & 2                   & 0.25         & 0.5          & 0.75         & 0.25         & 0.25         \\ \cline{2-7}
@@ -1148,7 +1148,7 @@ The best performance was from {\em last} method with 64 number of neurons. The a
 \label{tbl:gaussian_1_10}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                               \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
                       &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.5          & 0.5          & 0.75         & 0.5          & 0.75         \\ \cline{2-7}
                       & 2                   & 0.5          & 0.75         & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
@@ -1177,7 +1177,7 @@ The best performance was from {\em last} method with 64 number of neurons. The a
 \label{tbl:last_1_10_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurans}                                                                                                               \\ \cline{2-6}
+\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
                            & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
 1                          & 2:13:13                      & 2:21:07                      & 3:02:52                      & 4:25:58                      & 6:42:39                      \\ \hline
 2                          & 2:12:00                      & 2:19:41                      & 3:09:02                      & 4:35:59                      & 6:55:31                      \\ \hline
@@ -1193,7 +1193,7 @@ The best performance was from {\em last} method with 64 number of neurons. The a
 \label{tbl:mean_1_10_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurans}                                                                                                               \\ \cline{2-6}
+\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
                            & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
 1                          & 1:50:32                      & 2:26:14                      & 2:42:42                      & 4:23:05                      & 6:50:48                      \\ \hline
 2                          & 1:59:38                      & 3:02:34                      & 3:20:51                      & 4:28:45                      & 7:10:39                      \\ \hline
@@ -1209,7 +1209,7 @@ The best performance was from {\em last} method with 64 number of neurons. The a
 \label{tbl:gaussian_1_10_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurans}                                                                                                               \\ \cline{2-6}
+\multirow{2}{*}{Test}      & \multicolumn{5}{c|}{The number of neurons}                                                                                                               \\ \cline{2-6}
                            & 16                           & 32                           & 64                           & 128                          & 256                          \\ \hline
 1                          & 2:03:47                      & 2:36:34                      & 2:52:38                      & 4:18:07                      & 6:50:52                      \\ \hline
 2                          & 1:50:33                      & 2:27:43                      & 3:26:58                      & 4:39:46                      & 7:07:22                      \\ \hline
@@ -1241,7 +1241,7 @@ The overall average accuracy from SAE is 0.3375 (33.75\%) and the overall averag
 \label{tbl:mae_last_1_10}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                               \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
                       &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.25         & 0.75         & 0.25         & 0            & 0.5          \\ \cline{2-7}
                       & 2                   & 0.5          & 0.5          & 0.5          & 0.5          & 0.5          \\ \cline{2-7}
@@ -1270,7 +1270,7 @@ The overall average accuracy from SAE is 0.3375 (33.75\%) and the overall averag
 \label{tbl:mae_last_1_10_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multicolumn{5}{c|}{The number of neurans}       \\ \cline{2-6}
+\multirow{2}{*}{Test} & \multicolumn{5}{c|}{The number of neurons}       \\ \cline{2-6}
                       & 16      & 32      & 64      & 128     & 256      \\ \hline
 1                     & 6:59:30 & 6:59:33 & 8:13:06 & 9:21:31 & 11:40:13 \\ \hline
 2                     & 6:25:43 & 6:58:03 & 7:50:26 & 8:52:23 & 11:06:24 \\ \hline
@@ -1286,7 +1286,7 @@ Mean                  & 6:41:47 & 6:23:12 & 7:11:05 & 8:17:21 & 10:27:01 \\ \hli
 \label{tbl:sae_last_1_10}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                               \\ \cline{3-7}
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{3-7}
                       &                     & 16           & 32           & 64           & 128          & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.75         & 0.75         & 0.5          & 0            & 0.5          \\ \cline{2-7}
                       & 2                   & 0.25         & 0            & 0.5          & 0.25         & 0.25         \\ \cline{2-7}
@@ -1315,7 +1315,7 @@ Mean                  & 6:41:47 & 6:23:12 & 7:11:05 & 8:17:21 & 10:27:01 \\ \hli
 \label{tbl:sae_last_1_10_time}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multicolumn{5}{c|}{The number of neurans}      \\ \cline{2-6}
+\multirow{2}{*}{Test} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6}
                       & 16      & 32      & 64      & 128     & 256     \\ \hline
 1                     & 4:20:50 & 4:58:12 & 7:44:27 & 6:42:45 & 8:38:18 \\ \hline
 2                     & 3:48:20 & 3:51:03 & 5:16:07 & 6:02:29 & 8:24:17 \\ \hline
@@ -1959,7 +1959,7 @@ Such big error between original input and output from decode layer implies that 
 \label{tbl:sae_error}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                                   \\ \cline{3-7} 
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                                   \\ \cline{3-7} 
                       &                     & 16            & 32            & 64            & 128           & 256          \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.178460395   & 0.1239250116  & 0.1748844814  & 0.1502201539  & 0.1886790823 \\ \cline{2-7} 
                       & 2                   & 0.1658136155  & 0.1384476442  & 0.102677634   & 0.2454849277  & 0.1165074687 \\ \cline{2-7} 
@@ -1988,7 +1988,7 @@ Such big error between original input and output from decode layer implies that 
 \label{tbl:mae_error}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurans}                                   \\ \cline{3-7} 
+\multirow{2}{*}{Test} & \multirow{2}{*}{CV} & \multicolumn{5}{c|}{The number of neurons}                                   \\ \cline{3-7} 
                       &                     & 16           & 32            & 64            & 128           & 256           \\ \hline
 \multirow{4}{*}{1}    & 1                   & 0.1731109992 & 0.1436949167  & 0.1456636973  & 0.187595576   & 0.151621541   \\ \cline{2-7} 
                       & 2                   & 0.2256366871 & 0.2343511172  & 0.225972496   & 0.1990794409  & 0.1417004224  \\ \cline{2-7} 
