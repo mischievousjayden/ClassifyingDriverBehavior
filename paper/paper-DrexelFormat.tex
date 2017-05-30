@@ -95,17 +95,16 @@ Our results show that using an intermediate number of neurons in the LSTM networ
 % ####################################################################################################################################
 \chapter{Introduction}\label{chap:intro}
 % ####################################################################################################################################
+Most people spend several hours per day for driving vehicle when they go to work, school or shopping. Modern car systems collect real-time data of car status and driving behavior. Those recorded data is good source for healthcare and research but it has rarely been used. This paper is done in the context of the {\em Diagnostic Driving} project, an NSF funded collaborative project between Drexel, Children Hospital of Philadelphia and the University of Central Florida that aims at studying the possibility of using driving behavior data to diagnose medical conditions.
 
-Introduction Section
-\begin{enumerate}
-\item Problem Statement
-\end{enumerate}
+The paper focuses on the classification of driving simulation data from novice and expert drivers by three different neural network models. Two datasets are used on the paper. First dataset has 16 traces from four drivers: two are inexpert drivers and two are expert drivers. Each drivers drove four different tracks. Second dataset is from first dataset but only 23 features are selected from original dataset. Three models consist of Long-Short Term Memory (LSTM) network. First model uses second dataset to classify data. Second model uses single layer auto-encoder to reduce dimensions of first dataset then classifies it by LSTM. The last model uses multiple layer auto-encoder to reduce dimensions of first dataset then classifies it by LSTM.
 
+Chapter \ref{chap:bg} introduces background knowledge for deep neural network including LSTM and Auto-encoder and compares three most popular deep learning libraries. Chapter \ref{chap:dataset} explains detail about dataset. Technical approach and three different neural networks used for experiments on the paper are described in Chapter \ref{chap:tech_approach}. On Chapter \ref{chap:result}, result from three different neural network models are compared and analyzed. The last chapter, Chapter \ref{chap:conclusion}, forms a conclusion. The chapter mentions limitation of auto-encoder and new way to train multiple layer auto-encoder.
 
 
 % ====================================================================================================================================
 % ====================================================================================================================================
-\chapter{Background}\label{sec:bg}
+\chapter{Background}\label{chap:bg}
 % ====================================================================================================================================
 % ====================================================================================================================================
 This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived into three sections. First Section \ref{sec:DL} covers basic deep learning including recurrent neural network and auto-encoders. Second Section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. The last Section \ref{sec:MLDD} introduces current trends in machine learning for driving data.
@@ -551,7 +550,7 @@ DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed de
 \section{Machine Learning with Driving Data}\label{sec:MLDD}
 
 % ####################################################################################################################################
-\chapter{Data Set}
+\chapter{Data Set}\label{chap:dataset}
 % ####################################################################################################################################
 
 Data was collected in the high-fidelity simulator \cite{lee2017learning} of the Center for Injury Research Prevention Studies at the \textit{Children's Hospital of Philadelphia} (CHOP). The driving simulator provides an environment similar to real driving to test users. It has a 160 degree front view, rear-view, left side, and right side mirror images. It also features a full car chassis with active pedals, steering wheel, and a full dashboard with even audio equipment.
@@ -590,7 +589,7 @@ Trace15 & Inexpert1 & Track3 & 27255  \\ \hline
 
 
 % ####################################################################################################################################
-\chapter{Technical Approach}
+\chapter{Technical Approach}\label{chap:tech_approach}
 % ####################################################################################################################################
 
 This chapter covers technical methods for experiments on the paper and also introduces three different neural network used for the experiments.
@@ -770,7 +769,7 @@ After feeding re-sampled data to three neural network models, the data is standa
 
 
 % ####################################################################################################################################
-\chapter{Experiment Result}
+\chapter{Experiment Result}\label{chap:result}
 % ####################################################################################################################################
 This chapter summarizes results from all experiments. Experiments are divided to two parts: 1) experiments with {\em filtered dataset} 2) experiments with {\em raw dataset}. First part of experiments used {\em first model} which only has LSTM. Each experiments used 5 different number of neurons: 16, 32, 64, 128, and 256. Second part of experiments used {\em second model} which has SAE and {\em third model} which has MAE then compared result of three models.
 
@@ -2041,7 +2040,7 @@ Such big error between original input and output from decode layer implies that 
 \end{figure}
 
 % ####################################################################################################################################
-\chapter{Conclusion and Future work}
+\chapter{Conclusion and Future work}\label{chap:conclusion}
 % ####################################################################################################################################
 \section{Data Size}
 Two different data sizes should be considered on this paper. First data size is number of samples in each traces. Data with more samples in each traces gave better performance from first part of experiments with {\em first model}. The average accuracy with 1 over 10 sampled data show higher accuracy than the average accuracy with 1 over 20 sampled data and 1 over 50 sampled data. From the fact, experiments with more sample, data without re-sampling or data from long driving time, are expected with better performance. 
