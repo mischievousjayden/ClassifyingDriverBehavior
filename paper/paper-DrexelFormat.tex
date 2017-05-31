@@ -110,7 +110,7 @@ The remaining of this document is organized as follows. Chapter \ref{chap:bg} in
 This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived into three sections. First, Section \ref{sec:DL} covers basic deep learning concepts including recurrent neural networks and auto-encoders. Second, Section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. Finally, Section \ref{sec:MLDD} briefly discusses existing work in machine learning using for modeling driving data.
 
 \section{Deep Learning}\label{sec:DL}
-This section covers basic concepts of deep learning. First, Section \ref{subsec:basicDL} introduces deep learning, and next ,Section \ref{subsec:RNN} deals with recurrent neural networks and Long Short Term Memory networks (LSTMs). Finally, Section \ref{subsec:AE} covers auto-encoders.
+This section covers basic concepts of deep learning. First, Section \ref{subsec:basicDL} introduces deep learning, and next Section \ref{subsec:RNN} deals with recurrent neural networks and Long Short Term Memory networks (LSTMs). Finally, Section \ref{subsec:AE} covers auto-encoders.
 
 \subsection{Basic Concepts}\label{subsec:basicDL}
 
@@ -185,7 +185,7 @@ $\bold{W}=
     \label{fig:withoutBiasNN}
 \end{figure}
 
-Figure \ref{fig:withoutBiasNN} shows same neural network as Figure \ref{fig:detail_NN} with $\vec{X}$ and $\bold{W}$. Notice that the figure does not have an added node anymore.
+Figure \ref{fig:withoutBiasNN} shows same neural network as Figure \ref{fig:detail_NN} with $\vec{X}$ and $\bold{W}$. Notice that the figure does not have an {\em add} node anymore.
 
 In the remainder of this paper we will use the following convention: vector in upper case contain the bias term and vectors in lower case do not contain the bias term. For example, $\vec{X}$ is with bias and $\vec{x}$ is without bias. Also all vectors are row vectors. Transform matrix is bold character and if it includes bias, transform matrix uses upper case, otherwise it uses lower case. For example, $\bold{W}$ is a transform matrix with bias and $\bold{w}$ is a transform matrix without bias. By applying this, the equation for a neural network is:
 $$\vec{o} = \bm{\phi}(\vec{X}\bold{W})$$
@@ -264,6 +264,8 @@ $$
 = sigm(o'_i)\{1-sigm(o'_i)\}
 = o_i(1-o_i)
 $$
+where
+$$\frac{d}{dx} sigm(x) = \frac{d}{dx} \frac{1}{1+e^{-x}} = \frac{e^{-x}}{(1+e^{-x})^2} = \frac{1}{1+e^{-x}}(1-\frac{1}{1+e^{-x}}) = sigm(x)\{1-sigm(x)\}$$
 
 Assume train function is sum square then the last part is
 $$
@@ -374,7 +376,7 @@ Notice that as forward-propagation sends output of a layer as input of the next 
 
 
 \subsubsection{Long Short Term Memory (LSTM) networks:}\label{LSTM}
-	Basic RNNs are known to have problems modeling long term dependencies. When RNN passes the previous output for the current output, some information in the input might or might be needed for future. RNN does not have an ability to filter unnecessary information or to store necessary information. Long Short Term Memory (LSTM) neural networks are precisely designed to handle these problems.
+	Basic RNNs are known to have problems modeling long term dependencies. When RNN passes the previous output for the current output, some information in the input might or might not be needed for future. RNN does not have an ability to filter unnecessary information or to store necessary information. Long Short Term Memory (LSTM) neural networks are precisely designed to handle these problems.
 
 	LSTM is a type of RNN introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM solves long term dependency problems in RNN by memory cells. LSTM manages memory cells as a storage of knowledge. LSTM filters unnecessary information from memory cells and records necessary information on memory cells.
 
