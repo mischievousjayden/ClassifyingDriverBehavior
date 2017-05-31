@@ -107,19 +107,19 @@ The remaining of this document is organized as follows. Chapter \ref{chap:bg} in
 \chapter{Background}\label{chap:bg}
 % ====================================================================================================================================
 % ====================================================================================================================================
-This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived into three sections. First Section \ref{sec:DL} covers basic deep learning including recurrent neural network and auto-encoders. Second Section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. The last Section \ref{sec:MLDD} introduces current trends in machine learning for driving data.
+This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived into three sections. First, Section \ref{sec:DL} covers basic deep learning concepts including recurrent neural networks and auto-encoders. Second, Section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. Finally, Section \ref{sec:MLDD} briefly discusses existing work in machine learning using for modeling driving data.
 
 \section{Deep Learning}\label{sec:DL}
-This section covers basic concepts of deep learning. First Subsection \ref{subsec:basicDL} introduces deep learning, and next Section \ref{subsec:RNN} deals with recurrent neural networks and long short term memory neural networks (LSTMs). The last Subsection \ref{subsec:AE} covers auto-encoders.
+This section covers basic concepts of deep learning. First, Section \ref{subsec:basicDL} introduces deep learning, and next ,Section \ref{subsec:RNN} deals with recurrent neural networks and Long Short Term Memory networks (LSTMs). Finally, Section \ref{subsec:AE} covers auto-encoders.
 
 \subsection{Basic Concepts}\label{subsec:basicDL}
 
 \subsubsection{Artificial Neuron}\label{subsubsec:AN}
-The concept of artificial neurons or perseptrons was introduced by Warren McCullock and Walter Pitts \cite{raschka2015python}. Initial artificial neurons are described as binary output logic gate from inputs. If sum of weighted inputs is greater than threshold, the output is 1. Otherwise, the output is 0.
+The concept of artificial neurons or perseptrons was introduced by Warren McCullock and Walter Pitts \cite{raschka2015python}. Initially artificial neurons were described as binary output logic gates from inputs. If the sum of weighted inputs is greater than a threshold, the output is 1, otherwise, the output is 0.
 
-\begin{figure}[t!]
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.65\textwidth]{pictures/figures/basic_AN.png}
+    \includegraphics[width=0.5\textwidth]{pictures/figures/basic_AN.png}
     \caption{Basic Artificial Neuron}
     \label{fig:basic_AN}
 \end{figure}
@@ -133,19 +133,19 @@ $$U(z)=
 	\end{cases}
 $$
 
-The function deciding output $o$ is called an activation function. In this case, the step function $U(z)$ is activation function.
+The function deciding output $o$ is called an activation function. In the case of the original McCullock and Pitts neurons, the step function $U(z)$ is used as the activation function.
 
 Figure \ref{fig:basic_AN} also can be described by the following equation:
 $$ o = U(\vec{x}\cdot\vec{w}-\theta)$$
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.65\textwidth]{pictures/figures/general_AN.png}
+    \includegraphics[width=0.5\textwidth]{pictures/figures/general_AN.png}
     \caption{General Artificial Neuron}
     \label{fig:general_AN}
 \end{figure}
 
-Figure \ref{fig:general_AN} shows an general artificial neuron. Threshold is replaced by bias and subtract node is replaced by add node. In general artificial neuron, activation function $\phi$ can be many different functions such as step, linear, or sigmoid function. An general artificial neuron also can be described by equation as follow:
+Figure \ref{fig:general_AN} shows an general artificial neuron. The threshold is replaced by a {\em bias} term and the {\em subtract} node is replaced by an {\em add} node. In general artificial neurons, the activation function $\phi$ could be an arbitrary function such as step, linear, or sigmoid functions. An general artificial neuron also can be described by the following equation:
 $$o = \phi(\vec{x}\cdot\vec{w}+b)$$
 
 
@@ -153,14 +153,14 @@ $$o = \phi(\vec{x}\cdot\vec{w}+b)$$
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.65\textwidth]{pictures/figures/detail_NN.png}
+    \includegraphics[width=0.5\textwidth]{pictures/figures/detail_NN.png}
     \caption{Single Layer in a Neural Network}
     \label{fig:detail_NN}
 \end{figure}
 
-Using single neuron has a limitation since it can solve only specific problems. For example, single neuron cannot solve xor problem. Instead of using single neuron, neural network has bundle of neurons. Figure \ref{fig:detail_NN} illustrates it with $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for $i$th neuron are $\vec{w_i} = \{w_{i1}, ..., w_{in}\} \in \mathbb{R}^n$, and a bias term for the $i$th neuron is $b_i$. The output $\vec{o} = \{o_1, ..., o_m\} \in \mathbb{R}^m$ of the network is calculated as follows:
+Using a single neuron has many limitations, however, since a single neuron can solve only specific problems. For example, single neurons cannot solve the XOR problem. Instead of using a single neuron, standard neural networks contain a collection of neurons. Figure \ref{fig:detail_NN} illustrates this by showing $n$ input and $m$ neurons. The input is $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$, weights for $i$th neuron are $\vec{w_i} = \{w_{i1}, ..., w_{in}\} \in \mathbb{R}^n$, and the bias term for the $i$th neuron is $b_i$. The output $\vec{o} = \{o_1, ..., o_m\} \in \mathbb{R}^m$ of the network is calculated as follows:
 $$\vec{o} = \bm{\phi}(\{(\vec{x}\cdot\vec{w_1}+b_1),(\vec{x}\cdot\vec{w_2}+b_2),...,(\vec{x}\cdot\vec{w_m}+b_m)\})$$
-Where activation function is applied on each element of its input.
+Where the activation function is applied on each element of its input.
 
 To simplify the equation, let a transform matrix $\bold{w}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be
 $\bold{w}=
@@ -172,7 +172,7 @@ and bias vector $\vec{b} = \{b_1, ..., b_m\} \in \mathbb{R}^m$.
 The equation is
 $$\vec{o} = \bm{\phi}((\vec{x}^T\bold{w})^T+\vec{b})$$
 
-The bias term can be skipped by extending input vector and weight transform matrix. Let $\vec{X} \in \mathbb{R}^{n+1}$ be $\{x_1, x_2, ..., x_n, 1\}$ which is added one more dimension from $\vec{x}$ with value 1 and $\vec{W_i} \in \mathbb{R}^{n+1}$ be $\{w_{i1}, ..., w_{in}, b_i\}$ which is added by bias term into weights and $\bold{W}: \mathbb{R}^{n+1} \rightarrow \mathbb{R}^m$ be
+The bias term can be skipped by extending the input vector and weight transform matrix. Let $\vec{X} \in \mathbb{R}^{n+1}$ be $\{x_1, x_2, ..., x_n, 1\}$ which is added one more dimension from $\vec{x}$ with value 1 and $\vec{W_i} \in \mathbb{R}^{n+1}$ be $\{w_{i1}, ..., w_{in}, b_i\}$ which is added by bias term into weights and $\bold{W}: \mathbb{R}^{n+1} \rightarrow \mathbb{R}^m$ be
 $\bold{W}=
 \begin{bmatrix}
 	\vec{W_1} & \vec{W_2} & \cdots & \vec{W_m}
@@ -180,46 +180,46 @@ $\bold{W}=
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.75\textwidth]{pictures/figures/detail_NN_with_bias.png}
+    \includegraphics[width=0.5\textwidth]{pictures/figures/detail_NN_with_bias.png}
     \caption{Simplified Neural Network}
     \label{fig:withoutBiasNN}
 \end{figure}
 
 Figure \ref{fig:withoutBiasNN} shows same neural network as Figure \ref{fig:detail_NN} with $\vec{X}$ and $\bold{W}$. Notice that the figure does not have an added node anymore.
 
-	From this point on the paper, vector in large case is with bias term and vector in small case is without bias term. For example, $\vec{X}$ is with bias and $\vec{x}$ is without bias. Also all vectors is row vector. Transform matrix is bold character and if it includes bias, transform matrix uses large case, otherwise small case. For example, $\bold{W}$ is transform matrix with bias and $\bold{w}$ is transform matrix without bias. By applying this, the equation for neural network is
+In the remainder of this paper we will use the following convention: vector in upper case contain the bias term and vectors in lower case do not contain the bias term. For example, $\vec{X}$ is with bias and $\vec{x}$ is without bias. Also all vectors are row vectors. Transform matrix is bold character and if it includes bias, transform matrix uses upper case, otherwise it uses lower case. For example, $\bold{W}$ is a transform matrix with bias and $\bold{w}$ is a transform matrix without bias. By applying this, the equation for a neural network is:
 $$\vec{o} = \bm{\phi}(\vec{X}\bold{W})$$
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.4\textwidth]{pictures/figures/NN.png}
+    \includegraphics[width=0.3\textwidth]{pictures/figures/NN.png}
     \caption{Simplified Neural Network}
     \label{fig:NN}
 \end{figure}
 
-	For all figures under this point, $\Sigma$ node is skipped, square shape node represents input node, circle shape node represents compute node, edge with transform matrix represents weight matrix, edge without transform matrix represents identity matrix for weight matrix and arrow with small filled circle on end represents output vector. Figure \ref{fig:detail_NN}, Figure \ref{fig:withoutBiasNN}, and \ref{fig:NN} are equal.
+	For all figures in the remainder of this paper, the $\Sigma$ node will be skipped, square shape nodes represent input nodes, circle shape nodes represent computation nodes, edges with transform matrix represent the weight matrix, edges without transform matrix represent the identity matrix as the weight matrix and arrow with small filled circle on the end represent the output vector. Figure \ref{fig:detail_NN}, Figure \ref{fig:withoutBiasNN}, and \ref{fig:NN} are thus equivalent.
 
 
 \subsubsection{Multilayer Perceptron}\label{subsubsec:MLP}
-Single layer perceptron neural network has only an input layer and an output layer such as Figure \ref{fig:NN} but multilayer perceptron (MLP) has several hidden layers between an input layer and an output layer. This part introduces to MLP by explaining neural network with one hidden layer. Let $\vec{x} \in \mathbb{R}^n$ be inputs, $\vec{h} \in \mathbb{R}^m$ be outputs from hidden layers, $\vec{c} \in \mathbb{R}^m$ be bias for hidden layers, $\vec{o} \in \mathbb{R}^l$ be outputs from an output layer, $\vec{b} \in \mathbb{R}^l$ be a bias for an output layer, $\bold{v}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for hidden layers and $\bold{w}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for an output layer. The activation function $\bold{f}()$ is for hidden layers and the activation function $\bold{g}()$ is for an output layer. Figure \ref{fig:MLP} shows one hidden layer MLP.
+Single layer perceptron neural network has only an input layer and an output layer such as Figure \ref{fig:NN} but multilayer perceptron (MLP) has several hidden layers between an input layer and an output layer. This section introduces the basic ideas of MLPs by describing a neural network with one hidden layer. Let $\vec{x} \in \mathbb{R}^n$ be inputs, $\vec{h} \in \mathbb{R}^m$ be outputs from hidden layers, $\vec{c} \in \mathbb{R}^m$ be bias for hidden layers, $\vec{o} \in \mathbb{R}^l$ be outputs from an output layer, $\vec{b} \in \mathbb{R}^l$ be a bias for an output layer, $\bold{v}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for hidden layers and $\bold{w}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for an output layer. The activation function $\bold{f}()$ is for hidden layers and the activation function $\bold{g}()$ is for an output layer. Figure \ref{fig:MLP} shows one hidden layer MLP.
 
-To compute output of MLP, forward-propagation is used. Forward-propagation is to pass inputs $\vec{x}$ to outputs through hidden layers \cite{murphy2012machine}. For example, the output from hidden layers on Figure \ref{fig:MLP} can be computed
+To compute output of MLP, forward-propagation is used. Forward-propagation is to pass inputs $\vec{x}$ to outputs through hidden layers \cite{murphy2012machine}. For example, the output from hidden layers on Figure \ref{fig:MLP} can be computed as:
 $$\vec{h} = \bold{f}(\vec{x}\bold{v}+\vec{c}) = \bold{f}(\vec{X}\bold{V})$$
-Then the output layer uses outputs from hidden layer as inputs. The outputs of the neural network can be computed
+Then the output layer uses outputs from hidden layer as inputs. The outputs of the neural network can be computed as:
 $$\vec{o} = \bold{g}(\vec{h}\bold{w}+\vec{b}) = \bold{g}(\vec{H}\bold{W})$$
-Therefore, a final equation for two layer neural network is
+Therefore, a final equation for two layer neural network is as follows:
 $$\vec{o} = \bold{g}(\bold{h}(\vec{x}\bold{v}+\vec{c})\bold{w}+\vec{b}) = \bold{g}(\bold{h}(\vec{X}\bold{V})\bold{W})$$
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/figures/MLP.png}
+    \includegraphics[width=0.45\textwidth]{pictures/figures/MLP.png}
     \caption{One Hidden Layer MLP}
     \label{fig:MLP}
 \end{figure}
 
 
 \subsubsection{Back-propagation}\label{subsubsec:BP}
-Training neural network means finding weights and biases. Similar as forward-propagation, back-propagation is used when MLP is trained. As forward-propagation passes inputs $\vec{x}$ to outputs, back-propagation passes an error from the output layer to hidden layers \cite{murphy2012machine}. An error function $E()$ (some times called a loss function) usually uses a sum square error as follow:
+Training a neural network means finding weights and biases. Similar as forward-propagation, back-propagation is used when MLP is trained. As forward-propagation passes inputs $\vec{x}$ to outputs, back-propagation passes an error from the output layer to hidden layers \cite{murphy2012machine}. An error function $E()$ (some times called a loss function) usually uses a sum square error as follows:
 $$E(\vec{y}, \vec{o}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2$$
 where $\vec{y}$ is an expected output from MLP.
 
@@ -233,13 +233,13 @@ To train the neural network, weights and biases are regulated. To update weights
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.7\textwidth]{pictures/figures/BP1.png}
+    \includegraphics[width=0.6\textwidth]{pictures/figures/BP1.png}
     \caption{Back-propagation for $W_{ij}$}
     \label{fig:BP1}
 \end{figure}
 
-Let's first update $W_{ij}$ and Figure \ref{fig:BP1} shows the detail of an output layer related with ${W_{ij}}$. The updated weight ${{W_{ij}}^{next}}$ can be calculated as follow:
-$${{W_{ij}}^{next}}=W_{ij} - \eta\frac{\partial J}{\partial W_{ij}}$$ where $\eta$ is a learning rate. The equation tells to remove error, updated weight should be move opposite direction of gradient of error function. The method is called 'gradient descent'.
+Let's first update $W_{ij}$ and Figure \ref{fig:BP1} shows the detail of an output layer related with ${W_{ij}}$. The updated weight ${{W_{ij}}^{next}}$ can be calculated as follows:
+$${{W_{ij}}^{next}}=W_{ij} - \eta\frac{\partial J}{\partial W_{ij}}$$ where $\eta$ is a learning rate. The equation is intended to remove error, and thus the updated weight should  move in the opposite direction of the gradient of the error function. Thus, this method is called `gradient descent'.
 
 Let's compute $\frac{\partial J}{\partial W_{ij}}$
 $$
@@ -281,7 +281,7 @@ $$
 = W_{ij} + \eta(y_i-o_i)o_i(1-o_i)H_j
 $$
 
-Before moving to update weights for hidden layer, define $\delta_i$ as follow:
+Before moving to update weights for hidden layer, define $\delta_i$ as follows:
 $$
 \delta_i
 = \frac{\partial J}{\partial o'_i}
@@ -292,12 +292,12 @@ The $\delta_i$ is useful because it is shared when back-propagation updates all 
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=\textwidth]{pictures/figures/BP2.png}
+    \includegraphics[width=0.9\textwidth]{pictures/figures/BP2.png}
     \caption{Back-propagation for $V_{ij}$}
     \label{fig:BP2}
 \end{figure}
 
-The next step is to update weights in hidden layers. Let's update $V_{ij}$ and Figure \ref{fig:BP2} shows the detail of neural network related with $V_{ij}$. The updated weight ${{V_{ij}}^{next}}$ can be calculated as follow:
+The next step is to update weights in hidden layers. Let's update $V_{ij}$ and Figure \ref{fig:BP2} shows the detail of neural network related with $V_{ij}$. The updated weight ${{V_{ij}}^{next}}$ can be calculated as follows:
 $${{V_{ij}}^{next}}=V_{ij} - \eta\frac{\partial J}{\partial V_{ij}}$$ where $\eta$ is a learning rate. The equation is similar as ${{W_{ij}}^{next}}$
 
 Let's compute $\frac{\partial J}{\partial V_{ij}}$
@@ -347,26 +347,26 @@ Notice that as forward-propagation sends output of a layer as input of the next 
 \subsection{Recurrent Neural Network}\label{subsec:RNN}
 
 \subsubsection{Basic concepts of recurrent neural networks:}\label{basicRNN}
-	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. Figure \ref{fig:RNN} illustrates an abstract structure of RNN. RNN has two inputs. One input is from data such as a normal neural network input but the other input is from the previous output. The property gives benefit for sequential input data. This is because past outputs affect the current output. With sequential data, the previous data can affect the current data and RNN considers the previous outputs for the current output. It means that even the inputs from the data are equal, if the previous outputs are different, the current output are also different.
+	A recurrent neural network (RNN) is a neural network that is specialized for processing a sequence of input values \cite{Goodfellow-et-al-2016}. Figure \ref{fig:RNN} illustrates an abstract structure of RNN. RNN has two inputs. One input is from data such as a normal neural network input but the other input is from the previous output. This property makes recurrent neural networks be specially well suited to model sequential input data. This is because past outputs affect the current output. With sequential data, the previous data can affect the current data and RNN considers the previous outputs for the current output. This means that even if the inputs from the data are the same, if the previous outputs are different, the current output could also be different.
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/figures/RNN.png}
+    \includegraphics[width=0.4\textwidth]{pictures/figures/RNN.png}
     \caption{RNN}
     \label{fig:RNN}
 \end{figure}
 
 	For example, human language sentences have series of words, and meanings of words are different depending on context. RNN can be used for that. Another example is driving data which is used later on the paper.  Driving data are multi-dimension data with time domain. RNN can be used for the data because it is sequential data with the time domain.
 
-	To describe RNN in a mathematical equation, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{h^t} = \{ h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be result from hidden layer on time $t$, and $\vec{o^t} = \{ o_1^t, ..., o_l^t\} \in \mathbb{R}^l$ be output on time $t$. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for input data, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for data from hidden layer, and $\bold{w}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be a transform matrix for previous output. Figure \ref{fig:unfold_RNN} illustrates unfolded RNN with defined symbols. The result from hidden layer can be calculated by
+	To describe RNN in a mathematical equation, let $\vec{x^t} = \{ x_1^t, ..., x_n^t\} \in \mathbb{R}^n$ be a vector that represents the input data at time $t$, $\vec{h^t} = \{ h_1^t, ..., h_m^t\} \in \mathbb{R}^m$ be result from hidden layer on time $t$, and $\vec{o^t} = \{ o_1^t, ..., o_l^t\} \in \mathbb{R}^l$ be output on time $t$. For transform matrix, let $\bold{u}: \mathbb{R}^n \rightarrow \mathbb{R}^m$ be a transform matrix for input data, $\bold{v}: \mathbb{R}^m \rightarrow \mathbb{R}^l$ be a transform matrix for data from hidden layer, and $\bold{w}: \mathbb{R}^l \rightarrow \mathbb{R}^m$ be a transform matrix for previous output. Figure \ref{fig:unfold_RNN} illustrates an unfolded RNN with defined symbols. The result from hidden layer can be calculated by
 	$$\vec{h^t} = \bold{f}(\vec{X^t}\bold{U} + \vec{O^{t-1}}\bold{W})$$ where $\bold{f}$ is an activation function for the hidden layer. Then the output can be calculated by
 	$$\vec{o^t} = \bold{g}(\vec{H^t}\bold{V})$$ where $\bold{g}$ is an activation function for the output layer. Therefore, the RNN with bias is
 	$$\vec{o^t} = \bold{g}(\bold{f}(\vec{x^t}\bold{u}+\vec{b_x} + \vec{o^{t-1}}\bold{w}+\vec{b_o})\bold{v}+\vec{b_h})$$ where $\vec{b_x} = \{b_{x1}, ..., b_{xm}\} \in \mathbb{R}^m$ is the bias for the input data, $\vec{b_o} = \{b_{o1}, ..., b_{om}\} \in \mathbb{R}^m$ is the bias for the previous output data, and $\vec{b_h} = \{b_{h1}, ..., b_{hl}\} \in \mathbb{R}^l$ is the bias for the data from the hidden layers.
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.65\textwidth]{pictures/figures/unfold_RNN.png}
-    \caption{Unfold RNN}
+    \includegraphics[width=0.5\textwidth]{pictures/figures/unfold_RNN.png}
+    \caption{Unfolded RNN.}
     \label{fig:unfold_RNN}
 \end{figure}
 
@@ -374,7 +374,7 @@ Notice that as forward-propagation sends output of a layer as input of the next 
 
 
 \subsubsection{Long Short Term Memory (LSTM) networks:}\label{LSTM}
-	Basic RNN has some problems of long term dependency. When RNN passes the previous output for the current output, some information in the input might or might be needed for future. RNN does not have an ability to filter unnecessary information or to store necessary information. Long Short Term Memory (LSTM) neural network can handle these problems.
+	Basic RNNs are known to have problems modeling long term dependencies. When RNN passes the previous output for the current output, some information in the input might or might be needed for future. RNN does not have an ability to filter unnecessary information or to store necessary information. Long Short Term Memory (LSTM) neural networks are precisely designed to handle these problems.
 
 	LSTM is a type of RNN introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}. LSTM solves long term dependency problems in RNN by memory cells. LSTM manages memory cells as a storage of knowledge. LSTM filters unnecessary information from memory cells and records necessary information on memory cells.
 
@@ -392,7 +392,7 @@ Notice that as forward-propagation sends output of a layer as input of the next 
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.75\textwidth]{pictures/figures/LSTM.png}
+    \includegraphics[width=0.6\textwidth]{pictures/figures/LSTM.png}
     \caption{LSTM}
     \label{fig:LSTM}
 \end{figure}
@@ -437,14 +437,14 @@ Each gate has transform matrices for inputs. Let $\bold{t_{n,m}}: \mathbb{R}^n \
 
 This subsection introduces Auto-encoder and different kinds of Auto-encoder: undercomplete Auto-encoder, overcomplete Auto-encoder, and multilayer Auto-encoder.
 
-% and summarizes 'Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA.
+% and summarizes `Reducing the dimensionality of data with neural networks' by Hinton \cite{hinton2006reducing}. The paper introduces the method to reduce high dimensional data by neural networks named auto-encoder. The result of the paper shows that reducing dimension by auto-encoder gives better performance than PCA.
 
 \subsubsection{Basic Auto-encoder}\label{subsubsec:BAE}
 An Auto-encoder (AE) is defined as a neural network that is trained to attempt to copy its inputs to its outputs \cite{Goodfellow-et-al-2016}. It means that AE takes inputs and sends it as outputs. However, AE does not directly send inputs to outputs. AE has two layers: a encode layer and a decode layer. Figure \ref{fig:AE} illustrates an abstract structure of AE. The purpose of AE is to make outputs from a decode layer same as inputs.
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/figures/AE.png}
+    \includegraphics[width=0.35\textwidth]{pictures/figures/AE.png}
     \caption{Abstract structure of Auto-encoder}
     \label{fig:AE}
 \end{figure}
@@ -453,7 +453,7 @@ To describe AE, let $\vec{x} = \{x_1, ..., x_n\} \in \mathbb{R}^n$ be an input, 
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/figures/basic_AE.png}
+    \includegraphics[width=0.4\textwidth]{pictures/figures/basic_AE.png}
     \caption{Basic Auto-encoder}
     \label{fig:basic_AE}
 \end{figure}
@@ -478,18 +478,18 @@ On this paper and experiment, an undercomplete AE is used for reducing an input 
 
 
 \subsubsection{Multilayer Auto-encoder}\label{subsubsec:MAE}
-	Sometimes AE is designed with multiple encoder and decoder layers to reduce dimension. Figure \ref{fig:MAE} shows multilayer auto-encoder (MAE). However, it is difficult to find all the weights of encoders and decoders in MAE because all weights are initialized with random numbers and it makes difficult to find optimized weights \cite{zaremba2014recurrent}. So if the initial weights are close to optimized weights, training algorithm gradient descent can find optimized weights. The paper \cite{zaremba2014recurrent} shows "pretraining" method to initialize good weights.
+	Sometimes AE is designed with multiple encoder and decoder layers to reduce dimension. Figure \ref{fig:MAE} shows multilayer auto-encoder (MAE). However, it is difficult to find all the weights of encoders and decoders in MAE because all weights are initialized with random numbers and it makes difficult to find optimized weights \cite{zaremba2014recurrent}. So if the initial weights are close to optimized weights, training algorithm gradient descent can find optimized weights. The paper \cite{zaremba2014recurrent} shows ``pretraining'' method to initialize good weights.
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.75\textwidth]{pictures/figures/MAE.png}
+    \includegraphics[width=0.6\textwidth]{pictures/figures/MAE.png}
     \caption{Multilayer Auto-encoder}
     \label{fig:MAE}
 \end{figure}
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.75\textwidth]{pictures/figures/example_MAE.png}
+    \includegraphics[width=0.6\textwidth]{pictures/figures/example_MAE.png}
     \caption{Multilayer Auto-encoder Example}
     \label{fig:example_MAE}
 \end{figure}
@@ -498,21 +498,21 @@ On this paper and experiment, an undercomplete AE is used for reducing an input 
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.3\textwidth]{pictures/figures/train_MAE1.png}
+    \includegraphics[width=0.25\textwidth]{pictures/figures/train_MAE1.png}
     \caption{Pretraining First Step}
     \label{fig:train_MAE1}
 \end{figure}
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/figures/train_MAE2.png}
+    \includegraphics[width=0.4\textwidth]{pictures/figures/train_MAE2.png}
     \caption{Pretraining Second Step}
     \label{fig:train_MAE2}
 \end{figure}
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.75\textwidth]{pictures/figures/train_MAE3.png}
+    \includegraphics[width=0.6\textwidth]{pictures/figures/train_MAE3.png}
     \caption{Pretraining Thrid Step}
     \label{fig:train_MAE3}
 \end{figure}
@@ -532,26 +532,33 @@ $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\
 This section introduces three popular libraries for deep learning.
 
 \subsection{Tensorflow}
-Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operator as a node. For example, multiplication, addition, or sigmoid function are treated as a node.  This helps developers to intuitively build neural network. Another strength is a TensorBoard. A TensorBoard is a tool for Tensorflow to visualize neural networks built in Tensorflow. Developers can also review how neural networks are trained from TensorBoard because TensorBoard visualizes logs to track all parameters while neural networks are trained.
+Tensorflow \footnote{\url{https://www.tensorflow.org/}} is an open source software library for numerical computation using data flow graphs. The biggest difference from other libraries is that Tensorflow treats all operators as nodes. For example, multiplication, addition, or sigmoid functions are treated as nodes.  This helps developers to intuitively build neural networks. Another strength is the TensorBoard. TensorBoard is a tool for Tensorflow to visualize neural networks. Developers can also review how neural networks are trained from TensorBoard because TensorBoard visualizes logs to track all parameters while neural networks are trained.
 
-The most famous example of Tensorflow is AlphaGo \footnote{\url{https://cloudplatform.googleblog.com/2016/05/Google-supercharges-machine-learning-tasks-with-custom-chip.html}}. Google engineer teams built AlphaGo with Tensorflow and the AlphaGo runs on Tensor Processing Unit (TPU).
+The most famous example of the utilization of Tensorflow is AlphaGo \footnote{\url{https://cloudplatform.googleblog.com/2016/05/Google-supercharges-machine-learning-tasks-with-custom-chip.html}}. A team of Google engineers built AlphaGo using Tensorflow and the neural network parts of AlphaGo run on Tensor Processing Units (TPU).
 
 
 \subsection{Theano}
 Theano \footnote{\url{http://deeplearning.net/software/theano/}} is a Python library for machine learning. It integrates with Numpy and dynamically generates C code. Theano has many defined computations (called Op) and Theano allows to extend custom Ops written in C code.
 
-Theano has more example codes and more stable than Tensorflow. This is because Tensorflow is newer than Theano and APIs of Tensorlfow keep changing. For example, many APIs in Tensorflow 1.x have different interfaces compared to APIs in Tensorflow 0.x.
+Theano has more example code and is more stable than Tensorflow. This is because Tensorflow is newer than Theano and  the APIs of Tensorlfow keep changing. For example, many APIs in Tensorflow 1.x have different interfaces compared to  the APIs in Tensorflow 0.x.
 
 
 \subsection{DL4J}
-DL4J \footnote{\url{https://deeplearning4j.org/}} is open source, distributed deep-learning library for Java and Scala under the Apache 2.0 license. To compare with other deep learning libraries, DL4J can easily interact with Hadoop and Spark so neural networks built in DL4J can be used for big data.
+DL4J \footnote{\url{https://deeplearning4j.org/}} is an open source, distributed deep-learning library for Java and Scala under the Apache 2.0 license. To compare with other deep learning libraries, DL4J can easily interact with Hadoop and Spark so neural networks built in DL4J can be used for big data.
 
 
 \section{Machine Learning with Driving Data}\label{sec:MLDD}
-People are concerned about driving behavior for safety.  Human driving behavior has been researched for long time. For example, Macadam illustrates the manual creation of control models showing aspects of human driving behavior on \cite{markkula2012review}.
 
-Many research for human driving behavior use machine learning approach. For example, the paper \cite{ontanon2014case} introduces case-based and instance-based learning for driving behavior. Also the paper \cite{nechyba1998stochastic} applies Hidden Markov Models introduced on \cite{rabiner1986introduction} to develop a similarity measure of control models. The approach is able to measure similarity between driving data from different drivers.
+Due to its many practical applications and its importance to road safety, driving behavior modeling has been approached from many perspectives. A significant body of work, illustrated by the work of Macadam~\cite{macadam2003understanding}, exists on the manual creation of control models that exhibit specific aspects of human driving behavior (see Markkula et al.~\cite{markkula2012review} for an in-depth review).
 
+A number of approaches employ machine learning methods to automatically acquire models of human driving behavior \cite{fernlund2006lfo,Pomerleau_1989_2055}. For example, case-based and instance-based learning have been deployed for driving tasks~\cite{ontanon2014case} as well as other LfD tasks \cite{floyd2008imitating,ontanon2010darmok,DBLP:conf/ijcai/RubinW11,lamontagne2012acquisition}. These approaches learn behavior by observing an expert's performance, but except for the work of Rubin and Watson, focus on small-scale datasets, much smaller than the datasets required to analyze driving behavior. Nechyba and Xu~\cite{nechyba1998stochastic} developed a similarity measure based on Hidden Markov Models (HMM) \cite{rabiner1986introduction}. The results demonstrated the ability of the models to accurately differentiate driving traces generated from one driver from those generated from other drivers however, the measures were based on relatively simple driving data (without other traffic). Moreover, the driving data used in this paper is significantly more complex than that used by Nechyba and Xu (for example, our data includes other traffic). In our previous work \cite{lee2017learning}, we showed how choosing the right variables to model is key in accurately modeling driving behavior. For example, we showed that if the usual steering, throttle and brake variables are used as the target for prediction, then the learning problem becomes non-i.i.d.
+
+Finally, previous work has utilized models to automatically predict driver states from driving data. Das et al.~\cite{das2012differentiating} showed that statistical measures over steering wheel data such as entropy and the Lyapunov exponent can determine whether a given driver is under the effect of alcohol or not. 
+
+%People are concerned about driving behavior for safety.  Human driving behavior has been researched for long time. For example, Macadam illustrates the manual creation of control models showing aspects of human driving behavior on \cite{markkula2012review}.
+%
+%Many research for human driving behavior use machine learning approach. For example, the paper \cite{ontanon2014case} introduces case-based and instance-based learning for driving behavior. Also the paper \cite{nechyba1998stochastic} applies Hidden Markov Models introduced on \cite{rabiner1986introduction} to develop a similarity measure of control models. The approach is able to measure similarity between driving data from different drivers.
+%
 
 % ####################################################################################################################################
 \chapter{Data Set}\label{chap:dataset}
@@ -565,7 +572,7 @@ The simulator records 100 features which include car status: velocity, steer, Br
 
 In this paper, we used two versions of the collected data set. A first version ({\em raw dataset}) contains 98 of the 100 features collected by the driving simulator (the two features that are removed are time stamps). A second version ({\em filtered dataset}) contains only 23 features. These 23 features were manually selected as are those that are most important for the classification task at hand. Reducing size of features helps save time to train neural network.
 
-\begin{table}[!t]
+\begin{table}[tb]
 \centering
 \caption{Length of each of the traces used in our experiments.}
 \label{tbl:traces}
@@ -596,28 +603,28 @@ Trace15 & Inexpert1 & Track3 & 27255  \\ \hline
 \chapter{Technical Approach}\label{chap:tech_approach}
 % ####################################################################################################################################
 
-This chapter covers technical methods for experiments on the paper and also introduces three different neural network used for the experiments.
+This chapter covers the technical methods designed for the experiments reported later in this paper and also introduces three different neural network models used for these experiments.
 
 
 \section{Cross Validation}
-Cross validation (CV) is used to validate model when data is not enough \cite{Goodfellow-et-al-2016}. CV divides data set to $K$ folds then applies $i$th fold as test set and other folds as train set to target model. Experiments on the paper use 16 traces but it is not enough to train neural network. CV can be used to validate neural network model and compare performance of three different models. The 16 traces dataset is divided to 4 folds. Each folds contain two traces from expert and two traces from inexpert. The neural networks are trained four times with different train (3 folds) and test (1 fold) set. Figure \ref{fig:CV} shows four folds cross validation. Red color is the fold for testing and other folds are for training.
+Cross validation (CV) is a common method used to validate models when data is not large enough \cite{Goodfellow-et-al-2016}. CV divides a data set into $K$ folds and then uses the $i$th fold as the test set and other folds as the training set to the target model. Experiments on this paper use 16 full traces but this has shown not to be enough to train the complex neural networks that we studied. Thus, CV was used to validate neural network models and to compare performance of these different models. The 16 traces dataset is divided to 4 folds. Each fold contain two traces from expert and two traces from inexpert. The neural networks are thus trained four times with different training sets and test sets. Figure \ref{fig:CV} shows four folds cross validation. Red color is the fold for testing and other folds are for training. All the results presented in this paper are the result of repeating a 4-fold CV four times, and computing the average result.
 
-\begin{figure}[t!]
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=0.7\textwidth]{pictures/figures/CV.png}
+    \includegraphics[width=0.6\textwidth]{pictures/figures/CV.png}
     \caption{Cross Validation}
     \label{fig:CV}
 \end{figure}
 
 
 \section{LSTM}
-The LSTM neural network is used on three different neural network models to classify expert or inexpert drivers because the data has time domain and LSTM gives good performance for serial data. On the paper, LSTM neural network is built with 16, 32, 64, 128, and 256 hidden neurons. The output from LSTM is sent to the output layer which has two neurons. By using a softmax, the output from two neurons is classified. If it has [0, 1], it is classified to experts. Otherwise, it is classified to inexperts.
+The LSTM neural network is used on three different neural network models to classify expert or inexpert drivers because the data has time domain and LSTM gives good performance for serial data. On the paper, LSTM neural networks are built with 16, 32, 64, 128, and 256 hidden neurons. The output from LSTM is sent to an output layer which has two additional neurons. By using softmax, the output from two neurons is classified. If it is [0, 1], it is classified as expert. Otherwise, it is classified as inexpert.
 
 Figure \ref{fig:exp_NN1} shows first neural network model ({\em first model}) on the paper. Its input is {\em filtered dataset} which has 23 chosen features. The {\em filtered dataset} is feed directly to LSTM then the result is passed to the output layer.
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.7\textwidth]{pictures/figures/exp_NN1.png}
+    \includegraphics[width=0.6\textwidth]{pictures/figures/exp_NN1.png}
     \caption{First experiment NN}
     \label{fig:exp_NN1}
 \end{figure}
@@ -631,7 +638,7 @@ Figure \ref{fig:exp_NN2} shows the second neural network model ({\em second mode
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.8\textwidth]{pictures/figures/exp_NN2.png}
+    \includegraphics[width=0.7\textwidth]{pictures/figures/exp_NN2.png}
     \caption{Second experiment NN}
     \label{fig:exp_NN2}
 \end{figure}
@@ -642,19 +649,20 @@ Figure \ref{fig:exp_NN3} shows third neural network model ({\em third model}) on
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=\textwidth]{pictures/figures/exp_NN3.png}
+    \includegraphics[width=0.9\textwidth]{pictures/figures/exp_NN3.png}
     \caption{Third experiment NN}
     \label{fig:exp_NN3}
 \end{figure}
 
 
 \section{Sampling}
-The simulator records 60 samples per second. It is too often recorded. The dataset is re-sampled by three different periods: 1 over 10, 1 over 20, and 1 over 50. When it is re-sampled, three methods are used. The first method {\em last} chooses the last sample of period, the second method {\em mean} computes mean of data in period, and the third method {\em gaussian} applies Gaussian filter. For the third method, window size is 11, 21, and 51 for each periods which are one more greater than periods. Below example explains how to re-sample data.
+The simulator records 60 samples per second, which is too high a frequency. Thus, we re-sampled the dataset using three different periods: taking 1 out of each 10 samples, 1 out of each 20, and 1 out of each  50. For each period, we tested three different re-sampling methods. The first method {\em last} chooses the last sample of period, the second method {\em mean} computes mean of data in period, and the third method {\em gaussian} applies Gaussian filter. For the third method, window size is 11, 21, and 51 for each periods which are one more greater than periods. The example below explains how to re-sample data.
 
 \begin{table}[!t]
 \centering
 \caption{Example Data}
 \label{tbl:example_data}
+\begin{small}
 \begin{tabular}{|l|}
 \hline
 Example Data \\ \hline
@@ -680,6 +688,7 @@ Example Data \\ \hline
 20           \\
 21           \\ \hline
 \end{tabular}
+\end{small}
 \end{table}
 
 \begin{table}[!t]
@@ -704,6 +713,7 @@ where $\sigma = \frac{filter\_size-1}{6.0}$ because the sum of filter closes to 
 \centering
 \caption{Gaussian Filter (size=11, $\sigma$=1.667)}
 \label{tbl:gaussian_filter}
+\begin{small}
 \begin{tabular}{|l|l|}
 \hline
 x  & Gaussian Value \\ \hline
@@ -719,12 +729,14 @@ x  & Gaussian Value \\ \hline
 -4 & 0.01344760189  \\
 -5 & 0.00266126292  \\ \hline
 \end{tabular}
+\end{small}
 \end{table}
 
 \begin{table}[!t]
 \centering
 \caption{First Period applied by Gaussian Filter}
 \label{tbl:first_period}
+\begin{small}
 \begin{tabular}{|l|ll|}
 \hline
 First Period & \multicolumn{1}{l|}{Gaussian Value} & Filtered Value \\ \hline
@@ -741,12 +753,14 @@ First Period & \multicolumn{1}{l|}{Gaussian Value} & Filtered Value \\ \hline
 11           & \multicolumn{1}{l|}{0.00266126292}  & 0.02927389212  \\ \hline
 \multicolumn{2}{|l|}{Sum}                          & 5.999996063    \\ \hline
 \end{tabular}
+\end{small}
 \end{table}
 
 \begin{table}[!t]
 \centering
 \caption{Second Period applied by Gaussian Filter}
 \label{tbl:second_period}
+\begin{small}
 \begin{tabular}{|l|l|l|}
 \hline
 First Period & Gaussian Value & Filtered Value \\ \hline
@@ -763,17 +777,18 @@ First Period & Gaussian Value & Filtered Value \\ \hline
 21           & 0.00266126292  & 0.05588652132  \\ \hline
 \multicolumn{2}{|l|}{Sum}     & 15.9999895     \\ \hline
 \end{tabular}
+\end{small}
 \end{table}
 
 Table \ref{tbl:gaussian_filter} shows size 11 Gaussian filter with $\sigma=1.667$. Re-sampling example data by the Gaussian filter is just multiplication between filter and data. Table \ref{tbl:first_period} shows Gaussian filtered values for {\em first period}. The re-sampled value from {\em first period} is sum of Gaussian filtered values. That is 5.999996063. Table \ref{tbl:second_period} shows Gaussian filtered values for {\em second period}. The re-sampled value is 15.9999895.
 
 
-\section{Standardization}
-After feeding re-sampled data to three neural network models, the data is standardized: mean is 0, standard deviation is 1. CV is used for all experiments. Therefore, standardization is done in a training set without a testing set in CV. This is because the testing set should be hidden until final neural network models are applied on that. The testing set refers mean and standard deviation from the training set to standardize.
+\section{Normalization}
+After feeding re-sampled data to three neural network models, the data is normalized: mean is 0, standard deviation is 1. CV is used for all experiments. Therefore, normalization is done in a training set without a testing set in CV. This is because the testing set should be hidden until final neural network models are applied on that. The testing set refers mean and standard deviation from the training set to normalize.
 
 
 % ####################################################################################################################################
-\chapter{Experiment Result}\label{chap:result}
+\chapter{Experimental Result}\label{chap:result}
 % ####################################################################################################################################
 This chapter summarizes results from all experiments. Experiments are divided to two parts: 1) experiments with {\em filtered dataset} 2) experiments with {\em raw dataset}. First part of experiments used {\em first model} which only has LSTM. Each experiments used 5 different number of neurons: 16, 32, 64, 128, and 256. Second part of experiments used {\em second model} which has SAE and {\em third model} which has MAE then compared result of three models.
 
@@ -785,20 +800,20 @@ This subsection compares results from experiments with 1 over 50 re-sampled {\em
 
 The best performance was from {\em last} method with 16 number of neurons. The accuracy of this was 0.59375 (59.375\%). The worst performance was from {\em gaussian} method with 64 number of neurons. It was 0.40625 (40.625\%). Test with 64 neurons gave most stable result because standard deviation of this was the smallest. Many accuracy were below 0.5 (50\%) and total average accuracy is 0.492708 (49.2708\%). The experiments with 1 over 50 re-sampled data took short time than experiments with 1 over 20 and 1 over 10 re-sampled data on later of this chapter.
 
-\begin{figure}[t!]
+\begin{figure}[tb]
     \centering
     \includegraphics[width=0.75\textwidth]{pictures/result_pictures/filtered_1_50_result.png}
     \caption{Result of 1 over 50 Re-sampled {\em filtered dataset}}
     \label{fig:filter_1_50}
 \end{figure}
 
-\begin{table}[!t]
+\begin{table}[tb]
 \centering
 \caption{Average Accuracy of Result from 1 over 50 Re-sampled {\em filtered dataset}}
 \label{tbl:filtered_avg_1_50}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 50\\ Average\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}               \\ \cline{2-6} 
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 50\\\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}               \\ \cline{2-6} 
                                                                              & 16       & 32       & 64           & 128      & 256      \\ \hline
 \textit{last}                                                                & 0.59375  & 0.484375 & 0.546875     & 0.5625   & 0.515625 \\ \hline
 \textit{mean}                                                                & 0.421875 & 0.5      & 0.484375     & 0.421875 & 0.484375 \\ \hline
@@ -807,13 +822,13 @@ Average                                                                      & 0
 \end{tabular}
 \end{table}
 
-\begin{table}[!t]
+\begin{table}[tb]
 \centering
 \caption{Standard Deviation of Result from 1 over 50 Re-sampled {\em filtered dataset}}
 \label{tbl:filtered_std_1_50}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 50\\ Std.\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{2-6} 
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 50\\\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{2-6} 
                                                                           & 16           & 32           & 64           & 128          & 256          \\ \hline
 \textit{last}                                                             & 0.1983000672 & 0.2536196299 & 0.1547847968 & 0.249478623  & 0.2452677109 \\ \hline
 \textit{mean}                                                             & 0.218303115  & 0.1825741858 & 0.213478141  & 0.1983000672 & 0.2656556355 \\ \hline
@@ -822,13 +837,13 @@ Average                                                                   & 0.20
 \end{tabular}
 \end{table}
 
-\begin{table}[!t]
+\begin{table}[tb]
 \centering
 \caption{Test Time from 1 over 50 Re-sampled {\em filtered dataset}}
 \label{tbl:filtered_time_1_50}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 50\\ Time\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6} 
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 50\\ \end{tabular}} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6} 
                                                                           & 16      & 32      & 64      & 128     & 256     \\ \hline
 \textit{last}                                                             & 0:17:03 & 0:18:48 & 0:22:43 & 0:35:43 & 0:51:25 \\ \hline
 \textit{mean}                                                             & 0:17:06 & 0:18:17 & 0:23:10 & 0:35:23 & 0:50:42 \\ \hline
@@ -994,7 +1009,7 @@ The best performance was from {\em mean} method with 32 and 256 number of neuron
 \label{tbl:filtered_avg_1_20}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 20\\ Average\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                       \\ \cline{2-6} 
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 20\\ \end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                       \\ \cline{2-6} 
                                                                              & 16           & 32           & 64           & 128      & 256      \\ \hline
 \textit{last}                                                                & 0.484375     & 0.453125     & 0.515625     & 0.515625 & 0.5      \\ \hline
 \textit{mean}                                                                & 0.546875     & 0.59375      & 0.53125      & 0.375    & 0.59375  \\ \hline
@@ -1009,7 +1024,7 @@ Average                                                                      & 0
 \label{tbl:filtered_std_1_20}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 20\\ Std.\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{2-6} 
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 20\\ \end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{2-6} 
                                                                           & 16           & 32           & 64           & 128          & 256          \\ \hline
 \textit{last}                                                             & 0.1929756029 & 0.2617051458 & 0.213478141  & 0.213478141  & 0.2415229458 \\ \hline
 \textit{mean}                                                             & 0.1875       & 0.2561737691 & 0.1547847968 & 0.2581988897 & 0.2393567769 \\ \hline
@@ -1024,7 +1039,7 @@ Average                                                                   & 0.20
 \label{tbl:filtered_time_1_20}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 20\\ Time\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6} 
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 20\\ \end{tabular}} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6} 
                                                                           & 16      & 32      & 64      & 128     & 256     \\ \hline
 \textit{last}                                                             & 0:53:22 & 0:58:52 & 1:30:51 & 2:15:33 & 3:49:07 \\ \hline
 \textit{mean}                                                             & 0:48:29 & 0:59:33 & 1:27:01 & 2:14:11 & 3:46:40 \\ \hline
@@ -1192,7 +1207,7 @@ Overall performance from experiments with 1 over 10 gave better result than from
 \label{tbl:filtered_avg_1_10}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 10\\ Average\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                      \\ \cline{2-6} 
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 10\\ \end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                      \\ \cline{2-6} 
                                                                              & 16           & 32      & 64           & 128      & 256          \\ \hline
 \textit{last}                                                                & 0.5          & 0.5     & 0.6875       & 0.59375  & 0.5          \\ \hline
 \textit{mean}                                                                & 0.515625     & 0.59375 & 0.640625     & 0.4375   & 0.53125      \\ \hline
@@ -1207,7 +1222,7 @@ Average                                                                      & 0
 \label{tbl:filtered_std_1_10}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 10\\ Std.\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{2-6} 
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 10\\ \end{tabular}} & \multicolumn{5}{c|}{The number of neurons}                               \\ \cline{2-6} 
                                                                           & 16           & 32           & 64           & 128          & 256          \\ \hline
 \textit{last}                                                             & 0.2581988897 & 0.2041241452 & 0.2140872096 & 0.2015564437 & 0.2236067977 \\ \hline
 \textit{mean}                                                             & 0.1929756029 & 0.2015564437 & 0.2230237282 & 0.2140872096 & 0.1547847968 \\ \hline
@@ -1222,7 +1237,7 @@ Average                                                                   & 0.21
 \label{tbl:filtered_time_1_10}
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 10\\ Time\end{tabular}} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6} 
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}1 over 10\\ \end{tabular}} & \multicolumn{5}{c|}{The number of neurons}      \\ \cline{2-6} 
                                                                           & 16      & 32      & 64      & 128     & 256     \\ \hline
 \textit{last}                                                             & 2:11:58 & 2:21:11 & 3:04:34 & 4:28:24 & 6:35:52 \\ \hline
 \textit{mean}                                                             & 1:59:20 & 2:24:28 & 3:05:15 & 4:26:12 & 6:57:59 \\ \hline
@@ -2153,9 +2168,9 @@ Training LSTM in {\em second model} and {\em third model} were slow and most cas
 %\end{table}
 
 \subsection{Error from AE in {\em second model} and {\em third model}}
-Table \ref{tbl:sae_error} and Table \ref{tbl:mae_error} show error from AE. The error function $E()$ is defined as following:
+Table \ref{tbl:sae_error} and Table \ref{tbl:mae_error} show error from AE. We repeated each experiment for times (Test), and we also show the error in each of the folds of the cross validation run (CV). The error function $E()$ is defined as following:
 $$E(\vec{x}, \vec{d})=\sum_k(x_i-d_i)^2$$
-where $\vec{x}$ is input signal, $\vec{d}$ is output signal from last decoder. The total average error from AE in {\em second model} is 0.1587907 and the total average error from AE in {\em third model} is 0.1720756. Both error are big enough to affect performance because most range of standardized data for experiments is between 3 and -3. Figure \ref{fig:sae_error_c3}, Figure \ref{fig:sae_error_c17}, Figure \ref{fig:mae_error_c3}, and Figure \ref{fig:mae_error_c17} help visualize error.
+where $\vec{x}$ is input signal, $\vec{d}$ is output signal from last decoder. The total average error from AE in {\em second model} is 0.1587907 and the total average error from AE in {\em third model} is 0.1720756. Both error are big enough to affect performance because most range of normalized data for experiments is between 3 and -3. Figure \ref{fig:sae_error_c3}, Figure \ref{fig:sae_error_c17}, Figure \ref{fig:mae_error_c3}, and Figure \ref{fig:mae_error_c17} help visualize error.
 
 Such big error between original input and output from decode layer implies that data from final encode layer also has big error. The error in encoded data can interrupt train followed neural networks. In this case, the error interrupts LSTM layer.
 
@@ -2251,19 +2266,18 @@ Such big error between original input and output from decode layer implies that 
 \chapter{Conclusion and Future work}\label{chap:conclusion}
 % ####################################################################################################################################
 \section{Data Size}
-Two different data sizes should be considered on this paper. The first data size is the number of samples in each traces. The data with more samples in each traces gave better performance from the first part of experiments with {\em first model}. The average accuracy with 1 over 10 sampled data show a higher accuracy than the average accuracy with 1 over 20 sampled data and 1 over 50 sampled data. From the fact, experiments with more sample, the data without re-sampling or the data from long driving time, are expected with better performance.
+Two different data sizes should be considered on this paper. The first data size is the number of samples in each traces. The data with more samples in each traces gave better performance from the first part of experiments with {\em first model}. The average accuracy with 1 over 10 sampled data show a higher accuracy than the average accuracy with 1 over 20 sampled data and 1 over 50 sampled data. From this fact, experiments with more samples (in the extreme, using the full data without doing any re-sampling or data from longer driving time) is expected to have better performance. Verifying this hypothesis is part of our future work.
 
-Another data size is the number of traces. All experiments on the paper used 16 traces. The 12 traces were used for training and the 4 traces were used for testing. The 12 traces were not enough to train neural networks: {\em first model}, {\em second model}, and {\em third model}. Especially, {\em second model} and {\em third model} need more data than {\em first model} because two models are more complex than {\em first model}. To train complex neural network needs more data. Next experiments in the future should use the data with enough sample in each traces and enough number of traces.
+Another data size is the number of traces. All experiments on the paper used 16 traces. 12 traces were used for training and the 4 traces were used for testing in each of the folds of the cross validation runs. Using just 12 traces did not seem to be enough to train the proposed neural networks: {\em first model}, {\em second model}, and {\em third model}. Especially, {\em second model} and {\em third model} need more data than {\em first model} because two models are more complex than {\em first model}. To train complex neural network needs more data. Next experiments in the future should use the data with enough sample in each traces and enough number of traces.
 
-\section{Limitation of Auto-encoder}
-The result from experiments with with SAE in {\em second model} and MAE in {\em third model} show the bad performance. The principle of AE is to find two matrices: the first matrix is used for compression and the second matrix is used for decompression. If two matrices are not exist, impossible to reduce original dimensions to the target dimensions, either SAE or MAE do not work. For example, during training the first layer of MAE in {\em third model} which reduced 98 features to 75 features, the error from this was less than 0.009. This is much better performance than reducing 98 dimensions to 25 dimensions. Therefore, the bad performance of AE implies that it is not possible to reduce 98 features of original data to 25 features by AE.
+\section{Limitation of Auto-encoders}
+The result from experiments with with SAE in {\em second model} and MAE in {\em third model} show bad performance. The principle of AE is to find two matrices: the first matrix is used for compression and the second matrix is used for decompression. If these two matrices do not exist, it is impossible to reduce original dimensions to the target dimensions, and either SAE or MAE do not work. For example, during training the first layer of MAE in {\em third model} which reduced 98 features to 75 features, the error from this was less than 0.009. This is much better performance than reducing 98 dimensions to 25 dimensions. Therefore, the bad performance of AE implies that it is not possible to reduce 98 features of original data to 25 features by AE.
 
-The second limitation of AE is that auto-encoder always tries to keep all information on encoded data. It means that auto-encoder cannot remove unimportant features as principal components analysis (PCA) does. PCA is another popular method to reduce dimensions. It first takes a feature which has more information than other features. With the {\em raw dataset}, PCA is better method than AE because {\em raw dataset} has many unnecessary features.
+The second limitation of AE is that auto-encoder always tries to keep all information on encoded data. It means that auto-encoder cannot remove unimportant features other feature selection methods do. %For example, Principal Component Analysis (PCA) is another popular method to reduce dimensions. It first takes a feature which has more information than other features. With the {\em raw dataset}, PCA is better method than AE because {\em raw dataset} has many unnecessary features.
+For future work, it might be necessary to study auto-encoder methods that accept some form of supervision and can reduce dimensions with the ability to ignore unimportant features and keep information from the important features for the classification task at hand.
 
-For future work, it is necessary to research AE for reducing dimensions with ability to ignore unimportant features and keep information from important features.
-
-\section{Training Multiple Layer Auto-encoder}
-Chapter \ref{subsubsec:MAE} explains how to train MAE based on \cite{hinton2006reducing}. The paper introduces pretraining process, and it can help initializing good weights. However, processing of pretraining takes really long time. For example, average testing time for {\em third model} with 256 neurons took 10 hours and 27 minutes but the testing time for {\em second model} with 256 neurons took 8 hours and 33 minutes. The process of pretraining took about 2 hours.
+\section{Training Multiple Layer Auto-encoders}
+Section \ref{subsubsec:MAE} explains how to train MAE based on the work of Hinton and Salakhutdinov \cite{hinton2006reducing}. The paper introduces a pretraining process, and shows it can help for initializing good weights. However, processing of pretraining takes a really long time. For example, average testing time for {\em third model} with 256 neurons took 10 hours and 27 minutes but the testing time for {\em second model} with 256 neurons took 8 hours and 33 minutes. The process of pretraining took about 2 hours.
 
 Unlike training each layer separately in pretraining, add more AE until it gives a big error or it reaches goal dimensions. Figure \ref{fig:train_NMAE1}, Figure \ref{fig:train_NMAE2}, and Figure \ref{fig:train_NMAE3} show how to train MAE.
 
@@ -2273,27 +2287,27 @@ Now if it gives small enough error, add one more layer as Figure \ref{fig:train_
 $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{D_2})\bold{D_1}))$$
 If it gives a small enough error, add one more layer as Figure \ref{fig:train_NMAE3}. In this case, the error function is
 $$E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{E_3})\bold{D_3})\bold{D_2})\bold{D_1}))$$
-If it does not give a small error, stop adding more layer.
+If it does not give a small error, stop adding more layers.
 
-This way can give two benefits. The first benefit is to save training time. To compare with method on \cite{hinton2006reducing}, it does not train the whole network because this way always train the whole network. Another benefit is to find how much dimensions AE can reduce. For the future work, it is worth comparing two different train methods for MAE and finding minimized dimensions reduced by AE.
+This process can give two benefits. The first benefit is to save training time. The first methods is that compared with the method in \cite{hinton2006reducing}, it does not train the whole network. Another benefit is being able to find how much can the AE reduce dimensionality. As part of our future work, it is worth comparing two different training methods for MAE and finding minimized dimensions reduced by AE.
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.3\textwidth]{pictures/figures/train_new_MAE1.png}
+    \includegraphics[width=0.25\textwidth]{pictures/figures/train_new_MAE1.png}
     \caption{First Step of New Way to train MAE}
     \label{fig:train_NMAE1}
 \end{figure}
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/figures/train_new_MAE2.png}
+    \includegraphics[width=0.4\textwidth]{pictures/figures/train_new_MAE2.png}
     \caption{Second Step of New Way to train MAE}
     \label{fig:train_NMAE2}
 \end{figure}
 
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.75\textwidth]{pictures/figures/train_new_MAE3.png}
+    \includegraphics[width=0.6\textwidth]{pictures/figures/train_new_MAE3.png}
     \caption{Thrid Step of New Way to train MAE}
     \label{fig:train_NMAE3}
 \end{figure}
