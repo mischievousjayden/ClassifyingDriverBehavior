@@ -68,21 +68,43 @@
 \section{Introduction}
 \begin{frame}
 \frametitle{Problem Statement}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.85\textwidth]{project-overall}
+%    \caption{General Artificial Neuron}
+    \label{fig:diagnosticdriving}
+\end{figure}
 \begin{itemize}
 \item Modern car systems collect real-time data of the car status and driving behavior of the driver
-\item Those data is worth for healthcare and research
-\item Using driving behavior data to diagnose medical conditions
+\item Such data is very valuable for healthcare and research
+\item {\color{blue} Goal}: use driving behavior data to diagnose medical conditions
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Project Background}
 \begin{itemize}
-\item Classify driving simulation data from novice and expert drivers using several different neural network models
-\item Explain LSTM and Auto-encoder
-\item Compare result from three different neural network models
+\item Work in the context of the NSF SCH {\em Diagnostic Driving} project
+\item Partners:
+	\begin{itemize}
+	\item Drexel University (lead)
+	\item Children's Hospital of Philadelphia (CHOP)
+	\item George Mason University
+	\item University of Central Florida
+	\end{itemize}
+\item CHOP and GM are in charge of data collection, and Drexel and UCF are in charge of machine learning
 \end{itemize}
 \end{frame}
+
+\begin{frame}
+\frametitle{Project Tasks}
+\begin{itemize}
+\item Learn and understand LSTM and Auto-encoders neural networks
+\item Classify driving simulation data from novice and expert drivers using several different neural network models
+\item Compare result from three different neural network models created specifically for this task
+\end{itemize}
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%
 %------------------%
@@ -99,7 +121,7 @@
 \end{figure}
 
 \begin{itemize}
-\item An artificial neuron has input signals, weights, bias, and activation function
+\item An artificial neuron has input signals, weights, bias, and activation function \cite{raschka2015python}
 \end{itemize}
 \end{frame}
 
@@ -354,6 +376,15 @@ $$=E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(
 %%%%%%%%%%%%%%%%%%%%
 \section{Data Set}
 %%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=\textwidth]{figure-simulator-cropped}
+    \caption{Driving Simulator at CHOP}
+    \label{fig:simulator}
+\end{figure}
+\end{frame}
+
 \begin{frame}
 \frametitle{Data Set}
 \begin{itemize}
@@ -719,13 +750,13 @@ Models with Auto-encoder show worse performance
 \begin{frame}
 \frametitle{Conclusion - Data Size}
 \begin{itemize}
-\item The number of samples in trace
+\item The number of samples in trace:
 
-From result of experiment with different re-sampled periods, more densely re-sampled data gives better performance
+From the result of experiments with different re-sampled periods, more densely re-sampled data gives better performance
 
-\item The number of traces
+\item The number of traces:
 
-12 traces are not enough to train proposed neural networks
+12 traces are not enough to train the proposed neural networks
 
 \end{itemize}
 \end{frame}
@@ -734,13 +765,13 @@ From result of experiment with different re-sampled periods, more densely re-sam
 \begin{frame}
 \frametitle{Conclusion - Limitation of Auto-encoders}
 \begin{itemize}
-\item No optimize transfer matrices
+\item No optimize transfer matrices:
 
-When Auto-encoder tries to reduce dimensions, if encoder and decoder transfer matrices are not exist, encoded data has noise. It can make hard to train following neural networks.
+When Auto-encoder tries to reduce dimensions, if encoder and decoder transfer matrices do not exist, encoded data has noise. It can make it hard to train subsequent neural networks.
 
-\item Always try to keep all information
+\item Always try to keep all information:
 
-Auto-encoder does not ignore or exclude unimportant features
+Auto-encoder does not ignore or exclude unimportant features (it's unsupervised)
 
 \end{itemize}
 \end{frame}
@@ -749,13 +780,13 @@ Auto-encoder does not ignore or exclude unimportant features
 \begin{frame}
 \frametitle{Conclusion - Problem in training MAE}
 \begin{itemize}
-\item Training time
+\item Training time:
 
-Processing of pretraining takes long time
+Processing of pretraining takes a long time
 
-\item Learn error from previous layer during pretraining
+\item Learn error from previous layer during pretraining:
 
-Fix previous layer while follow auto-encoder layer is trained
+Fix previous layer while the following auto-encoder layer is trained
 
 \end{itemize}
 
@@ -776,8 +807,8 @@ Fix previous layer while follow auto-encoder layer is trained
 \frametitle{Future Work}
 \begin{itemize}
 \item Experiment with more traces
-\item Research auto-encoder that accept some form of supervision and reduce dimensions with the ability to ignore unimportant features and keep information from the important features
-\item Try different way to train MAE
+\item Research auto-encoder that accept some form of supervision and reduce dimensions with the ability to ignore unimportant features and keep information from the important features (and that can be used for sequential data with LSTMs)
+\item Try different ways to train MAE
 \end{itemize}
 \end{frame}
 
@@ -833,10 +864,10 @@ $$=E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(
 \end{frame}
 
 
-%\begin{frame}[allowframebreaks]
-%\frametitle{References}
-%\bibliographystyle{amsalpha}
-%\bibliography{../paper/references.bib}
-%\end{frame}
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\bibliographystyle{amsalpha}
+\bibliography{../paper/references.bib}
+\end{frame}
 
 \end{document}
