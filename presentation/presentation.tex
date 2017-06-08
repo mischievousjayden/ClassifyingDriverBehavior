@@ -68,12 +68,20 @@
 \section{Introduction}
 \begin{frame}
 \frametitle{Problem Statement}
-This is problem statement
+\begin{itemize}
+\item Modern car systems collect real-time data of the car status and driving behavior of the driver
+\item Those data is worth for healthcare and research
+\item Using driving behavior data to diagnose medical conditions
+\end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Project Background}
-This is project background
+\begin{itemize}
+\item Classify driving simulation data from novice and expert drivers using several different neural network models
+\item Explain LSTM and Auto-encoder
+\item Compare result from three different neural network models
+\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -83,28 +91,42 @@ This is project background
 %%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 \frametitle{Neural Networks - Introduction}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{../paper/pictures/figures/general_AN.png}
+    \caption{General Artificial Neuron}
+    \label{fig:general_AN}
+\end{figure}
+
 \begin{itemize}
-\item The concept of artificial neurons was introduced by Warren McCullock and Walter Pitts
-\item Neural network consists of many artificial neurons
+\item An artificial neuron has input signals, weights, bias, and activation function
 \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 \frametitle{Neural Networks - Introduction}
+\begin{columns}
+\column{0.5\textwidth}
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.5\textwidth]{../paper/pictures/figures/detail_NN.png}
+    \includegraphics[width=\textwidth]{../paper/pictures/figures/detail_NN.png}
     \caption{Example of a Neural Network}
     \label{fig:detail_NN}
 \end{figure}
 
+\column{0.5\textwidth}
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.3\textwidth]{../paper/pictures/figures/NN.png}
+    \includegraphics[width=0.6\textwidth]{../paper/pictures/figures/NN.png}
     \caption{Simplified Neural Network}
     \label{fig:NN}
 \end{figure}
+\end{columns}
+
+\begin{itemize}
+\item Neural network is a network made up many artificial neurons
+\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -127,35 +149,19 @@ $$\vec{o} = \bold{g}(\bold{h}(\vec{x}\bold{v}+\vec{c})\bold{w}+\vec{b}) = \bold{
 %%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 \frametitle{Neural Networks - Back Propagation}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.45\textwidth]{../paper/pictures/figures/MLP.png}
+    \caption{One Hidden Layer MLP}
+    \label{fig:MLP}
+\end{figure}
+
+Activation Function:
+$$f(z)=g(z)=sigm(z)=\frac{1}{1+e^{-z}}$$
+
 Error Function:
 $$J(\bold{V}, \bold{W}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2 =\frac{1}{2}\sum_{i}(y_i-g(\bold{h}(\vec{X}\bold{V})\bold{W_i}))^2$$
 
-Update $W_{ij}$ - $i$th neuron for $j$th input:
-\begin{figure}[t!]
-    \centering
-    \includegraphics[width=0.6\textwidth]{../paper/pictures/figures/BP1.png}
-    \caption{Back-propagation for $W_{ij}$}
-    \label{fig:BP1}
-\end{figure}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\frametitle{Neural Networks - Back Propagation}
-Update $W_{ij}$ - $i$th neuron for $j$th input:
-$$
-{{W_{ij}}^{next}}
-= W_{ij} - \eta\frac{\partial J}{\partial W_{ij}}
-= W_{ij} - \eta\frac{\partial J}{\partial o_i}\frac{\partial o_i}{\partial o'_i}\frac{\partial o'_i}{\partial W_{ij}}
-= W_{ij} + \eta(y_i-o_i)o_i(1-o_i)H_j
-$$
-
-Let
-$$
-\delta_i
-= \frac{\partial J}{\partial o'_i}
-= \frac{\partial J}{\partial o_i}\frac{\partial o_i}{\partial o'_i}
-$$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -295,6 +301,9 @@ $$E(\vec{x}, \vec{d}) = E(\vec{x}, \bold{g}(\vec{E}\bold{V})) = E(\vec{x}, \bold
     \caption{Pretraining First Step}
     \label{fig:train_MAE1}
 \end{figure}
+
+$$E(input, data\_from\_first\_decoder)$$
+$$=E(\vec{x}, \bold{g_1}(\bold{f_1}(\vec{X}\bold{E_1})\bold{D_1}))$$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -306,6 +315,9 @@ $$E(\vec{x}, \vec{d}) = E(\vec{x}, \bold{g}(\vec{E}\bold{V})) = E(\vec{x}, \bold
     \caption{Pretraining Second Step}
     \label{fig:train_MAE2}
 \end{figure}
+
+$$E(data\_from\_first\_encoder, data\_from\_second\_decoder)$$
+$$=E(\bold{f_1}(\vec{X}\bold{E_1^{fixed}}), \bold{g_2}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2})\bold{D_2}))$$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -317,6 +329,9 @@ $$E(\vec{x}, \vec{d}) = E(\vec{x}, \bold{g}(\vec{E}\bold{V})) = E(\vec{x}, \bold
     \caption{Pretraining Thrid Step}
     \label{fig:train_MAE3}
 \end{figure}
+
+$$E(data\_from\_second\_encoder, data\_from\_third\_decoder)$$
+$$=E(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2^{fixed}}), \bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1^{fixed}})\bold{E_2^{fixed}})\bold{E_3})\bold{D_3}))$$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -328,8 +343,10 @@ $$E(\vec{x}, \vec{d}) = E(\vec{x}, \bold{g}(\vec{E}\bold{V})) = E(\vec{x}, \bold
     \caption{Multilayer Auto-encoder Example}
     \label{fig:example_MAE}
 \end{figure}
-\end{frame}
 
+$$E(input, output)$$
+$$=E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{E_3})\bold{D_3})\bold{D_2})\bold{D_1}))$$
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%
@@ -533,15 +550,15 @@ Period                     & Method   & Model                         \\ \hline
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\frametitle{Environment}
-Tux
-\begin{itemize}
-\item Processors:
-\item Memory:
-\item Tensorflow 0.12.1
-\end{itemize}
-\end{frame}
+%\begin{frame}
+%\frametitle{Environment}
+%Tux
+%\begin{itemize}
+%\item Processors:
+%\item Memory:
+%\item Tensorflow 0.12.1
+%\end{itemize}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
 %------------------%
@@ -773,6 +790,9 @@ Fix previous layer while follow auto-encoder layer is trained
     \caption{First Step of New Way to train MAE}
     \label{fig:train_NMAE1}
 \end{figure}
+
+$$E(input, output)$$
+$$=E(\vec{x}, \bold{g_1}(\bold{f_1}(\vec{X}\bold{E_1})\bold{D_1}))$$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -784,6 +804,9 @@ Fix previous layer while follow auto-encoder layer is trained
     \caption{Second Step of New Way to train MAE}
     \label{fig:train_NMAE2}
 \end{figure}
+
+$$E(input, output)$$
+$$=E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{D_2})\bold{D_1}))$$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -795,6 +818,9 @@ Fix previous layer while follow auto-encoder layer is trained
     \caption{Thrid Step of New Way to train MAE}
     \label{fig:train_NMAE3}
 \end{figure}
+
+$$E(input, output)$$
+$$=E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(\vec{X}\bold{E_1})\bold{E_2})\bold{E_3})\bold{D_3})\bold{D_2})\bold{D_1}))$$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
