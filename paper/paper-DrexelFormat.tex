@@ -337,8 +337,8 @@ Therefore,
 $$
 {{V_{ij}}^{next}}
 = V_{ij} - \eta\frac{\partial J}{\partial V_{ij}}
-= W_{ij} - \eta\frac{\partial J}{\partial h_i}\frac{\partial h_i}{\partial h'_i}\frac{\partial h'_i}{\partial V_{ij}}
-= W_{ij} - \eta\sum_k(\delta_kw_{ki})h_i(1-h_i)X_j
+= V_{ij} - \eta\frac{\partial J}{\partial h_i}\frac{\partial h_i}{\partial h'_i}\frac{\partial h'_i}{\partial V_{ij}}
+= V_{ij} - \eta\sum_k(\delta_kw_{ki})h_i(1-h_i)X_j
 $$
 
 Notice that as forward-propagation sends output of a layer as input of the next layer, back-propagation sends the error of a the layer to the previous layer. For example, if the $\delta_i=\frac{\partial J}{\partial o'_i}$ is an error on the output layer, then it is sent to hidden layers.
