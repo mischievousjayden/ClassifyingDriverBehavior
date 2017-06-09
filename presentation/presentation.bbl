@@ -5,9 +5,30 @@
   \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
 }
 \providecommand{\href}[2]{#2}
-\begin{thebibliography}{Ras15}
+\begin{thebibliography}{GBC16}
+
+\bibitem[GBC16]{Goodfellow-et-al-2016}
+Ian Goodfellow, Yoshua Bengio, and Aaron Courville, \emph{Deep learning}, MIT
+  Press, 2016, \url{http://www.deeplearningbook.org}.
+
+\bibitem[HS97]{hochreiter1997long}
+Sepp Hochreiter and J{\"u}rgen Schmidhuber, \emph{Long short-term memory},
+  Neural computation \textbf{9} (1997), no.~8, 1735--1780.
+
+\bibitem[HS06]{hinton2006reducing}
+Geoffrey~E Hinton and Ruslan~R Salakhutdinov, \emph{Reducing the dimensionality
+  of data with neural networks}, science \textbf{313} (2006), no.~5786,
+  504--507.
+
+\bibitem[Mur12]{murphy2012machine}
+Kevin~P Murphy, \emph{Machine learning: a probabilistic perspective}, MIT
+  press, 2012.
 
 \bibitem[Ras15]{raschka2015python}
 Sebastian Raschka, \emph{Python machine learning}, Packt Publishing Ltd, 2015.
+
+\bibitem[ZSV14]{zaremba2014recurrent}
+Wojciech Zaremba, Ilya Sutskever, and Oriol Vinyals, \emph{Recurrent neural
+  network regularization}, arXiv preprint arXiv:1409.2329 (2014).
 
 \end{thebibliography}

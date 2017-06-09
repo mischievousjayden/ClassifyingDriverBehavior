@@ -1,46 +1,48 @@
-This is BibTeX, Version 0.99d (TeX Live 2016)
+This is BibTeX, Version 0.99d (TeX Live 2016/Arch Linux)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: presentation.aux
 The style file: amsalpha.bst
 Database file #1: ../paper/references.bib.bib
-You've used 1 entry,
+Warning--missing pages in zaremba2014recurrent
+You've used 6 entries,
             2624 wiz_defined-function locations,
-            562 strings with 4471 characters,
-and the built_in function-call counts, 303 in all, are:
-= -- 19
-> -- 8
-< -- 1
-+ -- 2
-- -- 2
-* -- 18
-:= -- 55
-add.period$ -- 1
-call.type$ -- 1
-change.case$ -- 5
-chr.to.int$ -- 1
-cite$ -- 1
-duplicate$ -- 16
-empty$ -- 28
-format.name$ -- 4
-if$ -- 56
+            596 strings with 5182 characters,
+and the built_in function-call counts, 2133 in all, are:
+= -- 182
+> -- 104
+< -- 2
++ -- 34
+- -- 34
+* -- 174
+:= -- 361
+add.period$ -- 6
+call.type$ -- 6
+change.case$ -- 36
+chr.to.int$ -- 6
+cite$ -- 7
+duplicate$ -- 89
+empty$ -- 169
+format.name$ -- 42
+if$ -- 419
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 3
-newline$ -- 13
-num.names$ -- 3
-pop$ -- 9
+missing$ -- 15
+newline$ -- 28
+num.names$ -- 18
+pop$ -- 45
 preamble$ -- 1
-purify$ -- 6
+purify$ -- 42
 quote$ -- 0
-skip$ -- 12
+skip$ -- 67
 stack$ -- 0
-substring$ -- 7
-swap$ -- 1
-text.length$ -- 1
-text.prefix$ -- 1
+substring$ -- 98
+swap$ -- 7
+text.length$ -- 2
+text.prefix$ -- 2
 top$ -- 0
-type$ -- 4
-warning$ -- 0
-while$ -- 2
-width$ -- 2
-write$ -- 19
+type$ -- 36
+warning$ -- 1
+while$ -- 20
+width$ -- 8
+write$ -- 71
+(There was 1 warning)

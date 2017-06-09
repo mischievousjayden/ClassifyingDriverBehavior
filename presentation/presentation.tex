@@ -70,7 +70,7 @@
 \frametitle{Problem Statement}
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=0.85\textwidth]{project-overall}
+    \includegraphics[width=0.85\textwidth]{./pictures/figures/project-overall.pdf}
 %    \caption{General Artificial Neuron}
     \label{fig:diagnosticdriving}
 \end{figure}
@@ -121,7 +121,8 @@
 \end{figure}
 
 \begin{itemize}
-\item An artificial neuron has input signals, weights, bias, and activation function \cite{raschka2015python}
+\item The concept of artificial neurons or perseptrons was introduced by Warren McCullock and Walter Pitts \cite{raschka2015python}
+\item An artificial neuron has input signals, weights, bias, and activation function
 \end{itemize}
 \end{frame}
 
@@ -161,6 +162,7 @@
     \label{fig:MLP}
 \end{figure}
 
+Pass inputs $\vec{x}$ to outputs through hidden layers \cite{murphy2012machine}
 $$\vec{h} = \bold{f}(\vec{x}\bold{v}+\vec{c}) = \bold{f}(\vec{X}\bold{V})$$
 
 $$\vec{o} = \bold{g}(\vec{h}\bold{w}+\vec{b}) = \bold{g}(\vec{H}\bold{W})$$
@@ -178,12 +180,16 @@ $$\vec{o} = \bold{g}(\bold{h}(\vec{x}\bold{v}+\vec{c})\bold{w}+\vec{b}) = \bold{
     \label{fig:MLP}
 \end{figure}
 
+\begin{itemize}
+\item Passes an error from the output layer to hidden layers \cite{murphy2012machine}
+\item Assumption:
+
 Activation Function:
 $$f(z)=g(z)=sigm(z)=\frac{1}{1+e^{-z}}$$
 
 Error Function:
 $$J(\bold{V}, \bold{W}) = \frac{1}{2}\sum_{i}(y_i-o_i)^2 =\frac{1}{2}\sum_{i}(y_i-g(\bold{h}(\vec{X}\bold{V})\bold{W_i}))^2$$
-
+\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -228,7 +234,24 @@ $$
 = V_{ij} - \eta\frac{\partial J}{\partial h_i}\frac{\partial h_i}{\partial h'_i}\frac{\partial h'_i}{\partial V_{ij}}
 = V_{ij} - \eta\sum_k(\delta_kw_{ki})h_i(1-h_i)X_j
 $$
+\end{frame}
 
+%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Neural Networks - Back Propagation}
+Update $V_{ij}$ - $i$th neuron for $j$th input:
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{./pictures/figures/BP2_with_error.png}
+    \caption{Back-propagation for $V_{ij}$}
+    \label{fig:BP2}
+\end{figure}
+$$
+{{V_{ij}}^{next}}
+= V_{ij} - \eta\frac{\partial J}{\partial V_{ij}}
+= V_{ij} - \eta\frac{\partial J}{\partial h_i}\frac{\partial h_i}{\partial h'_i}\frac{\partial h'_i}{\partial V_{ij}}
+= V_{ij} - \eta\sum_k(\delta_kw_{ki})h_i(1-h_i)X_j
+$$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -245,7 +268,7 @@ $$
 
 \column{0.5\textwidth}
 \begin{itemize}
-\item Recurrent Neural Network
+\item LSTM is a type of RNN introduced by Hochreiter and Schmidhuber \cite{hochreiter1997long}
 \item Four gates and Memory Cells handle long term dependencies
 \end{itemize}
 \end{columns}
@@ -254,23 +277,153 @@ $$
 %%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 \frametitle{Long Short Term Memory Networks (LSTM)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./pictures/figures/LSTM_input.png}
+    \caption{LSTM Input}
+    \label{fig:LSTM_input}
+\end{figure}
+
+\column{0.5\textwidth}
+\begin{itemize}
+\item Blue = Current Input
+\item Green = Previous Output
+\end{itemize}
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Long Short Term Memory Networks (LSTM)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./pictures/figures/LSTM_input_gate.png}
+    \caption{LSTM Input Gate}
+    \label{fig:LSTM_input_gate}
+\end{figure}
+
+\column{0.5\textwidth}
+Input gate:
+$$\vec{i^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{ii}} + \vec{H^{t-1}}\bold{T_{m,m}^{oi}})$$
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Long Short Term Memory Networks (LSTM)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./pictures/figures/LSTM_input_module_gate.png}
+    \caption{LSTM Input Module Gate}
+    \label{fig:LSTM_input_gate}
+\end{figure}
+
+\column{0.5\textwidth}
+Input modulation gate:
+$$\vec{m^t} = \bold{tanh}(\vec{X^t}\bold{T_{n,m}^{im}} + \vec{H^{t-1}}\bold{T_{m,m}^{om}})$$
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Long Short Term Memory Networks (LSTM)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./pictures/figures/LSTM_forget_gate.png}
+    \caption{LSTM Forget Gate}
+    \label{fig:LSTM_forget_gate}
+\end{figure}
+
+\column{0.5\textwidth}
+Forget gate:
+$$\vec{f^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{if}} + \vec{H^{t-1}}\bold{T_{m,m}^{of}})$$
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Long Short Term Memory Networks (LSTM)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./pictures/figures/LSTM_output_gate.png}
+    \caption{LSTM Output Gate}
+    \label{fig:LSTM_output_gate}
+\end{figure}
+
+\column{0.5\textwidth}
+Output gate:
+$$\vec{o^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{io}} + \vec{H^{t-1}}\bold{T_{m,m}^{oo}})$$
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Long Short Term Memory Networks (LSTM)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./pictures/figures/LSTM_memory_cells.png}
+    \caption{LSTM Memory Cells}
+    \label{fig:LSTM_memory_cells}
+\end{figure}
+
+\column{0.5\textwidth}
+Memory cells:
+$$\vec{c^t} = \vec{i^t} * \vec{m^t} + \vec{f^t} * \vec{c^{t-1}}$$
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Long Short Term Memory Networks (LSTM)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{figure}[t!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./pictures/figures/LSTM_output.png}
+    \caption{LSTM Output}
+    \label{fig:LSTM_output}
+\end{figure}
+
+\column{0.5\textwidth}
+Output:
+$$\vec{h^t} = \vec{c^t} * \vec{o^t}$$
+\end{columns}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Long Short Term Memory Networks (LSTM)}
+Math model \cite{zaremba2014recurrent}
+
 Input gate:
 $$\vec{i^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{ii}} + \vec{H^{t-1}}\bold{T_{m,m}^{oi}})$$
 
 Input modulation gate:
-	$$\vec{m^t} = \bold{tanh}(\vec{X^t}\bold{T_{n,m}^{im}} + \vec{H^{t-1}}\bold{T_{m,m}^{om}})$$
+$$\vec{m^t} = \bold{tanh}(\vec{X^t}\bold{T_{n,m}^{im}} + \vec{H^{t-1}}\bold{T_{m,m}^{om}})$$
 
 Forget gate:
-	$$\vec{f^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{if}} + \vec{H^{t-1}}\bold{T_{m,m}^{of}})$$
+$$\vec{f^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{if}} + \vec{H^{t-1}}\bold{T_{m,m}^{of}})$$
 
 Output gate:
-	$$\vec{o^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{io}} + \vec{H^{t-1}}\bold{T_{m,m}^{oo}})$$
+$$\vec{o^t} = \bold{sigm}(\vec{X^t}\bold{T_{n,m}^{io}} + \vec{H^{t-1}}\bold{T_{m,m}^{oo}})$$
 
 Memory cells:
-	$$\vec{c^t} = \vec{i^t} * \vec{m^t} + \vec{f^t} * \vec{c^{t-1}}$$
+$$\vec{c^t} = \vec{i^t} * \vec{m^t} + \vec{f^t} * \vec{c^{t-1}}$$
 
-Result:
-	$$\vec{h^t} = \vec{c^t} * \vec{o^t}$$
+Output:
+$$\vec{h^t} = \vec{c^t} * \vec{o^t}$$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -283,7 +436,7 @@ Result:
     \label{fig:AE}
 \end{figure}
 
-Auto-encoder is a neural network to attempt to copy its inputs to its outputs
+Auto-encoder is a neural network to attempt to copy its inputs to its outputs \cite{Goodfellow-et-al-2016}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -312,6 +465,11 @@ $$E(\vec{x}, \vec{d}) = E(\vec{x}, \bold{g}(\vec{E}\bold{V})) = E(\vec{x}, \bold
     \caption{Multilayer Auto-encoder Example}
     \label{fig:example_MAE}
 \end{figure}
+
+\begin{itemize}
+\item Multiple encoders and decoders
+\item Pretraining process \cite{hinton2006reducing}
+\end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -379,7 +537,7 @@ $$=E(\vec{x}, \bold{g_1}(\bold{g_2}(\bold{g_3}(\bold{f_3}(\bold{f_2}(\bold{f_1}(
 \begin{frame}
 \begin{figure}[t!]
     \centering
-    \includegraphics[width=\textwidth]{figure-simulator-cropped}
+    \includegraphics[width=\textwidth]{./pictures/figures/figure-simulator-cropped.pdf}
     \caption{Driving Simulator at CHOP}
     \label{fig:simulator}
 \end{figure}
