@@ -107,7 +107,7 @@ The remaining of this document is organized as follows. Chapter \ref{chap:bg} in
 \chapter{Background}\label{chap:bg}
 % ====================================================================================================================================
 % ====================================================================================================================================
-This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is dived into three sections. First, Section \ref{sec:DL} covers basic deep learning concepts including recurrent neural networks and auto-encoders. Second, Section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. Finally, Section \ref{sec:MLDD} briefly discusses existing work in machine learning using for modeling driving data.
+This chapter presents the necessary background to understand the experiments presented later in the paper. This chapter is divided into three sections. First, Section \ref{sec:DL} covers basic deep learning concepts including recurrent neural networks and auto-encoders. Second, Section \ref{sec:DLL} compares deep learning libraries: DL4J, Theano, and Tensorflow. Finally, Section \ref{sec:MLDD} briefly discusses existing work in machine learning using for modeling driving data.
 
 \section{Deep Learning}\label{sec:DL}
 This section covers basic concepts of deep learning. First, Section \ref{subsec:basicDL} introduces deep learning, and next Section \ref{subsec:RNN} deals with recurrent neural networks and Long Short Term Memory networks (LSTMs). Finally, Section \ref{subsec:AE} covers auto-encoders.
@@ -145,7 +145,7 @@ $$ o = U(\vec{x}\cdot\vec{w}-\theta)$$
     \label{fig:general_AN}
 \end{figure}
 
-Figure \ref{fig:general_AN} shows an general artificial neuron. The threshold is replaced by a {\em bias} term and the {\em subtract} node is replaced by an {\em add} node. In general artificial neurons, the activation function $\phi$ could be an arbitrary function such as step, linear, or sigmoid functions. An general artificial neuron also can be described by the following equation:
+Figure \ref{fig:general_AN} shows a general artificial neuron. The threshold is replaced by a {\em bias} term and the {\em subtract} node is replaced by an {\em add} node. In general artificial neurons, the activation function $\phi$ could be an arbitrary function such as step, linear, or sigmoid functions. A general artificial neuron also can be described by the following equation:
 $$o = \phi(\vec{x}\cdot\vec{w}+b)$$
 
 
@@ -555,7 +555,7 @@ Due to its many practical applications and its importance to road safety, drivin
 
 A number of approaches employ machine learning methods to automatically acquire models of human driving behavior \cite{fernlund2006lfo,Pomerleau_1989_2055}. For example, case-based and instance-based learning have been deployed for driving tasks~\cite{ontanon2014case} as well as other LfD tasks \cite{floyd2008imitating,ontanon2010darmok,DBLP:conf/ijcai/RubinW11,lamontagne2012acquisition}. These approaches learn behavior by observing an expert's performance, but except for the work of Rubin and Watson, focus on small-scale datasets, much smaller than the datasets required to analyze driving behavior. Nechyba and Xu~\cite{nechyba1998stochastic} developed a similarity measure based on Hidden Markov Models (HMM) \cite{rabiner1986introduction}. The results demonstrated the ability of the models to accurately differentiate driving traces generated from one driver from those generated from other drivers however, the measures were based on relatively simple driving data (without other traffic). Moreover, the driving data used in this paper is significantly more complex than that used by Nechyba and Xu (for example, our data includes other traffic). In our previous work \cite{lee2017learning}, we showed how choosing the right variables to model is key in accurately modeling driving behavior. For example, we showed that if the usual steering, throttle and brake variables are used as the target for prediction, then the learning problem becomes non-i.i.d.
 
-Finally, previous work has utilized models to automatically predict driver states from driving data. Das et al.~\cite{das2012differentiating} showed that statistical measures over steering wheel data such as entropy and the Lyapunov exponent can determine whether a given driver is under the effect of alcohol or not. 
+Finally, previous work has utilized models to automatically predict driver states from driving data. Das et al.~\cite{das2012differentiating} showed that statistical measures over steering wheel data such as entropy and the Lyapunov exponent can determine whether a given driver is under the effect of alcohol or not.
 
 %People are concerned about driving behavior for safety.  Human driving behavior has been researched for long time. For example, Macadam illustrates the manual creation of control models showing aspects of human driving behavior on \cite{markkula2012review}.
 %
@@ -572,11 +572,11 @@ The experiments on this paper use 16 traces from 4 drivers: 2 people were expert
 
 The simulator records 100 features which include car status: velocity, steer, Brake, throttle and etc. and include environment status features such as the current speed limit, whether the driver is instructed to make the next left or right turn, etc. These data is collected at 60Hz. The traces vary in length from 26298 to 51295, with an average of 33224.6875 instances. The specific lengths of each trace are shown on Table \ref{tbl:traces}
 
-In this paper, we used two versions of the collected data set. A first version ({\em raw dataset}) contains 98 of the 100 features collected by the driving simulator (the two features that are removed are time stamps). A second version ({\em filtered dataset}) contains only 23 features. These 23 features were manually selected as are those that are most important for the classification task at hand. Reducing size of features helps save time to train neural network.
+In this paper, we used two versions of the collected data set. A first version ({\em raw dataset}) contains 98 of the 100 features collected by the driving simulator (the two features that are removed are time stamps). A second version ({\em filtered dataset}) contains only 23 features: 'velocity', 'steer', 'brake', 'lane off set', 'throttle', 'stop', and so on. These 23 features were manually selected as are those that are most important for the classification task at hand. The reduced features helps save time to train neural network.
 
 \begin{table}[tb]
 \centering
-\caption{Length of each of the traces used in our experiments.}
+\caption{Sample length on the traces}
 \label{tbl:traces}
 \begin{tabular}{|l|l|l|l|}
 \hline
@@ -620,7 +620,7 @@ Cross validation (CV) is a common method used to validate models when data is no
 
 
 \section{LSTM}
-The LSTM neural network is used on three different neural network models to classify expert or inexpert drivers because the data has time domain and LSTM gives good performance for serial data. On the paper, LSTM neural networks are built with 16, 32, 64, 128, and 256 hidden neurons. The output from LSTM is sent to an output layer which has two additional neurons. By using softmax, the output from two neurons is classified. If it is [0, 1], it is classified as expert. Otherwise, it is classified as inexpert.
+The LSTM neural network is used on three different neural network models to classify expert or inexpert drivers because the data has time domain and LSTM gives good performance for serial data. On the paper, LSTM neural networks are built with 16, 32, 64, 128, and 256 hidden neurons. It means that output dimensions of LSTM is 16, 32, 64, 128, and 256 dimensions. The output from LSTM is sent to an output layer which has two additional neurons. By using softmax, the output from two neurons is classified. If it is [0, 1], it is classified as expert. Otherwise, it is classified as inexpert.
 
 Figure \ref{fig:exp_NN1} shows first neural network model ({\em first model}) on the paper. Its input is {\em filtered dataset} which has 23 chosen features. The {\em filtered dataset} is feed directly to LSTM then the result is passed to the output layer.
 
@@ -655,6 +655,12 @@ Figure \ref{fig:exp_NN3} shows third neural network model ({\em third model}) on
     \caption{Third experiment NN}
     \label{fig:exp_NN3}
 \end{figure}
+
+
+\section{Comparison of three models}
+Three models are deep neural network which has multiple layers. The {\em first model} has two layers: LSTM and softmax. The {\em second model} has three layers: one encoder, LSTM and softmax. The {\em third model} has five layers: three encoders, LSTM and softmax. Three models contain same structure of LSTM and softmax layer.
+
+The difference between {\em first model} and other models is that the {\em first model} uses {\em filtered dataset} which features are filtered by human but other models reduce features of {\em raw dataset} by AE. The difference between {\em second model} and {\em third model} is that {\em second model} reduces features by SAE but {\em third model} reduces features by MAE. The difference between three models is method for reduction dimensions.
 
 
 \section{Sampling}
@@ -792,7 +798,7 @@ After feeding re-sampled data to three neural network models, the data is normal
 % ####################################################################################################################################
 \chapter{Experimental Result}\label{chap:result}
 % ####################################################################################################################################
-This chapter summarizes results from all experiments. Experiments are divided to two parts: 1) experiments with {\em filtered dataset} 2) experiments with {\em raw dataset}. First part of experiments used {\em first model} which only has LSTM. Each experiments used 5 different number of neurons: 16, 32, 64, 128, and 256. Second part of experiments used {\em second model} which has SAE and {\em third model} which has MAE then compared result of three models.
+This chapter summarizes results from all experiments. Experiments are divided to two parts: 1) experiments with {\em filtered dataset} 2) experiments with {\em raw dataset}. First part of experiments used {\em first model} which only has LSTM. Each experiments used 5 different number of neurons: 16, 32, 64, 128, and 256. Second part of experiments used {\em second model} which has SAE and {\em third model} which has MAE then compared result of three models.  All experiments were tested four times with four cross validation then the average result are on the chapter.
 
 \section{Experiments with {\em filtered dataset}}
 The first part of experiments used {\em filtered dataset} which has chosen 23 features. The dataset was re-sampled by 1 over 10, 1 over 20, and 1 over 50 with three different methods: {\em last}, {\em mean}, and {\em gaussian} so it was 9 different re-sampled datasets.
